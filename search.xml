@@ -18,4 +18,16 @@
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
   </entry>
+  <entry>
+    <title>LeetCode题解</title>
+    <url>/2021/01/18/LeetCode%E9%A2%98%E8%A7%A3/</url>
+    <content><![CDATA[<h1 id="个人网站搭建"><a href="#个人网站搭建" class="headerlink" title="个人网站搭建"></a>个人网站搭建</h1><h2 id="需要的编辑软件"><a href="#需要的编辑软件" class="headerlink" title="需要的编辑软件"></a>需要的编辑软件</h2><ul>
+<li>Typora<br>个人建议在国内的网站下载，不要去官网  </li>
+<li>轻量级文档编辑器<br><img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1091405991,859863778&fm=26&gp=0.jpg"><br>##超链接<br><a href="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1091405991,859863778&fm=26&gp=0.jpg">图片地址</a>  </li>
+</ul>
+]]></content>
+      <tags>
+        <tag>题目解析</tag>
+      </tags>
+  </entry>
 </search>
