@@ -1,116 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title>LeetCode题解</title>
-    <url>/2021/01/18/LeetCode%E9%A2%98%E8%A7%A3/</url>
-    <content><![CDATA[<h1 id="个人网站搭建"><a href="#个人网站搭建" class="headerlink" title="个人网站搭建"></a>个人网站搭建</h1><h2 id="需要的编辑软件"><a href="#需要的编辑软件" class="headerlink" title="需要的编辑软件"></a>需要的编辑软件</h2><ul>
-<li>Typora<br>个人建议在国内的网站下载，不要去官网  </li>
-<li>轻量级文档编辑器<br><img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1091405991,859863778&fm=26&gp=0.jpg"><br>##超链接<br><a href="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1091405991,859863778&fm=26&gp=0.jpg">图片地址</a>  </li>
-</ul>
-]]></content>
-      <tags>
-        <tag>题目解析</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>剑指offer-34</title>
-    <url>/2021/01/19/%E5%89%91%E6%8C%87offer-34/</url>
-    <content><![CDATA[<h1 id="二叉树中和为某一值的路径"><a href="#二叉树中和为某一值的路径" class="headerlink" title="二叉树中和为某一值的路径"></a><strong>二叉树中和为某一值的路径</strong></h1><h2 id="·-题目描述"><a href="#·-题目描述" class="headerlink" title="· 题目描述"></a>· 题目描述</h2><p>输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。 </p>
-<img src="/2021/01/19/%E5%89%91%E6%8C%87offer-34/1.png" style="zoom:50%;">
-
-<h2 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h2><p>由于路径是从根节点出发到叶节点，也就是路径总是以根节点作为起始点，因此我们需要先遍历根节点，考虑使用前序遍历。</p>
-<p>对于上图中的二叉树，其前序遍历过程如下表所示：</p>
-<table>
-<thead>
-<tr>
-<th>操作</th>
-<th>是否叶节点</th>
-<th>路径</th>
-<th>路径节点的和</th>
-<th>是否符合要求</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>访问节点5</td>
-<td>否</td>
-<td>5</td>
-<td>5</td>
-<td>否</td>
-</tr>
-<tr>
-<td>访问节点4</td>
-<td>否</td>
-<td>5,4</td>
-<td>9</td>
-<td>否</td>
-</tr>
-<tr>
-<td>访问节点11</td>
-<td>否</td>
-<td>5,4,11</td>
-<td>20</td>
-<td>否</td>
-</tr>
-<tr>
-<td>访问节点7</td>
-<td>是</td>
-<td>5,4,11,7</td>
-<td>27</td>
-<td>否</td>
-</tr>
-<tr>
-<td>访问节点2</td>
-<td>是</td>
-<td>5,4,11,2</td>
-<td>22</td>
-<td>是</td>
-</tr>
-<tr>
-<td>访问节点8</td>
-<td>否</td>
-<td>5,8</td>
-<td>13</td>
-<td>否</td>
-</tr>
-<tr>
-<td>……</td>
-<td>……</td>
-<td>……</td>
-<td>……</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>通过表，我们可以得到算法的执行流程：</p>
-<p>当访问一个节点时，首先判断该节点是不是null，当节点为null时，直接返回；</p>
-<p>当访问的节点不为null，将该节点的值加到动态数组temp中，并在目标值tar上减去该节点的数值。通过上表可知当一个节点为<strong>叶子节点</strong>且<strong>路径的和等于sum</strong>时该路径复合题目要求（此处当tar的值为零时表示路径的和等于sum）；</p>
-<p>当被访问的节点不为null，也不满足第二条的要求时，进行左右子树的递归；</p>
-<p>一个被访问的节点递归结束，要从temp中删除该节点的值，比如：5→4→11→7，当节点7访问结束，要将7从temp删除，然后返回到访问节点11的函数，开始递归它的右子树，也就是节点2。</p>
-<blockquote>
-<p>Note：当一条路径满足要求时，要新建一个LinkedList(temp)对象传入res中（复制），因为如果直接res.add(temp)相当于传入temp对象，当temp改变时，res也会随之变化。</p>
-</blockquote>
-<h2 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    LinkedList&lt;List&lt;Integer&gt;&gt; res = <span class="keyword">new</span> LinkedList&lt;&gt;();<span class="comment">//res中存储的是满足要求的所有路径</span></span><br><span class="line">    LinkedList&lt;Integer&gt; temp = <span class="keyword">new</span> LinkedList&lt;&gt;(); <span class="comment">//temp存储动态变化的路径</span></span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, <span class="keyword">int</span> sum) &#123;</span><br><span class="line">        path(root,sum);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">path</span><span class="params">(TreeNode root,<span class="keyword">int</span> tar)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        tar-=root.val;</span><br><span class="line">        temp.add(root.val);</span><br><span class="line">        <span class="keyword">if</span>(tar==<span class="number">0</span>&amp;&amp;root.left==<span class="keyword">null</span>&amp;&amp;root.right==<span class="keyword">null</span>)&#123;</span><br><span class="line">           res.add(<span class="keyword">new</span> LinkedList(temp));</span><br><span class="line">        &#125;</span><br><span class="line">        path(root.left,tar);</span><br><span class="line">        path(root.right,tar);</span><br><span class="line">        temp.removeLast();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>LeetCode题解</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/11/12/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
+<search> 
+  
+  
+    
+    <entry>
+      <title>剑指offer-34</title>
+      <link href="2021/01/19/%E5%89%91%E6%8C%87offer-34/"/>
+      <url>2021/01/19/%E5%89%91%E6%8C%87offer-34/</url>
+      
+        <content type="html"><![CDATA[<h1 id="二叉树中和为某一值的路径"><a href="#二叉树中和为某一值的路径" class="headerlink" title="二叉树中和为某一值的路径"></a><strong>二叉树中和为某一值的路径</strong></h1><h2 id="·-题目描述"><a href="#·-题目描述" class="headerlink" title="· 题目描述"></a>· 题目描述</h2><p>输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。 </p><img src="/2021/01/19/%E5%89%91%E6%8C%87offer-34/1.png" style="zoom:50%;"><h2 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h2><p>由于路径是从根节点出发到叶节点，也就是路径总是以根节点作为起始点，因此我们需要先遍历根节点，考虑使用前序遍历。</p><p>对于上图中的二叉树，其前序遍历过程如下表所示：</p><table><thead><tr><th>操作</th><th>是否叶节点</th><th>路径</th><th>路径节点的和</th><th>是否符合要求</th></tr></thead><tbody><tr><td>访问节点5</td><td>否</td><td>5</td><td>5</td><td>否</td></tr><tr><td>访问节点4</td><td>否</td><td>5,4</td><td>9</td><td>否</td></tr><tr><td>访问节点11</td><td>否</td><td>5,4,11</td><td>20</td><td>否</td></tr><tr><td>访问节点7</td><td>是</td><td>5,4,11,7</td><td>27</td><td>否</td></tr><tr><td>访问节点2</td><td>是</td><td>5,4,11,2</td><td>22</td><td>是</td></tr><tr><td>访问节点8</td><td>否</td><td>5,8</td><td>13</td><td>否</td></tr><tr><td>……</td><td>……</td><td>……</td><td>……</td><td></td></tr></tbody></table><p>通过表，我们可以得到算法的执行流程：</p><p>当访问一个节点时，首先判断该节点是不是null，当节点为null时，直接返回；</p><p>当访问的节点不为null，将该节点的值加到动态数组temp中，并在目标值tar上减去该节点的数值。通过上表可知当一个节点为<strong>叶子节点</strong>且<strong>路径的和等于sum</strong>时该路径复合题目要求（此处当tar的值为零时表示路径的和等于sum）；</p><p>当被访问的节点不为null，也不满足第二条的要求时，进行左右子树的递归；</p><p>一个被访问的节点递归结束，要从temp中删除该节点的值，比如：5→4→11→7，当节点7访问结束，要将7从temp删除，然后返回到访问节点11的函数，开始递归它的右子树，也就是节点2。</p><blockquote><p>Note：当一条路径满足要求时，要新建一个LinkedList(temp)对象传入res中（复制），因为如果直接res.add(temp)相当于传入temp对象，当temp改变时，res也会随之变化。</p></blockquote><h2 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    LinkedList&lt;List&lt;Integer&gt;&gt; res = <span class="keyword">new</span> LinkedList&lt;&gt;();<span class="comment">//res中存储的是满足要求的所有路径</span></span><br><span class="line">    LinkedList&lt;Integer&gt; temp = <span class="keyword">new</span> LinkedList&lt;&gt;(); <span class="comment">//temp存储动态变化的路径</span></span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, <span class="keyword">int</span> sum) &#123;</span><br><span class="line">        path(root,sum);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">path</span><span class="params">(TreeNode root,<span class="keyword">int</span> tar)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        tar-=root.val;</span><br><span class="line">        temp.add(root.val);</span><br><span class="line">        <span class="keyword">if</span>(tar==<span class="number">0</span>&amp;&amp;root.left==<span class="keyword">null</span>&amp;&amp;root.right==<span class="keyword">null</span>)&#123;</span><br><span class="line">           res.add(<span class="keyword">new</span> LinkedList(temp));</span><br><span class="line">        &#125;</span><br><span class="line">        path(root.left,tar);</span><br><span class="line">        path(root.right,tar);</span><br><span class="line">        temp.removeLast();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode题解 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>LeetCode题解</title>
+      <link href="2021/01/18/LeetCode%E9%A2%98%E8%A7%A3/"/>
+      <url>2021/01/18/LeetCode%E9%A2%98%E8%A7%A3/</url>
+      
+        <content type="html"><![CDATA[<h1 id="个人网站搭建"><a href="#个人网站搭建" class="headerlink" title="个人网站搭建"></a>个人网站搭建</h1><a id="more"></a><h2 id="需要的编辑软件"><a href="#需要的编辑软件" class="headerlink" title="需要的编辑软件"></a>需要的编辑软件</h2><ul><li>Typora<br>个人建议在国内的网站下载，不要去官网  </li><li>轻量级文档编辑器<br><img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1091405991,859863778&fm=26&gp=0.jpg"><br>##超链接<br><a href="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1091405991,859863778&fm=26&gp=0.jpg">图片地址</a>  </li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 题目解析 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="2020/11/12/hello-world/"/>
+      <url>2020/11/12/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
 </search>
