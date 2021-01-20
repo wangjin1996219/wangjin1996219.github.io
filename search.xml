@@ -1,115 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title>二叉树中和为某一值的路径</title>
-    <url>/2021/01/19/%E5%89%91%E6%8C%87offer-34/</url>
-    <content><![CDATA[<hr>
-<a id="more"></a>
-
-<h1 id="·-题目描述"><a href="#·-题目描述" class="headerlink" title="· 题目描述"></a>· 题目描述</h1><p>​        输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。</p>
-<img src="/2021/01/19/%E5%89%91%E6%8C%87offer-34/1.png" style="zoom:50%;">
-
-<h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><p>​        由于路径是从根节点出发到叶节点，也就是路径总是以根节点作为起始点，因此我们需要先遍历根节点，考虑使用前序遍历。</p>
-<p>对于上图中的二叉树，其前序遍历过程如下表所示：</p>
-<table>
-<thead>
-<tr>
-<th>操作</th>
-<th>是否叶节点</th>
-<th>路径</th>
-<th>路径节点的和</th>
-<th>是否符合要求</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>访问节点5</td>
-<td>否</td>
-<td>5</td>
-<td>5</td>
-<td>否</td>
-</tr>
-<tr>
-<td>访问节点4</td>
-<td>否</td>
-<td>5,4</td>
-<td>9</td>
-<td>否</td>
-</tr>
-<tr>
-<td>访问节点11</td>
-<td>否</td>
-<td>5,4,11</td>
-<td>20</td>
-<td>否</td>
-</tr>
-<tr>
-<td>访问节点7</td>
-<td>是</td>
-<td>5,4,11,7</td>
-<td>27</td>
-<td>否</td>
-</tr>
-<tr>
-<td>访问节点2</td>
-<td>是</td>
-<td>5,4,11,2</td>
-<td>22</td>
-<td>是</td>
-</tr>
-<tr>
-<td>访问节点8</td>
-<td>否</td>
-<td>5,8</td>
-<td>13</td>
-<td>否</td>
-</tr>
-<tr>
-<td>……</td>
-<td>……</td>
-<td>……</td>
-<td>……</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>​        通过表，我们可以得到算法的执行流程：</p>
-<p>​        当访问一个节点时，首先判断该节点是不是null，当节点为null时，直接返回；</p>
-<p>​        当访问的节点不为null，将该节点的值加到动态数组temp中，并在目标值tar上减去该节点的数值。通过上表可知当一个节点为<strong>叶子节点</strong>且<strong>路径的和等于sum</strong>时该路径复合题目要求（此处当tar的值为零时表示路径的和等于sum）；</p>
-<p>​        当被访问的节点不为null，也不满足第二条的要求时，进行左右子树的递归；</p>
-<p>​        一个被访问的节点递归结束，要从temp中删除该节点的值，比如：5→4→11→7，当节点7访问结束，要将7从temp删除，然后返回        到访问节点11的函数，开始递归它的右子树，也就是节点2。</p>
-<blockquote>
-<p>Note：当一条路径满足要求时，要新建一个LinkedList(temp)对象传入res中（复制），因为如果直接res.add(temp)相当于传入temp对象，当temp改变时，res也会随之变化。</p>
-</blockquote>
-<h1 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    LinkedList&lt;List&lt;Integer&gt;&gt; res = <span class="keyword">new</span> LinkedList&lt;&gt;();<span class="comment">//res中存储的是满足要求的所有路径</span></span><br><span class="line">    LinkedList&lt;Integer&gt; temp = <span class="keyword">new</span> LinkedList&lt;&gt;(); <span class="comment">//temp存储动态变化的路径</span></span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, <span class="keyword">int</span> sum) &#123;</span><br><span class="line">        path(root,sum);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">path</span><span class="params">(TreeNode root,<span class="keyword">int</span> tar)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        tar-=root.val;</span><br><span class="line">        temp.add(root.val);</span><br><span class="line">        <span class="keyword">if</span>(tar==<span class="number">0</span>&amp;&amp;root.left==<span class="keyword">null</span>&amp;&amp;root.right==<span class="keyword">null</span>)&#123;</span><br><span class="line">           res.add(<span class="keyword">new</span> LinkedList(temp));</span><br><span class="line">        &#125;</span><br><span class="line">        path(root.left,tar);</span><br><span class="line">        path(root.right,tar);</span><br><span class="line">        temp.removeLast();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
+<search> 
+  
+  
+    
+    <entry>
+      <title>深度优先遍历</title>
+      <link href="2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/"/>
+      <url>2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/</url>
+      
+        <content type="html"><![CDATA[<hr><a id="more"></a><h1 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h1><p>​        从图中的某个顶点K出发，按照一定的原则（比如：总是先选择右边第一个点）先去访问它的邻接点，初始状态下K的邻接点未被访问过，按照这个原则找到它的一个未被访问过的邻接点，然后将该邻接点标记为“true”，表示该点已经被访问过。直到有一个顶点N，按照该原则下，它的邻接点已经被访问，则退回到N点，再去访问它右边第二个点，以此类推，直到所有的顶点都被访问到，遍历结束。</p><p>​        这里我们以邻接矩阵的方式来讲解DFS的算法执行流程：</p><p>​                              <img src="/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/邻接矩阵.jpg" style="zoom: 80%;"></p><blockquote><p><strong>Note：</strong>该代码不包含图的建立部分。其中，numVertexes为图中的节点数目，vexs[]数组为顶点表 ,arc[] []为边表</p></blockquote><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">boolean</span>[] visited = <span class="keyword">new</span> <span class="keyword">boolean</span>[G.numVertexes];<span class="comment">//创建visited[]数组，作为节点的访问标志</span></span><br><span class="line"><span class="comment">/*邻接矩阵的深度优先遍历操作*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DFSTraverse</span><span class="params">(Graph G)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;G.numVertexes;i++)&#123;</span><br><span class="line">        visited[i]=<span class="keyword">false</span>;<span class="comment">//初始化visited[]数组为false，表示初始状态下节点未被访问</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;j&lt;G.numVertexes;j++)&#123;<span class="comment">//从V0开始循环遍历树中的节点</span></span><br><span class="line">        <span class="keyword">if</span>(!visited[i])&#123;<span class="comment">//若节点Vi不为false，说明该节点未被访问过，调用DFS()方法。这里可以视为对边表的行遍历</span></span><br><span class="line">            DFS(G,i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*邻接矩阵的深度优先递归算法*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DFS</span><span class="params">(Graph G,<span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> j;</span><br><span class="line">    visited[i]=<span class="keyword">true</span>;<span class="comment">//另visited数组中的第i个节点的标志位true，表示该节点已经被访问</span></span><br><span class="line">    System.out.println(G.vexs[i]);<span class="comment">//可以对该顶点进行输出等操作</span></span><br><span class="line">    <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;G.numVertexes;j++)&#123;<span class="comment">//i表示边表矩阵的第i行，当满足G.[i][j]!==1（表示节点j是i的邻接点）且                                                   //visited[j]==false未被访问，则对节点j再进行DFS递归</span></span><br><span class="line">        <span class="keyword">if</span>(G.[i][j]!==<span class="number">1</span>&amp;&amp;visited[j]==<span class="keyword">false</span>)&#123;</span><br><span class="line">            DFS(G,j);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>​        当图是<strong>连通图</strong>时，DFSTraverse（）方法中的循环执行一次就可以；</p><p>​        当图是<strong>非连通图</strong>时，需要对它的连通分量分别进行DFS遍历，当图中尚有顶点还有顶点未被访问，则另选图中一个未曾被访问的顶点作为起始点，重复上述过程，直到图中所有的节点都被访问到为止。</p>]]></content>
+      
+      
       <categories>
-        <category>LeetCode题解</category>
+          
+          <category> 数据结构及算法 </category>
+          
       </categories>
-      <tags>
-        <tag>剑指offer</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>深度优先遍历</title>
-    <url>/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/</url>
-    <content><![CDATA[<hr>
-<a id="more"></a>
-
-<h1 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h1><p>​        从图中的某个顶点K出发，按照一定的原则（比如：总是先选择右边第一个点）先去访问它的邻接点，初始状态下K的邻接点未被访问过，按照这个原则找到它的一个未被访问过的邻接点，然后将该邻接点标记为“true”，表示该点已经被访问过。直到有一个顶点N，按照该原则下，它的邻接点已经被访问，则退回到N点，再去访问它右边第二个点，以此类推，直到所有的顶点都被访问到，遍历结束。</p>
-<p>​        这里我们以邻接矩阵的方式来讲解DFS的算法执行流程：</p>
-<p>​                              <img src="/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/邻接矩阵.jpg" style="zoom: 80%;"></p>
-<blockquote>
-<p><strong>Note：</strong>该代码不包含图的建立部分。其中，numVertexes为图中的节点数目，vexs[]数组为顶点表 ,arc[] []为边表</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">boolean</span>[] visited = <span class="keyword">new</span> <span class="keyword">boolean</span>[G.numVertexes];<span class="comment">//创建visited[]数组，作为节点的访问标志</span></span><br><span class="line"><span class="comment">/*邻接矩阵的深度优先遍历操作*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DFSTraverse</span><span class="params">(Graph G)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;G.numVertexes;i++)&#123;</span><br><span class="line">        visited[i]=<span class="keyword">false</span>;<span class="comment">//初始化visited[]数组为false，表示初始状态下节点未被访问</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;j&lt;G.numVertexes;j++)&#123;<span class="comment">//从V0开始循环遍历树中的节点</span></span><br><span class="line">        <span class="keyword">if</span>(!visited[i])&#123;<span class="comment">//若节点Vi不为false，说明该节点未被访问过，调用DFS()方法。这里可以视为对边表的行遍历</span></span><br><span class="line">            DFS(G,i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*邻接矩阵的深度优先递归算法*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DFS</span><span class="params">(Graph G,<span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> j;</span><br><span class="line">    visited[i]=<span class="keyword">true</span>;<span class="comment">//另visited数组中的第i个节点的标志位true，表示该节点已经被访问</span></span><br><span class="line">    System.out.println(G.vexs[i]);<span class="comment">//可以对该顶点进行输出等操作</span></span><br><span class="line">    <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;G.numVertexes;j++)&#123;<span class="comment">//i表示边表矩阵的第i行，当满足G.[i][j]!==1（表示节点j是i的邻接点）且                                                   //visited[j]==false未被访问，则对节点j再进行DFS递归</span></span><br><span class="line">        <span class="keyword">if</span>(G.[i][j]!==<span class="number">1</span>&amp;&amp;visited[j]==<span class="keyword">false</span>)&#123;</span><br><span class="line">            DFS(G,j);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>​        当图是<strong>连通图</strong>时，DFSTraverse（）方法中的循环执行一次就可以；</p>
-<p>​        当图是<strong>非连通图</strong>时，需要对它的连通分量分别进行DFS遍历，当图中尚有顶点还有顶点未被访问，则另选图中一个未曾被访问的顶点作为起始点，重复上述过程，直到图中所有的节点都被访问到为止。</p>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> 大话数据结构 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>二叉树中和为某一值的路径</title>
+      <link href="2021/01/19/%E5%89%91%E6%8C%87offer-34/"/>
+      <url>2021/01/19/%E5%89%91%E6%8C%87offer-34/</url>
+      
+        <content type="html"><![CDATA[<hr><a id="more"></a><h1 id="·-题目描述"><a href="#·-题目描述" class="headerlink" title="· 题目描述"></a>· 题目描述</h1><p>​        输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。</p><img src="/2021/01/19/%E5%89%91%E6%8C%87offer-34/1.png" style="zoom:50%;"><h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><p>​        由于路径是从根节点出发到叶节点，也就是路径总是以根节点作为起始点，因此我们需要先遍历根节点，考虑使用前序遍历。</p><p>对于上图中的二叉树，其前序遍历过程如下表所示：</p><table><thead><tr><th>操作</th><th>是否叶节点</th><th>路径</th><th>路径节点的和</th><th>是否符合要求</th></tr></thead><tbody><tr><td>访问节点5</td><td>否</td><td>5</td><td>5</td><td>否</td></tr><tr><td>访问节点4</td><td>否</td><td>5,4</td><td>9</td><td>否</td></tr><tr><td>访问节点11</td><td>否</td><td>5,4,11</td><td>20</td><td>否</td></tr><tr><td>访问节点7</td><td>是</td><td>5,4,11,7</td><td>27</td><td>否</td></tr><tr><td>访问节点2</td><td>是</td><td>5,4,11,2</td><td>22</td><td>是</td></tr><tr><td>访问节点8</td><td>否</td><td>5,8</td><td>13</td><td>否</td></tr><tr><td>……</td><td>……</td><td>……</td><td>……</td><td></td></tr></tbody></table><p>​        通过表，我们可以得到算法的执行流程：</p><p>​        当访问一个节点时，首先判断该节点是不是null，当节点为null时，直接返回；</p><p>​        当访问的节点不为null，将该节点的值加到动态数组temp中，并在目标值tar上减去该节点的数值。通过上表可知当一个节点为<strong>叶子节点</strong>且<strong>路径的和等于sum</strong>时该路径复合题目要求（此处当tar的值为零时表示路径的和等于sum）；</p><p>​        当被访问的节点不为null，也不满足第二条的要求时，进行左右子树的递归；</p><p>​        一个被访问的节点递归结束，要从temp中删除该节点的值，比如：5→4→11→7，当节点7访问结束，要将7从temp删除，然后返回        到访问节点11的函数，开始递归它的右子树，也就是节点2。</p><blockquote><p>Note：当一条路径满足要求时，要新建一个LinkedList(temp)对象传入res中（复制），因为如果直接res.add(temp)相当于传入temp对象，当temp改变时，res也会随之变化。</p></blockquote><h1 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    LinkedList&lt;List&lt;Integer&gt;&gt; res = <span class="keyword">new</span> LinkedList&lt;&gt;();<span class="comment">//res中存储的是满足要求的所有路径</span></span><br><span class="line">    LinkedList&lt;Integer&gt; temp = <span class="keyword">new</span> LinkedList&lt;&gt;(); <span class="comment">//temp存储动态变化的路径</span></span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, <span class="keyword">int</span> sum) &#123;</span><br><span class="line">        path(root,sum);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">path</span><span class="params">(TreeNode root,<span class="keyword">int</span> tar)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        tar-=root.val;</span><br><span class="line">        temp.add(root.val);</span><br><span class="line">        <span class="keyword">if</span>(tar==<span class="number">0</span>&amp;&amp;root.left==<span class="keyword">null</span>&amp;&amp;root.right==<span class="keyword">null</span>)&#123;</span><br><span class="line">           res.add(<span class="keyword">new</span> LinkedList(temp));</span><br><span class="line">        &#125;</span><br><span class="line">        path(root.left,tar);</span><br><span class="line">        path(root.right,tar);</span><br><span class="line">        temp.removeLast();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
       <categories>
-        <category>数据结构及算法</category>
+          
+          <category> LeetCode题解 </category>
+          
       </categories>
-      <tags>
-        <tag>大话数据结构</tag>
-      </tags>
-  </entry>
+      
+      
+        <tags>
+            
+            <tag> 剑指offer </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
 </search>
