@@ -20,19 +20,20 @@
     var CONFIG = {"hostname":"wangjin1996219.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="及时当勉励，岁月不待人">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://wangjin1996219.github.io/about/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="深度优先遍历">
+<meta property="og:url" content="http://wangjin1996219.github.io/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/index.html">
 <meta property="og:site_name" content="Wj-Blog">
-<meta property="og:description" content="及时当勉励，岁月不待人">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-12T08:35:06.000Z">
-<meta property="article:modified_time" content="2020-11-12T08:35:33.159Z">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/邻接矩阵.jpg">
+<meta property="article:published_time" content="2021-01-20T13:45:48.000Z">
+<meta property="article:modified_time" content="2021-01-20T15:25:05.650Z">
 <meta property="article:author" content="王进">
+<meta property="article:tag" content="大话数据结构">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://wangjin1996219.github.io/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/邻接矩阵.jpg">
 
-<link rel="canonical" href="http://wangjin1996219.github.io/about/">
+<link rel="canonical" href="http://wangjin1996219.github.io/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/">
 
 
 <script id="page-configurations">
@@ -40,13 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>about | Wj-Blog
-</title>
+  <title>深度优先遍历 | Wj-Blog</title>
   
 
 
@@ -197,43 +197,166 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
-      <header class="post-header">
-
-<h1 class="post-title" itemprop="name headline">about
-</h1>
-
-<div class="post-meta">
   
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="王进">
+      <meta itemprop="description" content="及时当勉励，岁月不待人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wj-Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深度优先遍历
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-20 21:45:48 / 修改时间：23:25:05" itemprop="dateCreated datePublished" datetime="2021-01-20T21:45:48+08:00">2021-01-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据结构及算法</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/" class="post-meta-item leancloud_visitors" data-flag-title="深度优先遍历" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<a id="more"></a>
+
+<h1 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h1><p>​        从图中的某个顶点K出发，按照一定的原则（比如：总是先选择右边第一个点）先去访问它的邻接点，初始状态下K的邻接点未被访问过，按照这个原则找到它的一个未被访问过的邻接点，然后将该邻接点标记为“true”，表示该点已经被访问过。直到有一个顶点N，按照该原则下，它的邻接点已经被访问，则退回到N点，再去访问它右边第二个点，以此类推，直到所有的顶点都被访问到，遍历结束。</p>
+<p>​        这里我们以邻接矩阵的方式来讲解DFS的算法执行流程：</p>
+<p>​                              <img src="/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/邻接矩阵.jpg" style="zoom: 80%;"></p>
+<blockquote>
+<p><strong>Note：</strong>该代码不包含图的建立部分。其中，numVertexes为图中的节点数目，vexs[]数组为顶点表 ,arc[] []为边表</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">boolean</span>[] visited = <span class="keyword">new</span> <span class="keyword">boolean</span>[G.numVertexes];<span class="comment">//创建visited[]数组，作为节点的访问标志</span></span><br><span class="line"><span class="comment">/*邻接矩阵的深度优先遍历操作*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DFSTraverse</span><span class="params">(Graph G)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;G.numVertexes;i++)&#123;</span><br><span class="line">        visited[i]=<span class="keyword">false</span>;<span class="comment">//初始化visited[]数组为false，表示初始状态下节点未被访问</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;j&lt;G.numVertexes;j++)&#123;<span class="comment">//从V0开始循环遍历树中的节点</span></span><br><span class="line">        <span class="keyword">if</span>(!visited[i])&#123;<span class="comment">//若节点Vi不为false，说明该节点未被访问过，调用DFS()方法。这里可以视为对边表的行遍历</span></span><br><span class="line">            DFS(G,i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*邻接矩阵的深度优先递归算法*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DFS</span><span class="params">(Graph G,<span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> j;</span><br><span class="line">    visited[i]=<span class="keyword">true</span>;<span class="comment">//另visited数组中的第i个节点的标志位true，表示该节点已经被访问</span></span><br><span class="line">    System.out.println(G.vexs[i]);<span class="comment">//可以对该顶点进行输出等操作</span></span><br><span class="line">    <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;G.numVertexes;j++)&#123;<span class="comment">//i表示边表矩阵的第i行，当满足G.[i][j]!==1（表示节点j是i的邻接点）且                                                   //visited[j]==false未被访问，则对节点j再进行DFS递归</span></span><br><span class="line">        <span class="keyword">if</span>(G.[i][j]!==<span class="number">1</span>&amp;&amp;visited[j]==<span class="keyword">false</span>)&#123;</span><br><span class="line">            DFS(G,j);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>​        当图是<strong>连通图</strong>时，DFSTraverse（）方法中的循环执行一次就可以；</p>
+<p>​        当图是<strong>非连通图</strong>时，需要对它的连通分量分别进行DFS遍历，当图中尚有顶点还有顶点未被访问，则另选图中一个未曾被访问的顶点作为起始点，重复上述过程，直到图中所有的节点都被访问到为止。</p>
+
+    </div>
+
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
 </div>
 
-</header>
-
+  
+</div>
+        <div class="reward-container">
+  <div>您的支持是我继续创作的动力！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
       
-      
-      
-      <div class="post-body">
-          
+      <div style="display: inline-block;">
+        <img src="/images/shoukuanma.png" alt="王进 微信支付">
+        <p>微信支付</p>
       </div>
-      
-      
-      
-    </div>
-    
 
+  </div>
+</div>
+
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%A7%E8%AF%9D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"><i class="fa fa-tag"></i>  大话数据结构</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/19/%E5%89%91%E6%8C%87offer-34/" rel="prev" title="二叉树中和为某一值的路径">
+      <i class="fa fa-chevron-left"></i> 二叉树中和为某一值的路径
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
     
-    
-    
+  </article>
+  
+  
+  
+
 
 
           </div>
@@ -285,6 +408,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3"><span class="nav-number">1.</span> <span class="nav-text">算法思想</span></a></li></ol></div>
       </div>
       <!--/noindex-->
       <div class="site-overview-wrap sidebar-panel">
