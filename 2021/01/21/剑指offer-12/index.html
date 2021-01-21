@@ -27,7 +27,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://wangjin1996219.github.io/2021/01/21/%E5%89%91%E6%8C%87offer-12/%E7%9F%A9%E9%98%B5.png">
 <meta property="article:published_time" content="2021-01-21T14:17:38.000Z">
-<meta property="article:modified_time" content="2021-01-21T15:30:12.150Z">
+<meta property="article:modified_time" content="2021-01-21T15:57:00.433Z">
 <meta property="article:author" content="王进">
 <meta property="article:tag" content="剑指offer">
 <meta name="twitter:card" content="summary">
@@ -140,11 +140,6 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">3</span></a>
 
   </li>
-        <li class="menu-item menu-item-schedule">
-
-    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
-
-  </li>
         <li class="menu-item menu-item-commonweal">
 
     <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
@@ -230,7 +225,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-01-21 22:17:38 / 修改时间：23:30:12" itemprop="dateCreated datePublished" datetime="2021-01-21T22:17:38+08:00">2021-01-21</time>
+              <time title="创建时间：2021-01-21 22:17:38 / 修改时间：23:57:00" itemprop="dateCreated datePublished" datetime="2021-01-21T22:17:38+08:00">2021-01-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -297,7 +292,7 @@
 <p>请设计一个函数，用来判断在一个矩阵中是否存在一条包含某字符串所有字符的路径。路径可以从矩阵中的任意一格开始，每一步可以在矩阵中向左、右、上、下移动一格。如果一条路径经过了矩阵的某一格，那么该路径不能再次进入该格子。例如，在下面的3×4的矩阵中包含一条字符串“bfce”的路径（路径中的字母用加粗标出）。</p>
 <p>[[“a”,”b”,”c”,”e”],<br>[“s”,”f”,”c”,”s”],<br>[“a”,”d”,”e”,”e”]]</p>
 <p>但矩阵中不包含字符串“abfb”的路径，因为字符串的第一个字符b占据了矩阵中的第一行第二个格子之后，路径不能再次进入这个格子。</p>
-<h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><p>该题属于矩阵的搜索问题，可以想到使用<a target="_blank" rel="noopener" href="https://eudemonia.tech/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/#more">深度优先遍历算法来解决</a>。通过DFS递归，先朝一个方向搜索，当路径上遇到一个节点k+1不满足条件时，再回溯至上个节点，沿其它方向搜索，以此类推。如<a target="_blank" rel="noopener" href="https://pic.leetcode-cn.com/b13c34a26060e7eea8ba5001928bcf6972abc65df05eca3b5a29e5fc483b9a94-image.png">下图</a>所示：</p>
+<h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><p>该题属于矩阵的搜索问题，可以想到使用<a target="_blank" rel="noopener" href="https://eudemonia.tech/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/#more">深度优先遍历算法</a>来解决。通过DFS递归，先朝一个方向搜索，当路径上遇到一个节点k+1不满足条件时，再回溯至上个节点，沿其它方向搜索，以此类推。如<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/solution/hui-su-suan-fa-qiu-jie-by-sdwwld/">下图</a>所示：</p>
 <p><img src="/2021/01/21/%E5%89%91%E6%8C%87offer-12/%E7%9F%A9%E9%98%B5.png"></p>
 <p>首先，在矩阵中任选一个节点，作为一条path的起点；</p>
 <p>然后，通过DFS以该节点作为起始点，开始递归。递归的结束结果有两种可能：</p>
@@ -317,7 +312,7 @@
   
     <div>
     
-        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢阅读-------------</div>
     
 </div>
 
@@ -561,7 +556,7 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
       notify     : true,
       appId      : 'pQCeFPCYCP9sz6YcISYlyUqk-gzGzoHsz',
       appKey     : 'RwrssV7QwO3le9kYtuScKNyD',
-      placeholder: "快快献上你的评论~",
+      placeholder: "评论一句，前排打call~",
       avatar     : 'monsterid',
       meta       : guest,
       pageSize   : '10' || 10,
