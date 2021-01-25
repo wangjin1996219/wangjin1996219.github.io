@@ -6,7 +6,7 @@
   <link href="http://wangjin1996219.github.io/atom.xml" rel="self"/>
   
   <link href="http://wangjin1996219.github.io/"/>
-  <updated>2021-01-25T13:10:25.095Z</updated>
+  <updated>2021-01-25T15:58:50.765Z</updated>
   <id>http://wangjin1996219.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>快速排序算法</title>
+    <link href="http://wangjin1996219.github.io/2021/01/25/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"/>
+    <id>http://wangjin1996219.github.io/2021/01/25/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</id>
+    <published>2021-01-25T13:40:23.000Z</published>
+    <updated>2021-01-25T15:58:50.765Z</updated>
+    
+    <content type="html"><![CDATA[<hr><a id="more"></a><h1 id="·-算法思想"><a href="#·-算法思想" class="headerlink" title="· 算法思想"></a>· 算法思想</h1><p>快速排序算法的本质同冒泡排序一样，同属于交换排序类。也就是通过不断地比较和移动交换来实现排序，只不过对于快速排序来说增大了记录的比较和移动的距离，将较大的关键字记录从前面直接移动到后面，将较小的从后面直接移动到前面，减少了总的比较次数和移动交换次数。</p><p><strong>快排的基本思想是：</strong>选定一个分隔点，通过一趟排序将待排记录<code>按照数组中元素与分隔点的逻辑关系分割成独立的两部分</code>，然后按照同样的方式，对两侧的子数组再排序，直到实现整个序列有序的目的。</p><p>例如：对于如图所示的数组进行排序的过程如下</p><img src="/2021/01/25/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/图片.png" style="zoom: 67%;"><h1 id="·-代码实现"><a href="#·-代码实现" class="headerlink" title="· 代码实现"></a>· 代码实现</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QiuckSort</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] nums = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">50</span>, <span class="number">10</span>, <span class="number">90</span>, <span class="number">30</span>, <span class="number">70</span>, <span class="number">40</span>, <span class="number">80</span>, <span class="number">60</span>, <span class="number">20</span>&#125;;</span><br><span class="line">        QSort(nums, <span class="number">0</span>, nums.length - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i : nums) &#123;</span><br><span class="line">            System.out.print(i+<span class="string">&quot; &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">QSort</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (l &gt; r) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> i = l;</span><br><span class="line">        <span class="keyword">int</span> j = r;</span><br><span class="line">        <span class="keyword">int</span> temp = nums[l];</span><br><span class="line">        <span class="keyword">while</span> (i &lt; j) &#123;</span><br><span class="line">            <span class="keyword">while</span> (i &lt; j &amp;&amp; nums[j] &gt;= nums[l]) j--;</span><br><span class="line">            <span class="keyword">while</span> (i &lt; j &amp;&amp; nums[i] &lt;= nums[l]) i++;</span><br><span class="line">            temp = nums[i];</span><br><span class="line">            nums[i] = nums[j];</span><br><span class="line">            nums[j] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        nums[i] = nums[l];</span><br><span class="line">        nums[l] = temp;</span><br><span class="line">        QSort(nums, l, i - <span class="number">1</span>);</span><br><span class="line">        QSort(nums, i + <span class="number">1</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>程序执行结果</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">10</span> <span class="number">20</span> <span class="number">30</span> <span class="number">40</span> <span class="number">50</span> <span class="number">60</span> <span class="number">70</span> <span class="number">80</span> <span class="number">90</span> </span><br><span class="line">Process finished with exit code <span class="number">0</span></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">&lt;hr&gt;</summary>
+    
+    
+    
+    <category term="数据结构及算法" scheme="http://wangjin1996219.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="大话数据结构" scheme="http://wangjin1996219.github.io/tags/%E5%A4%A7%E8%AF%9D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
   
   <entry>
     <title>机器人的运动范围</title>
