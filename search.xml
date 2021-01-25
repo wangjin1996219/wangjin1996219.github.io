@@ -1,6 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>顺时针打印矩阵</title>
+    <url>/2021/01/25/%E5%89%91%E6%8C%87offer-29/</url>
+    <content><![CDATA[<hr>
+<a id="more"></a>
+
+<h1 id="·-题目描述"><a href="#·-题目描述" class="headerlink" title="· 题目描述"></a>· 题目描述</h1><blockquote>
+<p><strong>题目来自LeetCode：</strong><a href="https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof">https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof</a></p>
+</blockquote>
+<p>输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。</p>
+<p>示例 1：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：matrix &#x3D; [[1,2,3],[4,5,6],[7,8,9]]</span><br><span class="line">输出：[1,2,3,6,9,8,7,4,5]</span><br></pre></td></tr></table></figure>
+
+<h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><img src="/2021/01/25/%E5%89%91%E6%8C%87offer-29/图片.png" style="zoom:50%;">
+
+<p>以<a href="https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/solution/mian-shi-ti-29-shun-shi-zhen-da-yin-ju-zhen-she-di/">上图</a>的矩阵为例，模拟一遍循环打印的过程：</p>
+<p><strong>外圈：</strong></p>
+<ul>
+<li>从左上角的1开始，遍历顶部的一行，到右上角的元素3结束；</li>
+<li>再从3下的元素6开始，遍历最右边的一列，到右下角的元素9结束；</li>
+<li>再从9左边的元素8开始，遍历底部的一行，到左下角的元素7结束；</li>
+<li>最后从7上边的元素4开始，遍历左边的一列，到起始元素的下边一个元素结束；  </li>
+</ul>
+<p><strong>内圈：</strong>元素多的话，与外圈的循环相同</p>
+<p><strong>因此我们可以用多个重复的循环来解决这个问题：</strong>记左上角的元素坐标为（lr,lc）=（0,0），右下角的元素坐标为（rr,rc）=（sums.length-1,sums[0].length-1），那么每层中每次循环的起始坐标都可以用这四个元素来表示。</p>
+<h1 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] spiralOrder(<span class="keyword">int</span>[][] matrix) &#123;</span><br><span class="line">    <span class="keyword">if</span>(matrix.length==<span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">int</span> lr=<span class="number">0</span>;<span class="comment">//第一层循环的左上角元素为（0,0）</span></span><br><span class="line">    <span class="keyword">int</span> lc=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> rr=matrix.length-<span class="number">1</span>;<span class="comment">//第一层循环的右下角元素为（matrix.length-1，matrix[0].length-1）</span></span><br><span class="line">    <span class="keyword">int</span> rc=matrix[<span class="number">0</span>].length-<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span>[] res=<span class="keyword">new</span> <span class="keyword">int</span>[(rr+<span class="number">1</span>)*(rc+<span class="number">1</span>)];</span><br><span class="line">    <span class="keyword">int</span> k=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;<span class="comment">//我们以第一层循环为例讲解代码</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=lc;j&lt;=rc;j++)&#123;<span class="comment">//第一个循环改变的是列，行不变。另j等于顶层最左边坐标的列值lc，结束值是顶层最右边坐标的列值                                 //rc</span></span><br><span class="line">            res[k++]=matrix[lr][j];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(++lr&gt;rr) <span class="keyword">break</span>;<span class="comment">//先另左边的行号+1，表示该行剔除，然后用加完后的值去跟右下角的行号比较，当大于该值，表示这两个在同                           //一行也就是只有一行，循环结束，下同</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=lr;i&lt;=rr;i++)&#123;</span><br><span class="line">            res[k++]=matrix[i][rc];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(--rc&lt;lc) <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=rc;j&gt;=lc;j--)&#123;</span><br><span class="line">            res[k++]=matrix[rr][j];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(--rr&lt;lr) <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=rr;i&gt;=lr;i--)&#123;</span><br><span class="line">            res[k++]=matrix[i][lc];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(++lc&gt;rc) <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>Note：</strong>++a&gt;b表示先对a的值+1再和b的值比较，a++相反。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>LeetCode题解</category>
+      </categories>
+      <tags>
+        <tag>剑指offer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>机器人的运动范围</title>
+    <url>/2021/01/25/%E5%89%91%E6%8C%87offer-13/</url>
+    <content><![CDATA[<hr>
+<a id="more"></a>
+
+<h1 id="·-题目描述"><a href="#·-题目描述" class="headerlink" title="· 题目描述"></a>· 题目描述</h1><blockquote>
+<p><strong>题目来自于LeetCode：</strong><a href="https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof">https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof</a></p>
+</blockquote>
+<p>地上有一个m行n列的方格，从坐标 [0,0] 到坐标 [m-1,n-1] 。一个机器人从坐标 [0, 0] 的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？</p>
+<p>示例 1：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：m &#x3D; 2, n &#x3D; 3, k &#x3D; 1</span><br><span class="line">输出：3</span><br></pre></td></tr></table></figure>
+
+<p>示例 2：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：m &#x3D; 3, n &#x3D; 1, k &#x3D; 0</span><br><span class="line">输出：1</span><br></pre></td></tr></table></figure>
+
+<h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><p>本题属于二维矩阵的搜索问题，考虑使用<a href="https://eudemonia.tech/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/#more">深度优先遍历（DFS）</a>的方法。也就是暴力法模拟机器人在矩阵中的所有路径。DFS 通过递归，先朝一个方向搜到底，再回溯至上个节点，沿另一个方向搜索，以此类推。本题中一个优化是不用对一个格子的四个方向都递归，只需要对右、下两个方向递归即可，所有的能够进入的格子都能通过它的左边或上边的格子达到。</p>
+<img src="/2021/01/25/%E5%89%91%E6%8C%87offer-13/图片.png" style="zoom:80%;">
+
+<p>我们可以通过上图来模拟DFS的执行流程：</p>
+<blockquote>
+<p><strong>Note：</strong>引入一个二维矩阵flag[] []来作为每个网格是否访问的标志</p>
+</blockquote>
+<p>机器人从（0,0）点出发，将flag[0] [0]记为true表示已经被访问过，向右递归，先判断（0,1）<code>1、网格是否越界 2、是否能进入 3、是否已经被访问过</code>，然后再从（0,1）点向右递归（这就是常说的向一个方向递归），依次类推，当到（0,2）时，经过判断不能进入（0,3）号格子，然后退回到（0,2）号格子，再向下递归，依次类推（这就是所说的该方向到底后，回溯到上一个节点沿另一个方向搜索）。</p>
+<h1 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> m,n,k;</span><br><span class="line">    <span class="keyword">boolean</span>[][] flag;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">movingCount</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(k==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">this</span>.flag=<span class="keyword">new</span> <span class="keyword">boolean</span>[m][n];</span><br><span class="line">    <span class="keyword">this</span>.m=m;</span><br><span class="line">    <span class="keyword">this</span>.n=n;</span><br><span class="line">    <span class="keyword">this</span>.k=k;</span><br><span class="line">    <span class="keyword">return</span> total(<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">total</span><span class="params">(<span class="keyword">int</span> r,<span class="keyword">int</span> c)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(r&gt;=m||c&gt;=n||(r / <span class="number">10</span> + r % <span class="number">10</span> + c / <span class="number">10</span> + c % <span class="number">10</span> )&gt; k||flag[r][c]) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        flag[r][c]=<span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>+total(r,c+<span class="number">1</span>)+total(r+<span class="number">1</span>,c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>LeetCode题解</category>
+      </categories>
+      <tags>
+        <tag>剑指offer</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>二维数组中的查找</title>
     <url>/2021/01/25/%E5%89%91%E6%8C%87offer-04/</url>
     <content><![CDATA[<hr>
@@ -19,7 +91,7 @@
 <h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><p>由于给定的二维数组具备每行从左到右递增以及每列从上到下递增的特点，当访问到一个元素时，可以排除数组中的部分元素。</p>
 <p>从二维数组的右上角开始查找。如果当前元素等于目标值，则返回 true。如果当前元素大于目标值，则移到左边一列。如果当前元素小于目标值，则移到下边一行。也就是说如果要查找的数字不在数组的右上角，则每一次都在数组的查找范围中剔除一行或者一列，这样每一次比较都可以缩小查找的范围，直到找到要查找的数字，或者查找范围为空。</p>
 <blockquote>
-<p>解法来源：<a href="https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/solution/mian-shi-ti-04-er-wei-shu-zu-zhong-de-cha-zhao-b-3/">https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/solution/mian-shi-ti-04-er-wei-shu-zu-zhong-de-cha-zhao-b-3/</a></p>
+<p>解法可以参考：<a href="https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/solution/mian-shi-ti-04-er-wei-shu-zu-zhong-de-cha-zhao-b-3/">https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/solution/mian-shi-ti-04-er-wei-shu-zu-zhong-de-cha-zhao-b-3/</a></p>
 </blockquote>
 <h1 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">findNumberIn2DArray</span><span class="params">(<span class="keyword">int</span>[][] matrix, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">boolean</span> flag=<span class="keyword">false</span>;<span class="comment">//flag作为标志位</span></span><br><span class="line">       <span class="keyword">if</span>((matrix.length)==<span class="number">0</span>||(matrix[<span class="number">0</span>].length)==<span class="number">0</span>) <span class="keyword">return</span> flag;</span><br><span class="line">       <span class="keyword">int</span> r=<span class="number">0</span>;</span><br><span class="line">       <span class="keyword">int</span> c=matrix[<span class="number">0</span>].length-<span class="number">1</span>;<span class="comment">//（r,c）作为右上角的起始坐标</span></span><br><span class="line">       <span class="keyword">while</span>(r&lt;=(matrix.length-<span class="number">1</span>)&amp;&amp;c&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">           <span class="keyword">if</span>(matrix[r][c]==target)&#123;<span class="comment">//如果右上角的坐标等于目标值，返回true，结束循环</span></span><br><span class="line">               flag=<span class="keyword">true</span>;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125;<span class="keyword">else</span> <span class="keyword">if</span>(matrix[r][c]&gt;target)&#123;<span class="comment">//当右上角的值大于目标值，左移一步，剔除右边的列，小于时，下移一步，剔除顶部一行</span></span><br><span class="line">               c--;</span><br><span class="line">           &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">               r++;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> flag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
