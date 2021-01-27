@@ -20,17 +20,18 @@
     var CONFIG = {"hostname":"wangjin1996219.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="及时当勉励，岁月不待人">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Wj-Blog">
-<meta property="og:url" content="http://wangjin1996219.github.io/archives/2021/01/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="把数组排成最小的数">
+<meta property="og:url" content="http://wangjin1996219.github.io/2021/01/27/%E5%89%91%E6%8C%87offer-45/index.html">
 <meta property="og:site_name" content="Wj-Blog">
-<meta property="og:description" content="及时当勉励，岁月不待人">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-27T04:43:03.000Z">
+<meta property="article:modified_time" content="2021-01-27T05:02:10.756Z">
 <meta property="article:author" content="老王家的小王呀">
+<meta property="article:tag" content="剑指offer">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://wangjin1996219.github.io/archives/2021/01/">
+<link rel="canonical" href="http://wangjin1996219.github.io/2021/01/27/%E5%89%91%E6%8C%87offer-45/">
 
 
 <script id="page-configurations">
@@ -38,12 +39,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | Wj-Blog</title>
+  <title>把数组排成最小的数 | Wj-Blog</title>
   
 
 
@@ -190,216 +191,171 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/01/27/%E5%89%91%E6%8C%87offer-45/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="老王家的小王呀">
+      <meta itemprop="description" content="及时当勉励，岁月不待人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wj-Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          把数组排成最小的数
+        </h1>
+
+        <div class="post-meta">
+        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-27 12:43:03 / 修改时间：13:02:10" itemprop="dateCreated datePublished" datetime="2021-01-27T12:43:03+08:00">2021-01-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">LeetCode题解</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/01/27/%E5%89%91%E6%8C%87offer-45/" class="post-meta-item leancloud_visitors" data-flag-title="把数组排成最小的数" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
   
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 9 篇日志。 继续努力。</span>
-      </div>
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/01/27/%E5%89%91%E6%8C%87offer-45/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/01/27/%E5%89%91%E6%8C%87offer-45/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2021</span>
-    </div>
+        <hr>
+<a id="more"></a>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+<h1 id="·-题目描述"><a href="#·-题目描述" class="headerlink" title="· 题目描述"></a>· 题目描述</h1><blockquote>
+<p><strong>题目来自于LeetCode：</strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof">https://leetcode-cn.com/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof</a></p>
+</blockquote>
+<p>输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。</p>
+<p>示例 1:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [10,2]</span><br><span class="line">输出: &quot;102&quot;</span><br></pre></td></tr></table></figure>
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-01-27T12:43:03+08:00"
-              content="2021-01-27">
-          01-27
-        </time>
-      </div>
+<p>示例 2:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [3,30,34,5,9]</span><br><span class="line">输出: &quot;3033459&quot;</span><br></pre></td></tr></table></figure>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/01/27/%E5%89%91%E6%8C%87offer-45/" itemprop="url">
-            <span itemprop="name">把数组排成最小的数</span>
-          </a>
-      </div>
+<h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><p>将数组排成最小的数，我们最直观的想法是小数在前，大数在后，但是这样的排序组成的数组不一定是最小的数字，例如：10,9，这两个数字组成的最小数字应该是109而不是910。因此需要定义一种排序规则，使组成的数字最小。</p>
+<p>若我们另两个数字为a，b，两个数字的组合有三种情况：</p>
+<ol>
+<li>当ab&gt;ba时，我们定义b应该在前；</li>
+<li>当ba&gt;ab时，我们定义a应该在前；</li>
+<li>当ab=ba时，两数相同，谁在前都可以。</li>
+</ol>
+<p>那么程序中的排序部分应该写成：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>((strs[j] + strs[l]).compareTo(strs[l] + strs[j]) &gt;= <span class="number">0</span> &amp;&amp; i &lt; j) j--;</span><br><span class="line"><span class="keyword">while</span>((strs[i] + strs[l]).compareTo(strs[l] + strs[i]) &lt;= <span class="number">0</span> &amp;&amp; i &lt; j) i++;</span><br></pre></td></tr></table></figure>
 
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-01-25T21:40:23+08:00"
-              content="2021-01-25">
-          01-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/01/25/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" itemprop="url">
-            <span itemprop="name">快速排序算法</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-01-25T20:45:04+08:00"
-              content="2021-01-25">
-          01-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/01/25/%E5%89%91%E6%8C%87offer-13/" itemprop="url">
-            <span itemprop="name">机器人的运动范围</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-01-25T12:58:14+08:00"
-              content="2021-01-25">
-          01-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/01/25/%E5%89%91%E6%8C%87offer-29/" itemprop="url">
-            <span itemprop="name">顺时针打印矩阵</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-01-25T12:33:46+08:00"
-              content="2021-01-25">
-          01-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/01/25/%E5%89%91%E6%8C%87offer-04/" itemprop="url">
-            <span itemprop="name">二维数组中的查找</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-01-25T11:52:54+08:00"
-              content="2021-01-25">
-          01-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/01/25/%E5%89%91%E6%8C%87offer-61/" itemprop="url">
-            <span itemprop="name">扑克牌中的顺子</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-01-21T22:17:38+08:00"
-              content="2021-01-21">
-          01-21
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/01/21/%E5%89%91%E6%8C%87offer-12/" itemprop="url">
-            <span itemprop="name">矩阵中的路径</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-01-20T21:45:48+08:00"
-              content="2021-01-20">
-          01-20
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/01/20/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/" itemprop="url">
-            <span itemprop="name">深度优先遍历</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-01-19T11:42:47+08:00"
-              content="2021-01-19">
-          01-19
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/01/19/%E5%89%91%E6%8C%87offer-34/" itemprop="url">
-            <span itemprop="name">二叉树中和为某一值的路径</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
+<blockquote>
+<p><strong>Note：</strong>本题除了排序规则之外，还应该在准备工作中将int类型转换为String类型，防止ab组合时溢出，所以这还是一个隐形的大数问题。</p>
+</blockquote>
+<h1 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">minNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        String[] strs = <span class="keyword">new</span> String[nums.length];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++)</span><br><span class="line">            strs[i] = String.valueOf(nums[i]);</span><br><span class="line">        fastSort(strs, <span class="number">0</span>, strs.length - <span class="number">1</span>);</span><br><span class="line">        StringBuilder res = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">for</span>(String s : strs)</span><br><span class="line">            res.append(s);</span><br><span class="line">        <span class="keyword">return</span> res.toString();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fastSort</span><span class="params">(String[] strs, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(l &gt;= r) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> i = l, j = r;</span><br><span class="line">        String tmp = strs[i];</span><br><span class="line">        <span class="keyword">while</span>(i &lt; j) &#123;</span><br><span class="line">            <span class="keyword">while</span>((strs[j] + strs[l]).compareTo(strs[l] + strs[j]) &gt;= <span class="number">0</span> &amp;&amp; i &lt; j) j--;</span><br><span class="line">            <span class="keyword">while</span>((strs[i] + strs[l]).compareTo(strs[l] + strs[i]) &lt;= <span class="number">0</span> &amp;&amp; i &lt; j) i++;</span><br><span class="line">            tmp = strs[i];</span><br><span class="line">            strs[i] = strs[j];</span><br><span class="line">            strs[j] = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        strs[i] = strs[l];</span><br><span class="line">        strs[l] = tmp;</span><br><span class="line">        fastSort(strs, l, i - <span class="number">1</span>);</span><br><span class="line">        fastSort(strs, i + <span class="number">1</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
     </div>
-  </div>
-  
-  
-  
 
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%89%91%E6%8C%87offer/" rel="tag"><i class="fa fa-tag"></i>  剑指offer</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/25/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="prev" title="快速排序算法">
+      <i class="fa fa-chevron-left"></i> 快速排序算法
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -446,6 +402,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%C2%B7-%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">· 题目描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%C2%B7-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">· 解题思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%C2%B7-%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%B3%A8%E8%A7%A3"><span class="nav-number">3.</span> <span class="nav-text">· 代码及注解</span></a></li></ol></div>
       </div>
       <!--/noindex-->
       <div class="site-overview-wrap sidebar-panel">
