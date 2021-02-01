@@ -6,7 +6,7 @@
   <link href="http://wangjin1996219.github.io/atom.xml" rel="self"/>
   
   <link href="http://wangjin1996219.github.io/"/>
-  <updated>2021-01-28T14:42:51.833Z</updated>
+  <updated>2021-01-31T09:16:59.795Z</updated>
   <id>http://wangjin1996219.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>假期的阶段性总结</title>
+    <link href="http://wangjin1996219.github.io/2021/01/31/%E5%81%87%E6%9C%9F%E7%9A%84%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/"/>
+    <id>http://wangjin1996219.github.io/2021/01/31/%E5%81%87%E6%9C%9F%E7%9A%84%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/</id>
+    <published>2021-01-31T08:35:12.000Z</published>
+    <updated>2021-01-31T09:16:59.795Z</updated>
+    
+    <content type="html"><![CDATA[<hr><a id="more"></a><p>研二的假期比往常来的稍早那么一些，回家的第二十一天，这段时间的学习效率是大打折扣，算是刚刚连抄带蒙地“刷完了”《剑指offer》里面的困难题暂时不准备刷，一部分因为懒，一部分因为菜。我属于是那种将就起来就会放飞自我的人哈哈，还是要梳理一下自己的进度，正视问题刺激一下自己才行。</p><h1 id="·-刷题方面"><a href="#·-刷题方面" class="headerlink" title="· 刷题方面"></a>· 刷题方面</h1><p>《剑指offer》刷完，共69道题，后面刷的一部分题勉强写了点题解：</p><p><a href="https://eudemonia.tech/2021/01/25/%E5%89%91%E6%8C%87offer-29/#more">顺时针打印矩阵</a></p><p><a href="https://eudemonia.tech/2021/01/28/%E5%89%91%E6%8C%87offer-49/#more">丑数</a></p><p><a href="https://eudemonia.tech/2021/01/28/%E5%89%91%E6%8C%87offer-38/#more">字符串的排列</a></p><p><a href="https://eudemonia.tech/2021/01/28/%E5%89%91%E6%8C%87offer-66/#more">构建乘积数组</a></p><p><a href="https://eudemonia.tech/2021/01/27/%E5%89%91%E6%8C%87offer-45/#more">把数组排成最小的数</a></p><p><a href="https://eudemonia.tech/2021/01/25/%E5%89%91%E6%8C%87offer-13/#more">机器人的运动范围</a></p><p><a href="https://eudemonia.tech/2021/01/25/%E5%89%91%E6%8C%87offer-04/#more">二维数组中的查找</a></p><p><a href="https://eudemonia.tech/2021/01/25/%E5%89%91%E6%8C%87offer-61/#more">扑克牌中的顺子</a></p><p><a href="https://eudemonia.tech/2021/01/25/%E5%89%91%E6%8C%87offer-61/#more">矩阵中的路径</a></p><p><a href="https://eudemonia.tech/2021/01/19/%E5%89%91%E6%8C%87offer-34/#more">二叉树中和为某一值的路径</a></p><p>前面的题解以word文档的形式保存了，那时候还没有这个博客，后面打算二刷剑指的时候补齐。</p><p>下面开始刷LeetCode热题100，还是每天两道，坚持写题解，头年再刷二十道左右。</p><h1 id="·-校园商城项目"><a href="#·-校园商城项目" class="headerlink" title="· 校园商城项目"></a>· 校园商城项目</h1><p>慕课看到了第四章的商铺注册也就是前端的页面设计部分，还在项目1.0版本，用的是SSM框架，后面大体结构搭建起来了，但是很多细节自己并不清楚，打算再看看后面做的过程中对项目的理解情况，不行真得从头再刷一遍，有篇文章值得看一看，对项目整理架构的理解有帮助，<a href="https://www.jb51.net/article/127829.htm">点这里查看</a>。</p><p>每天晚上的时间都用来搞这个，进度要赶一赶了，年前争取项目1.0这块做的差不多了得。</p><h1 id="·-计算机网络"><a href="#·-计算机网络" class="headerlink" title="· 计算机网络"></a>· 计算机网络</h1><p>按照大佬的学习路线看王道考研视频，看完了传输层的部分，打算看完了这块之后开始结合面经学习。大佬说这个考研视频讲的偏重于前面的部分，实际面经中考点在后面的部分。</p><p>最多两天看完，打算用这部分时间写写论文，之后再背面经。</p><h1 id="·-GitHub个人博客"><a href="#·-GitHub个人博客" class="headerlink" title="· GitHub个人博客"></a>· GitHub个人博客</h1><p>大概一周的时间，自己学着做了一个个人博客，想写点东西，当个自己的学习笔记，或者是生活日记什么的。</p>]]></content>
+    
+    
+    <summary type="html">&lt;hr&gt;</summary>
+    
+    
+    
+    
+    <category term="随笔" scheme="http://wangjin1996219.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
   
   <entry>
     <title>丑数</title>
