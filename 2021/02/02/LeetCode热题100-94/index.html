@@ -21,19 +21,17 @@
   </script>
 
   <meta property="og:type" content="article">
-<meta property="og:title" content="顺时针打印矩阵">
-<meta property="og:url" content="http://wangjin1996219.github.io/2021/01/25/%E5%89%91%E6%8C%87offer-29/index.html">
+<meta property="og:title" content="二叉树的中序遍历">
+<meta property="og:url" content="http://wangjin1996219.github.io/2021/02/02/LeetCode%E7%83%AD%E9%A2%98100-94/index.html">
 <meta property="og:site_name" content="Wj-Blog">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://wangjin1996219.github.io/2021/01/25/%E5%89%91%E6%8C%87offer-29/图片.png">
-<meta property="article:published_time" content="2021-01-25T04:58:14.000Z">
-<meta property="article:modified_time" content="2021-01-25T12:40:50.143Z">
+<meta property="article:published_time" content="2021-02-02T03:49:11.000Z">
+<meta property="article:modified_time" content="2021-02-02T04:33:30.685Z">
 <meta property="article:author" content="老王家的小王呀">
-<meta property="article:tag" content="剑指offer">
+<meta property="article:tag" content="LeetCode热题100">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://wangjin1996219.github.io/2021/01/25/%E5%89%91%E6%8C%87offer-29/图片.png">
 
-<link rel="canonical" href="http://wangjin1996219.github.io/2021/01/25/%E5%89%91%E6%8C%87offer-29/">
+<link rel="canonical" href="http://wangjin1996219.github.io/2021/02/02/LeetCode%E7%83%AD%E9%A2%98100-94/">
 
 
 <script id="page-configurations">
@@ -46,7 +44,7 @@
   };
 </script>
 
-  <title>顺时针打印矩阵 | Wj-Blog</title>
+  <title>二叉树的中序遍历 | Wj-Blog</title>
   
 
 
@@ -200,7 +198,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/01/25/%E5%89%91%E6%8C%87offer-29/">
+    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/02/02/LeetCode%E7%83%AD%E9%A2%98100-94/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -213,14 +211,10 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          顺时针打印矩阵
+          二叉树的中序遍历
         </h1>
 
         <div class="post-meta">
-        
-         <i class="fas fa-thumbtack"></i>
-           <font color=green>置顶</font>
-        <span class="post-meta-divider">|</span>
         
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -229,7 +223,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-01-25 12:58:14 / 修改时间：20:40:50" itemprop="dateCreated datePublished" datetime="2021-01-25T12:58:14+08:00">2021-01-25</time>
+              <time title="创建时间：2021-02-02 11:49:11 / 修改时间：12:33:30" itemprop="dateCreated datePublished" datetime="2021-02-02T11:49:11+08:00">2021-02-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -242,7 +236,7 @@
             </span>
 
           
-            <span id="/2021/01/25/%E5%89%91%E6%8C%87offer-29/" class="post-meta-item leancloud_visitors" data-flag-title="顺时针打印矩阵" title="阅读次数">
+            <span id="/2021/02/02/LeetCode%E7%83%AD%E9%A2%98100-94/" class="post-meta-item leancloud_visitors" data-flag-title="二叉树的中序遍历" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -257,8 +251,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2021/01/25/%E5%89%91%E6%8C%87offer-29/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/01/25/%E5%89%91%E6%8C%87offer-29/" itemprop="commentCount"></span>
+    <a title="valine" href="/2021/02/02/LeetCode%E7%83%AD%E9%A2%98100-94/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/02/02/LeetCode%E7%83%AD%E9%A2%98100-94/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -291,29 +285,25 @@
 <a id="more"></a>
 
 <h1 id="·-题目描述"><a href="#·-题目描述" class="headerlink" title="· 题目描述"></a>· 题目描述</h1><blockquote>
-<p><strong>题目来自LeetCode：</strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof">https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof</a></p>
+<p><strong>题目来自于LeetCode：</strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-inorder-traversal">https://leetcode-cn.com/problems/binary-tree-inorder-traversal</a></p>
 </blockquote>
-<p>输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。</p>
-<p>示例 1：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：matrix &#x3D; [[1,2,3],[4,5,6],[7,8,9]]</span><br><span class="line">输出：[1,2,3,6,9,8,7,4,5]</span><br></pre></td></tr></table></figure>
-
-<h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><img src="/2021/01/25/%E5%89%91%E6%8C%87offer-29/图片.png" style="zoom:50%;">
-
-<p>以<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/solution/mian-shi-ti-29-shun-shi-zhen-da-yin-ju-zhen-she-di/">上图</a>的矩阵为例，模拟一遍循环打印的过程：</p>
-<p><strong>外圈：</strong></p>
-<ul>
-<li>从左上角的1开始，遍历顶部的一行，到右上角的元素3结束；</li>
-<li>再从3下的元素6开始，遍历最右边的一列，到右下角的元素9结束；</li>
-<li>再从9左边的元素8开始，遍历底部的一行，到左下角的元素7结束；</li>
-<li>最后从7上边的元素4开始，遍历左边的一列，到起始元素的下边一个元素结束；  </li>
-</ul>
-<p><strong>内圈：</strong>元素多的话，与外圈的循环相同</p>
-<p><strong>因此我们可以用多个重复的循环来解决这个问题：</strong>记左上角的元素坐标为（lr,lc）=（0,0），右下角的元素坐标为（rr,rc）=（sums.length-1,sums[0].length-1），那么每层中每次循环的起始坐标都可以用这四个元素来表示。</p>
-<h1 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] spiralOrder(<span class="keyword">int</span>[][] matrix) &#123;</span><br><span class="line">    <span class="keyword">if</span>(matrix.length==<span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">int</span> lr=<span class="number">0</span>;<span class="comment">//第一层循环的左上角元素为（0,0）</span></span><br><span class="line">    <span class="keyword">int</span> lc=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> rr=matrix.length-<span class="number">1</span>;<span class="comment">//第一层循环的右下角元素为（matrix.length-1，matrix[0].length-1）</span></span><br><span class="line">    <span class="keyword">int</span> rc=matrix[<span class="number">0</span>].length-<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span>[] res=<span class="keyword">new</span> <span class="keyword">int</span>[(rr+<span class="number">1</span>)*(rc+<span class="number">1</span>)];</span><br><span class="line">    <span class="keyword">int</span> k=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;<span class="comment">//我们以第一层循环为例讲解代码</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=lc;j&lt;=rc;j++)&#123;<span class="comment">//第一个循环改变的是列，行不变。另j等于顶层最左边坐标的列值lc，结束值是顶层最右边坐标的列值                                 //rc</span></span><br><span class="line">            res[k++]=matrix[lr][j];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(++lr&gt;rr) <span class="keyword">break</span>;<span class="comment">//先另左边的行号+1，表示该行剔除，然后用加完后的值去跟右下角的行号比较，当大于该值，表示这两个在同                           //一行也就是只有一行，循环结束，下同</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=lr;i&lt;=rr;i++)&#123;</span><br><span class="line">            res[k++]=matrix[i][rc];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(--rc&lt;lc) <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=rc;j&gt;=lc;j--)&#123;</span><br><span class="line">            res[k++]=matrix[rr][j];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(--rr&lt;lr) <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=rr;i&gt;=lr;i--)&#123;</span><br><span class="line">            res[k++]=matrix[i][lc];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(++lc&gt;rc) <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>给定一个二叉树的根节点 <code>root</code> ，返回它的 <strong>中序</strong> 遍历。</p>
+<h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><p><strong>中序遍历：</strong>先中序遍历左子树，<strong>再访问根节点</strong>，再中序遍历右子树</p>
+<p><strong>核心就是：</strong>根节点必须在左节点弹出之后，再弹出</p>
+<p><strong>方法一：</strong>递归遍历</p>
+<p><strong>方法二：</strong>辅助栈法（非递归遍历）</p>
+<p>每到一个节点 A，因为根的访问在中间，将 A 入栈。然后<strong>先遍历左子树</strong>，接着访问 A（A出栈），最后遍历右子树。这样保证根节点在左子树后面被访问，右子树在根节点后面被访问。</p>
+<p>在访问完 A 后，A 就可以出栈了。因为 A 和其左子树都已经访问完成。</p>
+<h1 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h1><blockquote>
+<p><strong>方法一：</strong>递归遍历</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    List&lt;Integer&gt; res=<span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">inorderTraversal</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">           inorder(root);</span><br><span class="line">           <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">inorder</span><span class="params">(TreeNode root)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        inorder(root.left);</span><br><span class="line">        res.add(root.val);</span><br><span class="line">        inorder(root.right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p><strong>Note：</strong>++a&gt;b表示先对a的值+1再和b的值比较，a++相反。</p>
+<p><strong>方法二：</strong>辅助栈法（非递归遍历）</p>
 </blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">inorderTraversal</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; res = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">        Deque&lt;TreeNode&gt; stk = <span class="keyword">new</span> LinkedList&lt;TreeNode&gt;();</span><br><span class="line">        <span class="keyword">while</span> (root != <span class="keyword">null</span> || !stk.isEmpty()) &#123;<span class="comment">//1.root!=null 2.root==null但辅助栈中有元素，对应左子树访问完</span></span><br><span class="line">            <span class="keyword">while</span> (root != <span class="keyword">null</span>) &#123;<span class="comment">//每到一个节点，先去遍历左子树，只要它的左子树存在，就将该节点压入栈，直到有一个节点的左                                   //子树不存在为止，也就是它就是最左边的节点</span></span><br><span class="line">                stk.push(root);</span><br><span class="line">                root = root.left;</span><br><span class="line">            &#125;</span><br><span class="line">            root = stk.pop();<span class="comment">//1.root!=null表示到了最左边的节点，弹出栈访问</span></span><br><span class="line">                             <span class="comment">//2.root==null但辅助栈中有元素，对应左子树访问完,也就是上一轮的root.right==null，此时的栈                              //顶元素就对应的该左子树的根节点</span></span><br><span class="line">            res.add(root.val);</span><br><span class="line">            root = root.right;<span class="comment">//访问该节点的右子树</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -335,7 +325,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E5%89%91%E6%8C%87offer/" rel="tag"><i class="fa fa-tag"></i>  剑指offer</a>
+              <a href="/tags/LeetCode%E7%83%AD%E9%A2%98100/" rel="tag"><i class="fa fa-tag"></i>  LeetCode热题100</a>
           </div>
 
         
@@ -344,13 +334,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/01/25/%E5%89%91%E6%8C%87offer-04/" rel="prev" title="二维数组中的查找">
-      <i class="fa fa-chevron-left"></i> 二维数组中的查找
+    <a href="/2021/02/02/LeetCode%E7%83%AD%E9%A2%98100-20/" rel="prev" title="有效的括号">
+      <i class="fa fa-chevron-left"></i> 有效的括号
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/01/25/%E5%89%91%E6%8C%87offer-13/" rel="next" title="机器人的运动范围">
-      机器人的运动范围 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
