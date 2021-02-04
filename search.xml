@@ -63,6 +63,175 @@
       </tags>
   </entry>
   <entry>
+    <title>字符串解码</title>
+    <url>/2021/02/04/LeetCode%E7%83%AD%E9%A2%98100-394/</url>
+    <content><![CDATA[<hr>
+<a id="more"></a>
+
+<h1 id="·-题目描述"><a href="#·-题目描述" class="headerlink" title="· 题目描述"></a>· 题目描述</h1><blockquote>
+<p><strong>题目来自于LeetCode：</strong><a href="https://leetcode-cn.com/problems/decode-string">https://leetcode-cn.com/problems/decode-string</a></p>
+</blockquote>
+<p>给定一个经过编码的字符串，返回它解码后的字符串。</p>
+<p>编码规则为: k[encoded_string]，表示其中方括号内部的 encoded_string 正好重复 k 次。注意 k 保证为正整数。</p>
+<p>你可以认为输入字符串总是有效的；输入字符串中没有额外的空格，且输入的方括号总是符合格式要求的。</p>
+<p>此外，你可以认为原始数据不包含数字，所有的数字只表示重复的次数 k ，例如不会出现像 3a 或 2[4] 的输入。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">示例 1：</span><br><span class="line">输入：s &#x3D; &quot;3[a]2[bc]&quot;</span><br><span class="line">输出：&quot;aaabcbc&quot;</span><br></pre></td></tr></table></figure>
+
+<h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><blockquote>
+<p>这道题我看到总结的比较好的一句话：数字放在数字栈，字符串放在字符串栈，右括号弹出一个数字栈中的数字，字符串栈弹到0为止。</p>
+</blockquote>
+<p>在遍历一个编码字符串时我们遇到的字符有以下几种情况：（数字栈：nums         字符串栈：ss）</p>
+<p>数字——括号内字符串的重复次数</p>
+<p>普通字母——拼接到res中</p>
+<p>左括号’[‘——当我们遇到左括号时：</p>
+<ul>
+<li>先将存储数字的变量num加入数字栈nums中</li>
+<li>说明括号内的字符串要重复num次，然后与括号外面的字符串拼接，因此我们先将左括号左边的res转换成字符串压入字符串栈ss中</li>
+<li>另res和数字num重新计数（因为括号中还可能套括号，比如a3[a2[c]]，就是先将最外层的res=a存到字符串栈ss中，数字num=3存到数字栈nums中，将res和num置零后，再将第一层括号的res=a存到字符串栈ss中，数字num=2存到数字栈nums中）</li>
+</ul>
+<p>右括号’]’——当我们遇到右括号时：（说明最内层字符串记录结束，存于res中）</p>
+<ul>
+<li>从数字栈nums中弹出栈顶的数字，这个数就是这一层括号前面记录重复次数的数字，将res中的字符串重复curnum次，存到StringBuilder类型的temp中</li>
+<li>再弹出一个ss栈顶的字符串，这个字符串就是括号之前的字符串，将它与temp拼接起来，再用res保存，用于遇到下一个右括号时，这个res就是该括号内要重复的字符串（比如a3[a2[c]]，当遇到第一个右括号时，将数字栈中的2弹出，将res=c循环拼接3次，也就是拼成temp=cc，再将字符串栈ss中的a弹出，与temp拼接成res=acc，之后遇到第二个右括号，temp=accaccacc，再与a拼接成res=aaccaccacc）</li>
+</ul>
+<p>最后编码字符串遍历结束，返回res</p>
+<h1 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">decodeString</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">      LinkedList&lt;Integer&gt; nums=<span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">      LinkedList&lt;String&gt; ss=<span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">      <span class="keyword">int</span> num=<span class="number">0</span>;</span><br><span class="line">      StringBuilder res=<span class="keyword">new</span> StringBuilder();</span><br><span class="line">      <span class="keyword">for</span>(Character c : s.toCharArray())&#123;</span><br><span class="line">          <span class="keyword">if</span>(c&gt;=<span class="string">&#x27;0&#x27;</span>&amp;&amp;c&lt;=<span class="string">&#x27;9&#x27;</span>)&#123;</span><br><span class="line">              num=num*<span class="number">10</span>+Integer.parseInt(c + <span class="string">&quot;&quot;</span>);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">else</span> <span class="keyword">if</span>(c==<span class="string">&#x27;[&#x27;</span>)&#123;</span><br><span class="line">             nums.add(num);</span><br><span class="line">             ss.add(res.toString());</span><br><span class="line">             res=<span class="keyword">new</span> StringBuilder();</span><br><span class="line">             num=<span class="number">0</span>;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">else</span> <span class="keyword">if</span>(c == <span class="string">&#x27;]&#x27;</span>) &#123;</span><br><span class="line">             StringBuilder temp = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">             <span class="keyword">int</span> curNum = nums.removeLast();</span><br><span class="line">             <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; curNum; i++) &#123;</span><br><span class="line">                 temp.append(res);</span><br><span class="line">             &#125;</span><br><span class="line">             res = <span class="keyword">new</span> StringBuilder(ss.removeLast() + temp);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">else</span>&#123;</span><br><span class="line">              res.append(c);</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> res.toString(); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>LeetCode题解</category>
+      </categories>
+      <tags>
+        <tag>LeetCode热题100</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>每日温度</title>
+    <url>/2021/02/04/LeetCode%E7%83%AD%E9%A2%98100-739/</url>
+    <content><![CDATA[<hr>
+<a id="more"></a>
+
+<h1 id="·-题目描述"><a href="#·-题目描述" class="headerlink" title="· 题目描述"></a>· 题目描述</h1><blockquote>
+<p><strong>题目来自于LeetCode：</strong><a href="https://leetcode-cn.com/problems/daily-temperatures">https://leetcode-cn.com/problems/daily-temperatures</a></p>
+</blockquote>
+<p>请根据每日 气温 列表，重新生成一个列表。对应位置的输出为：要想观测到更高的气温，至少需要等待的天数。如果气温在这之后都不会升高，请在该位置用 0 来代替。</p>
+<p>例如，给定一个列表 temperatures = [73, 74, 75, 71, 69, 72, 76, 73]，你的输出应该是 [1, 1, 4, 2, 1, 1, 0, 0]。</p>
+<blockquote>
+<p><strong>提示：</strong>气温 列表长度的范围是 [1, 30000]。每个气温的值的均为华氏度，都是在 [30, 100] 范围内的整数。</p>
+</blockquote>
+<h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><p>这个题我们需要借助<strong>递减栈</strong></p>
+<p>当给定数组为： [73, 74, 75, 71, 69, 72, 76, 73]时，我们来模拟函数的运行过程</p>
+<p>遍历数组（入栈操作时我们加入栈的是<strong>元素的下标</strong>，这样我们后面能够根据弹出的元素下标填入等待的天数）</p>
+<p>元素73对应的下标压入栈中，</p>
+<p>元素74，这时栈不为空，要用74跟栈顶的元素来比较，当它大于栈顶的元素时，要将栈顶的元素弹出，并且将此时的元素下标x减去弹出元素的index就是该位置的温度再等几天能够观测到更高温，这里弹出73，将2-1=1加入res数组中下标0的位置，</p>
+<p>元素75，同元素74，</p>
+<p>元素71，小于栈顶元素75，直接压入栈中，</p>
+<p>元素69，同元素71，</p>
+<p>元素72，大于69，弹出69，并将5-4=1填入res数组下标4对应的位置，大于71，将71弹出，将5-3=2填入res数组下标3对应位置，小于75，循环结束，将72压入栈中，</p>
+<p>然后以此类推……</p>
+<h1 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] dailyTemperatures(<span class="keyword">int</span>[] T) &#123;</span><br><span class="line">    Deque&lt;Integer&gt; stack = <span class="keyword">new</span> LinkedList&lt;Integer&gt;();</span><br><span class="line">    <span class="keyword">int</span>[] res=<span class="keyword">new</span> <span class="keyword">int</span>[T.length];</span><br><span class="line">    <span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(i&lt;T.length)&#123;</span><br><span class="line">        <span class="keyword">while</span>(!stack.isEmpty()&amp;&amp;T[i]&gt;T[stack.peek()])&#123;</span><br><span class="line">           <span class="keyword">int</span> index=stack.pop();</span><br><span class="line">           res[index]=i-index;</span><br><span class="line">        &#125;</span><br><span class="line">        stack.push(i);</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>LeetCode题解</category>
+      </categories>
+      <tags>
+        <tag>LeetCode热题100</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数值的整数次方</title>
+    <url>/2021/02/04/%E5%89%91%E6%8C%87offer-16/</url>
+    <content><![CDATA[<hr>
+<a id="more"></a>
+
+<h1 id="·-题目描述"><a href="#·-题目描述" class="headerlink" title="· 题目描述"></a>· 题目描述</h1><blockquote>
+<p><strong>题目来自于LeetCode：</strong><a href="https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof">https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof</a></p>
+</blockquote>
+<p>实现函数double Power(double base, int exponent)，求base的exponent次方。不得使用库函数，同时不需要考虑大数问题。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">示例 1:</span><br><span class="line">输入: 2.00000, 10</span><br><span class="line">输出: 1024.00000</span><br></pre></td></tr></table></figure>
+
+<h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><blockquote>
+<p>本题的重点在于理解<strong>“快速幂法”</strong>为什么能把时间复杂度降低到<strong>log2n</strong></p>
+</blockquote>
+<p>求 x^n最简单的方法是通过循环将 n 个 x 乘起来，依次求x^1, x^2, …, x^{n-1}，直到求出x^n时间复杂度为 O(n) 。例如我们输入的幂次exponent为32，我们要求base的32次方就要在程序中对base乘31次。但是如果我们通过base的2次方求base的4次方接着求base的8次方，16次方，32次方，这样就能将循环次数降为对数级。我们可以通过以下公式来求得a的n次方：</p>
+<p>我们设循环中的变量为i，初始值为n</p>
+<p><strong>当i=n时：</strong><br>$$<br>{a^i} =<br>        \begin{cases}<br>        {a^{i/2}}·{a^{i/2}}    &amp; \text{如果 $i$ 为偶数}\<br>        {a^{i/2}}·{a^{i/2}}·a  &amp; \text{如果 $i$ 为奇数}<br>        \end{cases}<br>$$<br><strong>当i=n/2时：</strong>仍然按照上面的公式判断i的奇偶，求得a的i次方……</p>
+<p>通过一个for循环，每次将幂次除以2，最终可以以O(log2n)的时间复杂度求得a的n次方，因为2^x=n,x=log2n,也就是循环x=log2n次。</p>
+<blockquote>
+<p>理解了快速幂法之后，下面是解题的流程：</p>
+</blockquote>
+<ul>
+<li>当底数为0时没有意义，直接返回</li>
+<li>当指数为负数时，将底数变为1/x，负数变为正数（转换成了常规的指数为正数的情况）</li>
+<li>当指数为正数时，按照上面的公式求解</li>
+</ul>
+<h1 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">myPow</span><span class="params">(<span class="keyword">double</span> x, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">long</span> b=n;</span><br><span class="line">    <span class="keyword">if</span>(b&lt;<span class="number">0</span>)&#123;</span><br><span class="line">        b=-b;</span><br><span class="line">        x=<span class="number">1</span>/x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">double</span> res=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(b&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>((b&amp;<span class="number">1</span>)==<span class="number">1</span>) res*=x;</span><br><span class="line">        x*=x;</span><br><span class="line">        b&gt;&gt;=<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>代码中有两处注意点：</strong></p>
+</blockquote>
+<ol>
+<li>用long类型的b去暂存n的值，因为int类型的负数范围比正数大1，这样做为了防止另n=-n时溢出</li>
+<li>用指数的二进制形式来判断奇偶，并用移位来代替幂次每循环一次除以2，能够提高运算效率</li>
+</ol>
+]]></content>
+      <categories>
+        <category>LeetCode题解</category>
+      </categories>
+      <tags>
+        <tag>剑指offer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>字符串转换成整数</title>
+    <url>/2021/02/04/%E5%89%91%E6%8C%87offer-67/</url>
+    <content><![CDATA[<hr>
+<a id="more"></a>
+
+<h1 id="·-题目描述"><a href="#·-题目描述" class="headerlink" title="· 题目描述"></a>· 题目描述</h1><blockquote>
+<p><strong>题目来自于LeetCode：</strong><a href="https://leetcode-cn.com/problems/ba-zi-fu-chuan-zhuan-huan-cheng-zheng-shu-lcof">https://leetcode-cn.com/problems/ba-zi-fu-chuan-zhuan-huan-cheng-zheng-shu-lcof</a></p>
+</blockquote>
+<p>写一个函数 StrToInt，实现把字符串转换成整数这个功能。不能使用 atoi 或者其他类似的库函数。</p>
+<p>首先，该函数会根据需要丢弃无用的开头空格字符，直到寻找到第一个非空格的字符为止。</p>
+<p>当我们寻找到的第一个非空字符为正或者负号时，则将该符号与之后面尽可能多的连续数字组合起来，作为该整数的正负号；假如第一个非空字符是数字，则直接将其与之后连续的数字字符组合起来，形成整数。</p>
+<p>该字符串除了有效的整数部分之后也可能会存在多余的字符，这些字符可以被忽略，它们对于函数不应该造成影响。</p>
+<blockquote>
+<p><strong>注意：</strong>假如该字符串中的第一个非空格字符不是一个有效整数字符、字符串为空或字符串仅包含空白字符时，则你的函数不需要进行转换。</p>
+<p>在任何情况下，若函数不能进行有效的转换时，请返回 0。</p>
+<p><strong>说明：</strong></p>
+<p>假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−231,  231 − 1]。如果数值超过这个范围，请返回  INT_MAX (231 − 1) 或 INT_MIN (−231) 。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">示例 1:</span><br><span class="line">输入: &quot;42&quot;</span><br><span class="line">输出: 42</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">示例 2:</span><br><span class="line">输入: &quot;   -42&quot;</span><br><span class="line">输出: -42</span><br><span class="line">解释: 第一个非空白字符为 &#39;-&#39;, 它是一个负号。我们尽可能将负号与后面所有连续出现的数字组合起来，最后得到 -42 。</span><br></pre></td></tr></table></figure>
+
+<h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><p>当我们遍历给定的字符串时，当前的字符串有下面几种可能：</p>
+<ul>
+<li><p><strong>空格</strong>——跳过</p>
+</li>
+<li><p><strong>其它字符</strong>——循环遍历结束</p>
+</li>
+<li><p><strong>正负号</strong>——存储到flag变量中，后面再拼接到结果中</p>
+</li>
+<li><p><strong>数字字符：</strong></p>
+<p>对数字字符要进行转换和拼接工作</p>
+<p><strong>转换：</strong>将数字字符减去字符’0’，得到数字的值</p>
+<p><strong>拼接：</strong>前一位得到的数字应该在高位，所以拼接公式为*<em>res=res</em>10+c**</p>
+</li>
+</ul>
+<p>在对数字进行拼接工作时，要<strong>预判</strong>得到的结果是不是发生了越界，之所以要进行预判是因为得到的结果可能很大，不能确定用什么样类型的变量来接收这个结果。Java中int类型的数值范围为 [−231,  231 − 1]，也就是<strong>2147483647</strong>，要在进行本轮的拼接时，判断结果是否会发生越界，也就是上一轮的结果要小于<strong>214748364</strong>或者等于<strong>214748364</strong>且本轮的数值<strong>c</strong>小于等于7，这样按照公式*<em>res=res</em>10+c**拼接时才不会发生越界，当出现越界时直接返回题目要求的结果。</p>
+<h1 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">strToInt</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(str.length()==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> bndry = Integer.MAX_VALUE/<span class="number">10</span>;<span class="comment">//边界值</span></span><br><span class="line">    <span class="keyword">int</span> flag=<span class="number">1</span>;<span class="comment">//符号位</span></span><br><span class="line">    <span class="keyword">int</span> first=<span class="number">0</span>;<span class="comment">//定位第一个非空格字符</span></span><br><span class="line">    <span class="keyword">int</span> res=<span class="number">0</span>;<span class="comment">//保存结果</span></span><br><span class="line">    <span class="keyword">while</span>(str.charAt(first)==<span class="string">&#x27; &#x27;</span>)&#123;<span class="comment">//去除多余的空格</span></span><br><span class="line">        first++;</span><br><span class="line">        <span class="keyword">if</span>(first==str.length()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(str.charAt(first)==<span class="string">&#x27;-&#x27;</span>) flag=-<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(str.charAt(first)==<span class="string">&#x27;-&#x27;</span>||str.charAt(first)==<span class="string">&#x27;+&#x27;</span>) first++;<span class="comment">//如果第一个非空格字符为正负号时，保存到flag，且first++</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=first;i&lt;str.length();i++)&#123;<span class="comment">//拼接数字字符</span></span><br><span class="line">        <span class="keyword">if</span>(str.charAt(i)&lt;<span class="string">&#x27;0&#x27;</span>||str.charAt(i)&gt;<span class="string">&#x27;9&#x27;</span>) <span class="keyword">break</span>;<span class="comment">//遇到非数字字符，跳出循环</span></span><br><span class="line">        <span class="keyword">if</span>(res&gt;bndry||(res==bndry&amp;&amp;str.charAt(i)&gt;<span class="string">&#x27;7&#x27;</span>)) &#123;<span class="comment">//预判结果是否越界</span></span><br><span class="line">            <span class="keyword">return</span> flag==<span class="number">1</span>? Integer.MAX_VALUE : Integer.MIN_VALUE;&#125;</span><br><span class="line">        res=res*<span class="number">10</span>+(str.charAt(i)-<span class="string">&#x27;0&#x27;</span>);<span class="comment">//不越界的情况下，拼接数字字符</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> flag*res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>LeetCode题解</category>
+      </categories>
+      <tags>
+        <tag>剑指offer</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>堆排序</title>
     <url>/2021/02/02/%E5%A0%86%E6%8E%92%E5%BA%8F/</url>
     <content><![CDATA[<hr>
