@@ -6,7 +6,7 @@
   <link href="http://wangjin1996219.github.io/atom.xml" rel="self"/>
   
   <link href="http://wangjin1996219.github.io/"/>
-  <updated>2021-02-22T13:44:39.012Z</updated>
+  <updated>2021-02-28T11:41:54.747Z</updated>
   <id>http://wangjin1996219.github.io/</id>
   
   <author>
@@ -15,6 +15,69 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>eclipse使用</title>
+    <link href="http://wangjin1996219.github.io/2021/02/28/eclipse%E4%BD%BF%E7%94%A8/"/>
+    <id>http://wangjin1996219.github.io/2021/02/28/eclipse%E4%BD%BF%E7%94%A8/</id>
+    <published>2021-02-28T09:13:30.000Z</published>
+    <updated>2021-02-28T11:41:54.747Z</updated>
+    
+    <content type="html"><![CDATA[<hr><a id="more"></a><h1 id="1、设置断点-amp-断点处运行快捷键"><a href="#1、设置断点-amp-断点处运行快捷键" class="headerlink" title="1、设置断点&amp;断点处运行快捷键"></a>1、设置断点&amp;断点处运行快捷键</h1><p><strong>设置断点</strong></p><p>在该行最前面边框双击或快捷键：Ctrl+Shift+B </p><p><strong>以Debug 方式运行Java程序</strong></p><p> Debug 运行启动 （在进行前后端联调时，Tomcat要在debug模式下运行）</p><p><strong>调试快捷键</strong></p><p> 运行到断点后： </p><p> F5：Step into/进入该行的函数内部 ；</p><p> F6：Step over/一行一行执行 ，它是不进入每一行的函数内部的；</p><p> F7：Step return/退出当前的函数；</p><p> F8：直接执行程序直到遇到下一个断点时暂停。</p><p>如果快捷键不能使用，可以通过窗口中的按钮运行程序，如图：</p><img src="/2021/02/28/eclipse%E4%BD%BF%E7%94%A8/设置断点及调试.png" style="zoom:90%;"><h1 id="2、修改包的显示结构和显示方法"><a href="#2、修改包的显示结构和显示方法" class="headerlink" title="2、修改包的显示结构和显示方法"></a>2、修改包的显示结构和显示方法</h1><h2 id="Eclipse-中包结构展开有两种方式："><a href="#Eclipse-中包结构展开有两种方式：" class="headerlink" title="Eclipse 中包结构展开有两种方式："></a>Eclipse 中包结构展开有两种方式：</h2><p><strong>一：平坦方式（flat）</strong></p><img src="/2021/02/28/eclipse%E4%BD%BF%E7%94%A8/平坦方式.png" style="zoom:110%;"><p><strong>二、分层方式（hierarchical）</strong></p><img src="/2021/02/28/eclipse%E4%BD%BF%E7%94%A8/分层方式.png" style="zoom:90%;"><h2 id="快速展开包"><a href="#快速展开包" class="headerlink" title="快速展开包"></a>快速展开包</h2><p><strong>在右边选中类时，快速的将类对应的包结构展开（Link with editor）</strong></p><p>设置只需点击包机构面板中的双箭头即可。</p><p>双箭头按下，表示包自动展开，不按下，表示包不自动展开。</p><p>如图红色框内按钮：</p><img src="/2021/02/28/eclipse%E4%BD%BF%E7%94%A8/在右边选中类时，快速的将类对应的包结构展开.png" style="zoom:80%;">]]></content>
+    
+    
+    <summary type="html">&lt;hr&gt;</summary>
+    
+    
+    
+    <category term="校园o2o项目1.0" scheme="http://wangjin1996219.github.io/categories/%E6%A0%A1%E5%9B%ADo2o%E9%A1%B9%E7%9B%AE1-0/"/>
+    
+    
+    <category term="eclipse" scheme="http://wangjin1996219.github.io/tags/eclipse/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>谷歌浏览器调试快捷键</title>
+    <link href="http://wangjin1996219.github.io/2021/02/28/%E8%B0%B7%E6%AD%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B0%83%E8%AF%95%E5%BF%AB%E6%8D%B7%E9%94%AE/"/>
+    <id>http://wangjin1996219.github.io/2021/02/28/%E8%B0%B7%E6%AD%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B0%83%E8%AF%95%E5%BF%AB%E6%8D%B7%E9%94%AE/</id>
+    <published>2021-02-28T02:05:07.000Z</published>
+    <updated>2021-02-28T11:41:58.643Z</updated>
+    
+    <content type="html"><![CDATA[<hr><a id="more"></a><h1 id="快捷键大全"><a href="#快捷键大全" class="headerlink" title="快捷键大全"></a>快捷键大全</h1><blockquote><p><strong>转自：<a href="https://www.cnblogs.com/lishanyang/p/7767135.html">https://www.cnblogs.com/lishanyang/p/7767135.html</a></strong></p></blockquote><p>快捷键有这么以下几大类.且看我一一道来<del>~</del>注:All pane是全局快捷键</p><h2 id="Console"><a href="#Console" class="headerlink" title="Console()"></a>Console()</h2><ul><li>Ctrl + L : 清除控制台消息</li><li>Tab : 自动完成通用常缀</li><li>→: 接受建议</li><li>Ctrl +  U: 清除console的提示!!(实操查看源代码!!)</li><li>↓ / ↑ :选中下一行/上一行</li><li>Enter: 执行代码或者命令</li></ul><h2 id="Debugger-调试面板"><a href="#Debugger-调试面板" class="headerlink" title="Debugger(调试面板)"></a>Debugger(调试面板)</h2><ul><li>F8 or Ctrl + : 暂停/继续</li><li>F10 or  Ctrl + ‘: 单步执行</li><li>F11 or Ctrl +;: 单步进入</li><li>Shift + F11 or Ctrl + Shift+;: 单步退出</li><li>Ctrl +./Ctrl+, : 上一帧/下一帧(译为框架怪怪的)</li><li>Ctrl +Shift+E: 被选中代码在控制台中打印出console信息**(非常实用)**</li><li>Ctrl + Shift + A: 添加到debugger的watch里面,可以关注你选中内容的变化</li><li>Ctrl + B: 打断点/取消断点**(很实用)**</li></ul><p>Chrome调试面板上的对应按钮如图所示：</p><img src="/2021/02/28/%E8%B0%B7%E6%AD%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B0%83%E8%AF%95%E5%BF%AB%E6%8D%B7%E9%94%AE/调试面板.png" style="zoom:80%;"><h2 id="Text-Editor-文本编辑器"><a href="#Text-Editor-文本编辑器" class="headerlink" title="Text Editor(文本编辑器)"></a>Text Editor(文本编辑器)</h2><ul><li>Ctrl + Shift+P : 跳转到某个成员(不知鸟用)</li><li>Ctrl + Space: 自动完成</li><li>Ctrl + G : 跳转到某行</li><li>Ctrl + Shift + E</li><li>Alt + -: 跳转到之前的编辑位置</li><li>Alt + +: 跳转到下一个编辑的位置</li><li>Ctrl + /: 快捷键注释</li><li>Alt + ↑: 调整CSS度量单位,每次<strong>增加</strong>一个单元</li><li>Alt + ↓: 调整CSS度量单位,每次<strong>减少</strong>一个单元</li><li>Alt + PageUp: 调整CSS度量单位,每次<strong>增加</strong>10个单元</li><li>Alt + PageDown: 调整CSS度量单位,每次<strong>减少</strong>10个单元</li><li>Ctrl + D: 选择选中内容的下一个匹配内容</li><li>Ctrl + U: 软撤销</li><li>Ctrl + M: 进入匹配的括号</li><li>Alt + W: 关闭编辑便签</li><li>Alt + O: 切换相同名字的或者不同后缀的文件</li></ul><h2 id="All-Panels-所有面板"><a href="#All-Panels-所有面板" class="headerlink" title="All Panels(所有面板)"></a>All Panels(所有面板)</h2><ul><li>Ctrl + [ / Ctrl + ]:切换面板(向左向右)</li><li>Ctrl + Shift + [ / Ctrl + Shift+] : 返回之前之后的面板状态</li><li>Ctrl + Tilde[~]:显示Console</li><li>Esc: 小菜单弹出隐藏</li><li>Ctrl + Shift + M: 进入仿真设备模式(移动平板屏幕)</li><li>Ctrl + Shift + D: 切换调试面板在底部还是侧边栏展示</li><li>Ctrl + F: 搜索内容</li><li>Ctrl + Shift + F: 在所有代码中搜索(跨域),<strong>很实用</strong></li><li>Ctrl + Shift + C: 选择页面节点并且查看代码,<strong>最常用!!</strong></li><li>Ctrl + P: 快速切换源码文件,<strong>很常用!</strong></li></ul><h2 id="Style-Pane-风格面板"><a href="#Style-Pane-风格面板" class="headerlink" title="Style Pane(风格面板)"></a>Style Pane(风格面板)</h2><ul><li>Tab / Shift + Tab: 下一个/上一个属性</li><li>↑: 增加CSS度量单位-&gt;1单元</li><li>↓:减少CSS度量单位-&gt;1单元</li><li>PageUporShift + ↑:增加CSS度量单位-&gt;10单元</li><li>PageDownorShift + ↓:减少CSS度量单位-&gt;10单元</li><li>Shift + PageUp:增加CSS度量单位-&gt;100单元</li><li>Shift + PageDown:减少CSS度量单位-&gt;100单元</li><li>Alt + ↑:增加CSS度量单位-&gt;0.1单元</li><li>Alt + ↓:减少CSS度量单位-&gt;0.1单元</li></ul><h2 id="Timeline-Panel-时间轴面板"><a href="#Timeline-Panel-时间轴面板" class="headerlink" title="Timeline Panel(时间轴面板)"></a>Timeline Panel(时间轴面板)</h2><ul><li>Ctrl + E:开始</li><li>Ctrl + S:保存时间轴数据</li><li>Ctrl + O:加载时间轴数据</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;hr&gt;</summary>
+    
+    
+    
+    <category term="校园o2o项目1.0" scheme="http://wangjin1996219.github.io/categories/%E6%A0%A1%E5%9B%ADo2o%E9%A1%B9%E7%9B%AE1-0/"/>
+    
+    
+    <category term="前端调试" scheme="http://wangjin1996219.github.io/tags/%E5%89%8D%E7%AB%AF%E8%B0%83%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>二叉树</title>
+    <link href="http://wangjin1996219.github.io/2021/02/23/%E4%BA%8C%E5%8F%89%E6%A0%91/"/>
+    <id>http://wangjin1996219.github.io/2021/02/23/%E4%BA%8C%E5%8F%89%E6%A0%91/</id>
+    <published>2021-02-23T01:32:00.000Z</published>
+    <updated>2021-02-23T03:51:29.849Z</updated>
+    
+    <content type="html"><![CDATA[<hr><a id="more"></a><h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><h2 id="二叉树的遍历"><a href="#二叉树的遍历" class="headerlink" title="二叉树的遍历"></a>二叉树的遍历</h2><p>根据根节点的访问顺序可以将二叉树的遍历分为：</p><p><strong>前序遍历：</strong>根节点→左子树→右子树</p><p><strong>中序遍历：</strong>左子树→根节点→右子树</p><p><strong>后序遍历：</strong>左子树→右子树→根节点</p><p>注意：左子树一般都是先于右子树的</p>]]></content>
+    
+    
+    <summary type="html">&lt;hr&gt;</summary>
+    
+    
+    
+    <category term="LeetCode题解" scheme="http://wangjin1996219.github.io/categories/LeetCode%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="数据结构篇" scheme="http://wangjin1996219.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87/"/>
+    
+  </entry>
   
   <entry>
     <title>位运算</title>
@@ -368,69 +431,6 @@
     
     
     <category term="剑指offer" scheme="http://wangjin1996219.github.io/tags/%E5%89%91%E6%8C%87offer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>构建乘积数组</title>
-    <link href="http://wangjin1996219.github.io/2021/01/28/%E5%89%91%E6%8C%87offer-66/"/>
-    <id>http://wangjin1996219.github.io/2021/01/28/%E5%89%91%E6%8C%87offer-66/</id>
-    <published>2021-01-28T05:05:36.000Z</published>
-    <updated>2021-01-28T06:07:41.254Z</updated>
-    
-    <content type="html"><![CDATA[<hr><a id="more"></a><h1 id="·-题目描述"><a href="#·-题目描述" class="headerlink" title="· 题目描述"></a>· 题目描述</h1><blockquote><p><strong>题目来自于LeetCode：</strong><a href="https://leetcode-cn.com/problems/gou-jian-cheng-ji-shu-zu-lcof">https://leetcode-cn.com/problems/gou-jian-cheng-ji-shu-zu-lcof</a></p></blockquote><p>给定一个数组 A[0,1,…,n-1]，请构建一个数组 B[0,1,…,n-1]，其中 B[i] 的值是数组 A 中除了下标 i 以外的元素的积, 即 B[i]=A[0]×A[1]×…×A[i-1]×A[i+1]×…×A[n-1]。不能使用除法。</p><p>示例:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,3,4,5]</span><br><span class="line">输出: [120,60,40,30,24]</span><br></pre></td></tr></table></figure><h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><p>方法一：暴力解法，每次用连乘n-1个数字的方法得到B[i]。但是这种方法的时间复杂度为O(n^2)。</p><p>方法二：通过分析乘积数组的特点，即 B[i]=A[0]×A[1]×…×A[i-1]×A[i+1]×…×A[n-1]，定义C[i]=A[0]×A[1]×…×A[i-1]，D[i]=A[i+1]×…×A[n-1]，也就是B[i]可以分成两部分C[i]和D[i]的乘积，如图所示：</p><p><img src="/2021/01/28/%E5%89%91%E6%8C%87offer-66/2021-01-28-%E5%89%91%E6%8C%87offer-66%5C%E5%9B%BE%E7%89%87.jpg"></p><p>而C[i]和D[i]可以分别通过两次循环得到，这种做法的时间复杂度为O(n)。</p><h1 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] constructArr(<span class="keyword">int</span>[] a) &#123;</span><br><span class="line">        <span class="keyword">if</span>(a.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span>[] b = <span class="keyword">new</span> <span class="keyword">int</span>[a.length];</span><br><span class="line">        b[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> tmp = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; a.length; i++) &#123;</span><br><span class="line">            b[i] = b[i - <span class="number">1</span>] * a[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = a.length - <span class="number">2</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            tmp *= a[i + <span class="number">1</span>];</span><br><span class="line">            b[i] *= tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-    <summary type="html">&lt;hr&gt;</summary>
-    
-    
-    
-    <category term="LeetCode题解" scheme="http://wangjin1996219.github.io/categories/LeetCode%E9%A2%98%E8%A7%A3/"/>
-    
-    
-    <category term="剑指offer" scheme="http://wangjin1996219.github.io/tags/%E5%89%91%E6%8C%87offer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>把数组排成最小的数</title>
-    <link href="http://wangjin1996219.github.io/2021/01/27/%E5%89%91%E6%8C%87offer-45/"/>
-    <id>http://wangjin1996219.github.io/2021/01/27/%E5%89%91%E6%8C%87offer-45/</id>
-    <published>2021-01-27T04:43:03.000Z</published>
-    <updated>2021-01-27T05:02:10.756Z</updated>
-    
-    <content type="html"><![CDATA[<hr><a id="more"></a><h1 id="·-题目描述"><a href="#·-题目描述" class="headerlink" title="· 题目描述"></a>· 题目描述</h1><blockquote><p><strong>题目来自于LeetCode：</strong><a href="https://leetcode-cn.com/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof">https://leetcode-cn.com/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof</a></p></blockquote><p>输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。</p><p>示例 1:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [10,2]</span><br><span class="line">输出: &quot;102&quot;</span><br></pre></td></tr></table></figure><p>示例 2:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [3,30,34,5,9]</span><br><span class="line">输出: &quot;3033459&quot;</span><br></pre></td></tr></table></figure><h1 id="·-解题思路"><a href="#·-解题思路" class="headerlink" title="· 解题思路"></a>· 解题思路</h1><p>将数组排成最小的数，我们最直观的想法是小数在前，大数在后，但是这样的排序组成的数组不一定是最小的数字，例如：10,9，这两个数字组成的最小数字应该是109而不是910。因此需要定义一种排序规则，使组成的数字最小。</p><p>若我们另两个数字为a，b，两个数字的组合有三种情况：</p><ol><li>当ab&gt;ba时，我们定义b应该在前；</li><li>当ba&gt;ab时，我们定义a应该在前；</li><li>当ab=ba时，两数相同，谁在前都可以。</li></ol><p>那么程序中的排序部分应该写成：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>((strs[j] + strs[l]).compareTo(strs[l] + strs[j]) &gt;= <span class="number">0</span> &amp;&amp; i &lt; j) j--;</span><br><span class="line"><span class="keyword">while</span>((strs[i] + strs[l]).compareTo(strs[l] + strs[i]) &lt;= <span class="number">0</span> &amp;&amp; i &lt; j) i++;</span><br></pre></td></tr></table></figure><blockquote><p><strong>Note：</strong>本题除了排序规则之外，还应该在准备工作中将int类型转换为String类型，防止ab组合时溢出，所以这还是一个隐形的大数问题。</p></blockquote><h1 id="·-代码及注解"><a href="#·-代码及注解" class="headerlink" title="· 代码及注解"></a>· 代码及注解</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">minNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        String[] strs = <span class="keyword">new</span> String[nums.length];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++)</span><br><span class="line">            strs[i] = String.valueOf(nums[i]);</span><br><span class="line">        fastSort(strs, <span class="number">0</span>, strs.length - <span class="number">1</span>);</span><br><span class="line">        StringBuilder res = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">for</span>(String s : strs)</span><br><span class="line">            res.append(s);</span><br><span class="line">        <span class="keyword">return</span> res.toString();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fastSort</span><span class="params">(String[] strs, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(l &gt;= r) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> i = l, j = r;</span><br><span class="line">        String tmp = strs[i];</span><br><span class="line">        <span class="keyword">while</span>(i &lt; j) &#123;</span><br><span class="line">            <span class="keyword">while</span>((strs[j] + strs[l]).compareTo(strs[l] + strs[j]) &gt;= <span class="number">0</span> &amp;&amp; i &lt; j) j--;</span><br><span class="line">            <span class="keyword">while</span>((strs[i] + strs[l]).compareTo(strs[l] + strs[i]) &lt;= <span class="number">0</span> &amp;&amp; i &lt; j) i++;</span><br><span class="line">            tmp = strs[i];</span><br><span class="line">            strs[i] = strs[j];</span><br><span class="line">            strs[j] = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        strs[i] = strs[l];</span><br><span class="line">        strs[l] = tmp;</span><br><span class="line">        fastSort(strs, l, i - <span class="number">1</span>);</span><br><span class="line">        fastSort(strs, i + <span class="number">1</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-    <summary type="html">&lt;hr&gt;</summary>
-    
-    
-    
-    <category term="LeetCode题解" scheme="http://wangjin1996219.github.io/categories/LeetCode%E9%A2%98%E8%A7%A3/"/>
-    
-    
-    <category term="剑指offer" scheme="http://wangjin1996219.github.io/tags/%E5%89%91%E6%8C%87offer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>快速排序算法</title>
-    <link href="http://wangjin1996219.github.io/2021/01/25/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"/>
-    <id>http://wangjin1996219.github.io/2021/01/25/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</id>
-    <published>2021-01-25T13:40:23.000Z</published>
-    <updated>2021-02-08T09:55:10.414Z</updated>
-    
-    <content type="html"><![CDATA[<hr><a id="more"></a><h1 id="·-算法思想"><a href="#·-算法思想" class="headerlink" title="· 算法思想"></a>· 算法思想</h1><p>快速排序算法的本质同冒泡排序一样，同属于交换排序类。也就是通过不断地比较和移动交换来实现排序，只不过对于快速排序来说增大了记录的比较和移动的距离，将较大的关键字记录从前面直接移动到后面，将较小的从后面直接移动到前面，减少了总的比较次数和移动交换次数。</p><p><strong>快排的基本思想是：</strong>选定一个分隔点，通过一趟排序将待排记录<code>按照数组中元素与分隔点的逻辑关系分割成独立的两部分</code>，然后按照同样的方式，对两侧的子数组再排序，直到实现整个序列有序的目的。</p><p>例如：对于如图所示的数组进行排序的过程如下</p><img src="/2021/01/25/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/图片.png" style="zoom: 67%;"><h1 id="·-代码实现"><a href="#·-代码实现" class="headerlink" title="· 代码实现"></a>· 代码实现</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QiuckSort</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] nums = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">50</span>, <span class="number">10</span>, <span class="number">90</span>, <span class="number">30</span>, <span class="number">70</span>, <span class="number">40</span>, <span class="number">80</span>, <span class="number">60</span>, <span class="number">20</span>&#125;;</span><br><span class="line">        QSort(nums, <span class="number">0</span>, nums.length - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i : nums) &#123;</span><br><span class="line">            System.out.print(i+<span class="string">&quot; &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">QSort</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (l &gt; r) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> i = l;</span><br><span class="line">        <span class="keyword">int</span> j = r;</span><br><span class="line">        <span class="keyword">int</span> temp = nums[l];</span><br><span class="line">        <span class="keyword">while</span> (i &lt; j) &#123;</span><br><span class="line">            <span class="keyword">while</span> (i &lt; j &amp;&amp; nums[j] &gt;= nums[l]) j--;</span><br><span class="line">            <span class="keyword">while</span> (i &lt; j &amp;&amp; nums[i] &lt;= nums[l]) i++;</span><br><span class="line">            temp = nums[i];</span><br><span class="line">            nums[i] = nums[j];</span><br><span class="line">            nums[j] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        nums[i] = nums[l];</span><br><span class="line">        nums[l] = temp;</span><br><span class="line">        QSort(nums, l, i - <span class="number">1</span>);</span><br><span class="line">        QSort(nums, i + <span class="number">1</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>程序执行结果</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">10</span> <span class="number">20</span> <span class="number">30</span> <span class="number">40</span> <span class="number">50</span> <span class="number">60</span> <span class="number">70</span> <span class="number">80</span> <span class="number">90</span> </span><br><span class="line">Process finished with exit code <span class="number">0</span></span><br></pre></td></tr></table></figure><h1 id="·-相关题目"><a href="#·-相关题目" class="headerlink" title="· 相关题目"></a>· 相关题目</h1><blockquote><p><strong><a href="https://leetcode-cn.com/problems/sort-colors">75.颜色分类</a></strong></p></blockquote><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sortColors</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">    quickSort(nums,<span class="number">0</span>,nums.length-<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] nums,<span class="keyword">int</span> l,<span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(r&lt;=l)&#123;</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> i=l;</span><br><span class="line">        <span class="keyword">int</span> j=r;</span><br><span class="line">        <span class="keyword">int</span> temp=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(i&lt;j)&#123;</span><br><span class="line">            <span class="keyword">while</span>(i&lt;j&amp;&amp;nums[j]&gt;=nums[l]) j--;</span><br><span class="line">            <span class="keyword">while</span>(i&lt;j&amp;&amp;nums[i]&lt;nums[l]) i++;</span><br><span class="line">            temp=nums[i];</span><br><span class="line">            nums[i]=nums[j];</span><br><span class="line">            nums[j]=temp;</span><br><span class="line">        &#125;</span><br><span class="line">        nums[l]=temp;</span><br><span class="line">        nums[i]=nums[l];</span><br><span class="line">        quickSort(nums,l,i);</span><br><span class="line">        quickSort(nums,i+<span class="number">1</span>,r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-    <summary type="html">&lt;hr&gt;</summary>
-    
-    
-    
-    <category term="数据结构及算法" scheme="http://wangjin1996219.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E7%AE%97%E6%B3%95/"/>
-    
-    
-    <category term="大话数据结构" scheme="http://wangjin1996219.github.io/tags/%E5%A4%A7%E8%AF%9D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
     
   </entry>
   

@@ -1254,4 +1254,147 @@
         <tag>数据结构篇</tag>
       </tags>
   </entry>
+  <entry>
+    <title>二叉树</title>
+    <url>/2021/02/23/%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
+    <content><![CDATA[<hr>
+<a id="more"></a>
+
+<h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><h2 id="二叉树的遍历"><a href="#二叉树的遍历" class="headerlink" title="二叉树的遍历"></a>二叉树的遍历</h2><p>根据根节点的访问顺序可以将二叉树的遍历分为：</p>
+<p><strong>前序遍历：</strong>根节点→左子树→右子树</p>
+<p><strong>中序遍历：</strong>左子树→根节点→右子树</p>
+<p><strong>后序遍历：</strong>左子树→右子树→根节点</p>
+<p>注意：左子树一般都是先于右子树的</p>
+]]></content>
+      <categories>
+        <category>LeetCode题解</category>
+      </categories>
+      <tags>
+        <tag>数据结构篇</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>谷歌浏览器调试快捷键</title>
+    <url>/2021/02/28/%E8%B0%B7%E6%AD%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B0%83%E8%AF%95%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<hr>
+<a id="more"></a>
+
+<h1 id="快捷键大全"><a href="#快捷键大全" class="headerlink" title="快捷键大全"></a>快捷键大全</h1><blockquote>
+<p><strong>转自：<a href="https://www.cnblogs.com/lishanyang/p/7767135.html">https://www.cnblogs.com/lishanyang/p/7767135.html</a></strong></p>
+</blockquote>
+<p>快捷键有这么以下几大类.且看我一一道来<del>~</del>注:All pane是全局快捷键</p>
+<h2 id="Console"><a href="#Console" class="headerlink" title="Console()"></a>Console()</h2><ul>
+<li>Ctrl + L : 清除控制台消息</li>
+<li>Tab : 自动完成通用常缀</li>
+<li>→: 接受建议</li>
+<li>Ctrl +  U: 清除console的提示!!(实操查看源代码!!)</li>
+<li>↓ / ↑ :选中下一行/上一行</li>
+<li>Enter: 执行代码或者命令</li>
+</ul>
+<h2 id="Debugger-调试面板"><a href="#Debugger-调试面板" class="headerlink" title="Debugger(调试面板)"></a>Debugger(调试面板)</h2><ul>
+<li>F8 or Ctrl + : 暂停/继续</li>
+<li>F10 or  Ctrl + ‘: 单步执行</li>
+<li>F11 or Ctrl +;: 单步进入</li>
+<li>Shift + F11 or Ctrl + Shift+;: 单步退出</li>
+<li>Ctrl +./Ctrl+, : 上一帧/下一帧(译为框架怪怪的)</li>
+<li>Ctrl +Shift+E: 被选中代码在控制台中打印出console信息**(非常实用)**</li>
+<li>Ctrl + Shift + A: 添加到debugger的watch里面,可以关注你选中内容的变化</li>
+<li>Ctrl + B: 打断点/取消断点**(很实用)**</li>
+</ul>
+<p>Chrome调试面板上的对应按钮如图所示：</p>
+<img src="/2021/02/28/%E8%B0%B7%E6%AD%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B0%83%E8%AF%95%E5%BF%AB%E6%8D%B7%E9%94%AE/调试面板.png" style="zoom:80%;">
+
+<h2 id="Text-Editor-文本编辑器"><a href="#Text-Editor-文本编辑器" class="headerlink" title="Text Editor(文本编辑器)"></a>Text Editor(文本编辑器)</h2><ul>
+<li>Ctrl + Shift+P : 跳转到某个成员(不知鸟用)</li>
+<li>Ctrl + Space: 自动完成</li>
+<li>Ctrl + G : 跳转到某行</li>
+<li>Ctrl + Shift + E</li>
+<li>Alt + -: 跳转到之前的编辑位置</li>
+<li>Alt + +: 跳转到下一个编辑的位置</li>
+<li>Ctrl + /: 快捷键注释</li>
+<li>Alt + ↑: 调整CSS度量单位,每次<strong>增加</strong>一个单元</li>
+<li>Alt + ↓: 调整CSS度量单位,每次<strong>减少</strong>一个单元</li>
+<li>Alt + PageUp: 调整CSS度量单位,每次<strong>增加</strong>10个单元</li>
+<li>Alt + PageDown: 调整CSS度量单位,每次<strong>减少</strong>10个单元</li>
+<li>Ctrl + D: 选择选中内容的下一个匹配内容</li>
+<li>Ctrl + U: 软撤销</li>
+<li>Ctrl + M: 进入匹配的括号</li>
+<li>Alt + W: 关闭编辑便签</li>
+<li>Alt + O: 切换相同名字的或者不同后缀的文件</li>
+</ul>
+<h2 id="All-Panels-所有面板"><a href="#All-Panels-所有面板" class="headerlink" title="All Panels(所有面板)"></a>All Panels(所有面板)</h2><ul>
+<li>Ctrl + [ / Ctrl + ]:切换面板(向左向右)</li>
+<li>Ctrl + Shift + [ / Ctrl + Shift+] : 返回之前之后的面板状态</li>
+<li>Ctrl + Tilde[~]:显示Console</li>
+<li>Esc: 小菜单弹出隐藏</li>
+<li>Ctrl + Shift + M: 进入仿真设备模式(移动平板屏幕)</li>
+<li>Ctrl + Shift + D: 切换调试面板在底部还是侧边栏展示</li>
+<li>Ctrl + F: 搜索内容</li>
+<li>Ctrl + Shift + F: 在所有代码中搜索(跨域),<strong>很实用</strong></li>
+<li>Ctrl + Shift + C: 选择页面节点并且查看代码,<strong>最常用!!</strong></li>
+<li>Ctrl + P: 快速切换源码文件,<strong>很常用!</strong></li>
+</ul>
+<h2 id="Style-Pane-风格面板"><a href="#Style-Pane-风格面板" class="headerlink" title="Style Pane(风格面板)"></a>Style Pane(风格面板)</h2><ul>
+<li>Tab / Shift + Tab: 下一个/上一个属性</li>
+<li>↑: 增加CSS度量单位-&gt;1单元</li>
+<li>↓:减少CSS度量单位-&gt;1单元</li>
+<li>PageUporShift + ↑:增加CSS度量单位-&gt;10单元</li>
+<li>PageDownorShift + ↓:减少CSS度量单位-&gt;10单元</li>
+<li>Shift + PageUp:增加CSS度量单位-&gt;100单元</li>
+<li>Shift + PageDown:减少CSS度量单位-&gt;100单元</li>
+<li>Alt + ↑:增加CSS度量单位-&gt;0.1单元</li>
+<li>Alt + ↓:减少CSS度量单位-&gt;0.1单元</li>
+</ul>
+<h2 id="Timeline-Panel-时间轴面板"><a href="#Timeline-Panel-时间轴面板" class="headerlink" title="Timeline Panel(时间轴面板)"></a>Timeline Panel(时间轴面板)</h2><ul>
+<li>Ctrl + E:开始</li>
+<li>Ctrl + S:保存时间轴数据</li>
+<li>Ctrl + O:加载时间轴数据</li>
+</ul>
+]]></content>
+      <categories>
+        <category>校园o2o项目1.0</category>
+      </categories>
+      <tags>
+        <tag>前端调试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>eclipse使用</title>
+    <url>/2021/02/28/eclipse%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<hr>
+<a id="more"></a>
+
+<h1 id="1、设置断点-amp-断点处运行快捷键"><a href="#1、设置断点-amp-断点处运行快捷键" class="headerlink" title="1、设置断点&amp;断点处运行快捷键"></a>1、设置断点&amp;断点处运行快捷键</h1><p><strong>设置断点</strong></p>
+<p>在该行最前面边框双击或快捷键：Ctrl+Shift+B </p>
+<p><strong>以Debug 方式运行Java程序</strong></p>
+<p> Debug 运行启动 （在进行前后端联调时，Tomcat要在debug模式下运行）</p>
+<p><strong>调试快捷键</strong></p>
+<p> 运行到断点后： </p>
+<p> F5：Step into/进入该行的函数内部 ；</p>
+<p> F6：Step over/一行一行执行 ，它是不进入每一行的函数内部的；</p>
+<p> F7：Step return/退出当前的函数；</p>
+<p> F8：直接执行程序直到遇到下一个断点时暂停。</p>
+<p>如果快捷键不能使用，可以通过窗口中的按钮运行程序，如图：</p>
+<img src="/2021/02/28/eclipse%E4%BD%BF%E7%94%A8/设置断点及调试.png" style="zoom:90%;">
+
+<h1 id="2、修改包的显示结构和显示方法"><a href="#2、修改包的显示结构和显示方法" class="headerlink" title="2、修改包的显示结构和显示方法"></a>2、修改包的显示结构和显示方法</h1><h2 id="Eclipse-中包结构展开有两种方式："><a href="#Eclipse-中包结构展开有两种方式：" class="headerlink" title="Eclipse 中包结构展开有两种方式："></a>Eclipse 中包结构展开有两种方式：</h2><p><strong>一：平坦方式（flat）</strong></p>
+<img src="/2021/02/28/eclipse%E4%BD%BF%E7%94%A8/平坦方式.png" style="zoom:110%;">
+
+<p><strong>二、分层方式（hierarchical）</strong></p>
+<img src="/2021/02/28/eclipse%E4%BD%BF%E7%94%A8/分层方式.png" style="zoom:90%;">
+
+
+
+<h2 id="快速展开包"><a href="#快速展开包" class="headerlink" title="快速展开包"></a>快速展开包</h2><p><strong>在右边选中类时，快速的将类对应的包结构展开（Link with editor）</strong></p>
+<p>设置只需点击包机构面板中的双箭头即可。</p>
+<p>双箭头按下，表示包自动展开，不按下，表示包不自动展开。</p>
+<p>如图红色框内按钮：</p>
+<img src="/2021/02/28/eclipse%E4%BD%BF%E7%94%A8/在右边选中类时，快速的将类对应的包结构展开.png" style="zoom:80%;">]]></content>
+      <categories>
+        <category>校园o2o项目1.0</category>
+      </categories>
+      <tags>
+        <tag>eclipse</tag>
+      </tags>
+  </entry>
 </search>
