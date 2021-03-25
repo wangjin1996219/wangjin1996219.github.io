@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wangjin1996219.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="操作系统">
+<meta property="og:url" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="Wj-Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.1.01.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.1.02.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.1.03.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub/MyBlogs/source/_posts/2021-03-15-操作系统/4.1.1.03.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub/MyBlogs/source/_posts/2021-03-15-操作系统/4.1.1.05.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub/MyBlogs/source/_posts/2021-03-15-操作系统/4.1.1.06.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub/MyBlogs/source/_posts/2021-03-15-操作系统/4.1.1.07.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub/MyBlogs/source/_posts/2021-03-15-操作系统/4.1.1.08.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub/MyBlogs/source/_posts/2021-03-15-操作系统/4.1.2.01.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub/MyBlogs/source/_posts/2021-03-15-操作系统/4.1.2.02.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/2021-03-15-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C4.1.3.01.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub/MyBlogs/source/_posts/2021-03-15-操作系统/4.1.2.02.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/2021-03-15-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C4.1.3.01.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub/MyBlogs/source/_posts/2021-03-15-操作系统/4.1.4.01.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub/MyBlogs/source/_posts/2021-03-15-操作系统/4.1.4.02.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/2021-03-15-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C4.1.4.03.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.4.03.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/2021-03-15-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C4.1.4.04.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.4.05.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/2021-03-15-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C4.1.4.06.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.4.07.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.4.06.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.4.08.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.4.09.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.5.01.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.5.02.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.5.03.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.5.04.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.01.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.02.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.03.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.04.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.01.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.02.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.03.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.04.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.05.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.07.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.08.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.09.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.01.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.02.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.03.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.04.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.05.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.06.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.07.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.08.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.10.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.09.png">
+<meta property="article:published_time" content="2021-03-15T09:51:11.000Z">
+<meta property="article:modified_time" content="2021-03-16T13:47:02.358Z">
+<meta property="article:author" content="老王家的小王呀">
+<meta property="article:tag" content="基础知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.1.01.png">
+
+<link rel="canonical" href="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>操作系统 | Wj-Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Wj-Blog" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wj-Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">56</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="老王家的小王呀">
+      <meta itemprop="description" content="及时当勉励，岁月不待人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wj-Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统
+        </h1>
+
+        <div class="post-meta">
+        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-15 17:51:11" itemprop="dateCreated datePublished" datetime="2021-03-15T17:51:11+08:00">2021-03-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-16 21:47:02" itemprop="dateModified" datetime="2021-03-16T21:47:02+08:00">2021-03-16</time>
+              </span>
+
+          
+            <span id="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-meta-item leancloud_visitors" data-flag-title="操作系统" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<a id="more"></a>
+
+<h1 id="1-进程、线程与协程"><a href="#1-进程、线程与协程" class="headerlink" title="1.进程、线程与协程"></a><strong>1.进程、线程与协程</strong></h1><h2 id="1-1基本概念"><a href="#1-1基本概念" class="headerlink" title="1.1基本概念"></a>1.1基本概念</h2><ul>
+<li><strong>进程：</strong>进程是程序向操作系统申请资源的基本单位，是一个动态概念，也是竞争计算机系统资源的基本单位。</li>
+<li><strong>线程：</strong>线程是比进程更小的独立运行的执行单位，一个进程中可以包含多个线程。与进程不同的是同类的多个线程共享同一块内存空间和系统资源，所以系统在产生一个线程，或者在各个线程之间进行切换时，负担比进程小很多，因此线程也被称为轻量级进程。</li>
+<li><strong>协程：</strong>它就是一个函数，一个特殊的函数，可以在某个地方挂起，并且可以重新在挂起处继续运行。协程拥有自己的寄存器上下文和栈。协程调度切换时，将寄存器上下文和栈保存到其他地方。在切回来的时候，恢复先前保存的寄存器上下文和栈，直接操作栈则基本没有内核切换的开销，可以不加锁的访问全局变量，所以上下文的切换非常快。进程线程都是同步机制，而协程则是异步。协程不需要多线程的锁机制。</li>
+</ul>
+<h2 id="1-2进程与线程的区别与联系"><a href="#1-2进程与线程的区别与联系" class="headerlink" title="1.2进程与线程的区别与联系"></a>1.2进程与线程的区别与联系</h2><ul>
+<li>进程是资源分配最小单位，线程是程序执行的最小单位；</li>
+<li>进程有自己独立的地址空间，每启动一个进程，系统都会为其分配地址空间。线程是进程的一个实体，一个进程至少有一个线程,同一个进程的所有线程，共享所属进程的资源；</li>
+<li>线程占用的资源比进程少很多，所以创建线程和切换线程的开销相对来说很小。但多进程程序更安全，生命力更强。一个进程的死亡不会对其他进程造成影响。而一个线程死掉，（可能会锁住资源）造成整个进程都死掉了。</li>
+</ul>
+<h2 id="1-3进程空间"><a href="#1-3进程空间" class="headerlink" title="1.3进程空间"></a>1.3进程空间</h2><p><strong>进程空间：</strong>内核态内存空间、用户态的堆栈（一般8M，从高地址向低地址增长）、数据段、进程代码段。</p>
+<p><strong>线程共享的有：</strong>进程代码段、进程共有数据、文件描述符、信号处理器、进程当前目录、进程用户ID、进程组ID。</p>
+<p><strong>线程私有的：</strong>线程ID、寄存器的值、线程的栈、线程优先级、错误返回码、线程信号屏蔽码。</p>
+<p>1、线程ID<br>同一进程中每个线程拥有唯一的线程ID。<br>2、寄存器组的值<br>由于线程间是并发运行的，每个线程有自己不同的运行线索，当从一个线 程切换到另一个线程上 时，必须将原有的线程的寄存器集合的状态保存，以便将来该线程在被重新切换到时能得以恢复。<br>3、线程堆栈<br>线程可以进行函数调用，必然会使用大函数堆栈。<br>4、错误返回码<br>线程执行出错时，必须明确是哪个线程出现何种错误，因此不同的线程应该拥有自己的错误返回码变量。<br>5、信号屏蔽码<br>由于每个线程所感兴趣的信号不同，所以线程的信号屏蔽码应该由线程自己管理。但所有的线程都共享同样的信号处理器。<br>6、线程的优先级<br>由于线程需要像进程那样能够被调度，那么就必须要有可供调度使用的参数，这个参数就是线程的优先级。</p>
+<h2 id="1-4线程间的通信方式"><a href="#1-4线程间的通信方式" class="headerlink" title="1.4线程间的通信方式"></a>1.4线程间的通信方式</h2><ol>
+<li><p><strong>锁机制</strong></p>
+<p>互斥锁：提供了以排它方式阻止数据结构被并发修改的方法。</p>
+<p>读写锁：允许多个线程同时读共享数据，而对写操作互斥。</p>
+<p>条件变量：可以以原子的方式阻塞进程，直到某个特定条件为真为止。对条件测试是在互斥锁的保护下进行的。条件变量始终与互斥锁一起使用。（条件变量与互斥锁的使用见CSDN收藏的文章）</p>
+</li>
+<li><p><strong>信号量机制</strong>：包括无名线程信号量与有名线程信号量。</p>
+</li>
+<li><p><strong>信号机制</strong>：类似于进程间的信号处理。</p>
+</li>
+</ol>
+<p><strong>线程间通信的主要目的是用于线程同步</strong>，所以线程没有象进程通信中用于数据交换的通信机制。</p>
+<h2 id="1-5多进程和多线程的对比"><a href="#1-5多进程和多线程的对比" class="headerlink" title="1.5多进程和多线程的对比"></a>1.5多进程和多线程的对比</h2><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">数据</th>
+<th align="center">共享</th>
+<th align="center">同步</th>
+<th align="center">内存占用</th>
+<th align="center">CPU利用率</th>
+<th align="center">创建、销毁、切换</th>
+<th align="center">相互间影响</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>多线程</strong></td>
+<td align="center">多个线程共享所属进程的数据</td>
+<td align="center">共享复杂，需要通过IPC来共享</td>
+<td align="center">困难</td>
+<td align="center">少</td>
+<td align="center">高</td>
+<td align="center">简单且速度快</td>
+<td align="center">一个线程挂掉将导致整个进程挂掉（可能会锁住资源）</td>
+</tr>
+<tr>
+<td align="center"><strong>多进程</strong></td>
+<td align="center">每个进程都有自己的数据，且互不干涉</td>
+<td align="center">共享简单</td>
+<td align="center">简单</td>
+<td align="center">大</td>
+<td align="center">低</td>
+<td align="center">复杂且速度慢</td>
+<td align="center">进程之间不会相互影响</td>
+</tr>
+</tbody></table>
+<h2 id="1-6竞态"><a href="#1-6竞态" class="headerlink" title="1.6竞态"></a>1.6竞态</h2><p><strong>竞态：</strong>多线程编程中的一个问题，对于同样的输入，程序的输出有时是正确的，有时是错误的，这种计算结果的正确性与时间有关的现象被成为竞态。</p>
+<h2 id="1-7线程安全和非线程安全"><a href="#1-7线程安全和非线程安全" class="headerlink" title="1.7线程安全和非线程安全"></a>1.7线程安全和非线程安全</h2><p><strong>线程安全和非线程安全：</strong> 一个类在单线程环境下能够正常运行，并且在多线程环境下，使用方不做特别处理也能运行正常，我们就称其是线程安全的。反之，一个类在单线程环境下运行正常，而在多线程环境下无法正常运行，这个类就是非线程安全的。</p>
+<h2 id="1-8进程间的通信方式IPC"><a href="#1-8进程间的通信方式IPC" class="headerlink" title="1.8进程间的通信方式IPC"></a>1.8进程间的通信方式IPC</h2><h3 id="1-8-1七种通信方式"><a href="#1-8-1七种通信方式" class="headerlink" title="1.8.1七种通信方式"></a>1.8.1七种通信方式</h3><ol>
+<li><strong>管道pipe：</strong>管道是一种半双工的通信方式，数据只能单向流动，而且只能在具有亲缘关系的进程间使用。进程的亲缘关系通常是指父子进程关系。</li>
+<li><strong>命名管道FIFO：</strong>有名管道也是半双工的通信方式，但是它允许无亲缘关系进程间的通信。</li>
+<li><strong>消息队列MessageQueue：</strong>消息队列是有消息的链表，存放在内核中并由消息队列标识符标识。消息队列克服了信号传递信息少、管道只能承载无格式字节流以及缓冲区大小受限等缺点。</li>
+<li><strong>共享存储SharedMemory：</strong>共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问。共享内存是最快的 IPC 方式，它是针对其他进程间通信方式运行效率低而专门设计的。它往往与其他通信机制，如信号量，配合使用，来实现进程间的同步和通信。</li>
+<li><strong>信号量Semaphore：</strong>信号量是一个计数器，可以用来控制多个进程对共享资源的访问。它常作为一种锁机制，防止某进程正在访问共享资源时，其他进程也访问该资源。因此，主要作为进程间以及同一进程内不同线程之间的同步手段。</li>
+<li><strong>套接字Socket：</strong>套解口也是一种进程间通信机制，与其他通信机制不同的是，它可用于不同及其间的进程通信。</li>
+<li><strong>信号 ( sinal ) ：</strong> 信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生。</li>
+</ol>
+<h3 id="1-8-2详细解释"><a href="#1-8-2详细解释" class="headerlink" title="1.8.2详细解释"></a>1.8.2详细解释</h3><p><strong>1.无名管道与命名管道：</strong></p>
+<p>管道分为pipe（无名管道）和fifo（命名管道）两种，除了建立、打开、删除的方式不同外，这两种管道几乎是一样的。他们都是通过内核缓冲区实现数据传输。</p>
+<ul>
+<li>无名管道pipe：用于相关进程之间的通信，例如父进程和子进程，它通过pipe()系统调用来创建并打开，当最后一个使用它的进程关闭对他的引用时，pipe将自动撤销。</li>
+<li>命名管道FIFO：在磁盘上有对应的节点，但没有数据块——换言之，只是拥有一个名字和相应的访问权限，通过mknode()系统调用或者mkfifo()函数来建立的。一旦建立，任何进程都可以通过文件名将其打开和进行读写，而不局限于父子进程，当然前提是进程对FIFO有适当的访问权。当不再被进程使用时，FIFO在内存中释放，但磁盘节点仍然存在。</li>
+</ul>
+<p><strong>管道的实质是一个内核缓冲区</strong>，进程以<strong>先进先出</strong>的方式从缓冲区存取数据：管道一端的进程顺序地将进程数据写入缓冲区，另一端的进程则顺序地读取数据，该缓冲区可以看做一个循环队列，读和写的位置都是自动增加的，一个数据只能被读一次，读出以后再缓冲区都不复存在了。当缓冲区读空或者写满时，有一定的规则控制相应的读进程或写进程是否进入等待队列，当空的缓冲区有新数据写入或慢的缓冲区有数据读出时，就唤醒等待队列中的进程继续读写。</p>
+<p><strong>2.消息队列：</strong></p>
+<p>消息队列，就是一个消息的链表，是一系列保存在内核中消息的列表。用户进程可以向消息队列添加消息，也可以向消息队列读取消息。</p>
+<p>消息队列与管道通信相比，其优势是<strong>对每个消息指定特定的消息类型，接收的时候不需要按照队列次序，而是可以根据自定义条件接收特定类型的消息。</strong></p>
+<p>可以把消息看做一个记录，具有特定的格式以及特定的优先级。对消息队列有写权限的进程可以向消息队列中按照一定的规则添加新消息，对消息队列有读权限的进程可以从消息队列中读取消息。</p>
+<p><strong>3.共享内存：</strong></p>
+<p>共享内存允许两个或多个进程共享一个给定的存储区，这一段存储区可以被两个或两个以上的进程映射至自身的地址空间中，一个进程写入共享内存的信息，可以被其他使用这个共享内存的进程，通过一个简单的内存读取错做读出，从而实现了进程间的通信。</p>
+<p>采用共享内存进行通信的一个主要好处是<strong>效率高</strong>，因为进程可以直接读写内存，而不需要任何数据的拷贝，对于像管道和消息队里等通信方式，则需要再内核和用户空间进行四次的数据拷贝，而<strong>共享内存则只拷贝两次：一次从输入文件到共享内存区，另一次从共享内存到输出文件。</strong></p>
+<p>一般而言，进程之间在共享内存时，并不总是读写少量数据后就解除映射，有新的通信时在重新建立共享内存区域；而是保持共享区域，直到通信完毕为止，这样，数据内容一直保存在共享内存中，并没有写回文件。共享内存中的内容往往是在解除映射时才写回文件，因此，采用共享内存的通信方式效率非常高。</p>
+<p><strong>4.信号量：</strong></p>
+<p><strong>信号量是一个计数器，可以用来控制多个进程对共享资源的访问</strong>。它通常作为一种锁机制，防止某进程正在访问共享资源时，其他进程也访问该资源。因此，主要作为进程间以及同一进程内不同线程之间的同步手段。</p>
+<p><strong>5.信号：</strong></p>
+<p>信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生。</p>
+<p><strong>6.套接字：</strong></p>
+<p><strong>套接字是一种通信机制，凭借这种机制，客户/服务器（即要进行通信的进程）系统的开发工作既可以在本地单机上进行，也可以跨网络进行。</strong>也就是说它可以让不在同一台计算机但通过网络连接计算机上的进程进行通信。也因为这样，套接字明确地将客户端和服务器区分开来。</p>
+<h1 id="2-用户态与核心态"><a href="#2-用户态与核心态" class="headerlink" title="2.用户态与核心态"></a>2.用户态与核心态</h1><h2 id="2-1基本概念"><a href="#2-1基本概念" class="headerlink" title="2.1基本概念"></a>2.1基本概念</h2><p>为防止用户进程访问对操作系统的稳定运行造成破坏。对一些资源的访问进行了等级划分。<strong>内核态和用户态是操作系统的两种运行级别，内核态权限高，用户态权限低。</strong></p>
+<h2 id="2-2为什么要划分用户态与核心态"><a href="#2-2为什么要划分用户态与核心态" class="headerlink" title="2.2为什么要划分用户态与核心态"></a>2.2为什么要划分用户态与核心态</h2><p><strong>操作系统的很多操作会消耗系统的物理资源，</strong>例如创建一个新进程时，要做很多底层的细致工作，如分配物理内存，从父进程拷贝相关信息，拷贝设置页目录、页表等，这些操作显然不能随便让任何程序都可以做，<strong>于是就产生了特权级别的概念，与系统相关的一些特别关键性的操作必须由高级别的程序来完成，这样可以做到集中管理，减少有限资源的访问和使用冲突</strong></p>
+<p><strong>当一个进程在执行用户自己的代码时处于用户运行态（用户态），此时特权级最低，为3级，是普通的用户进程运行的特权级，</strong>大部分用户直接面对的程序都是运行在用户态。Ring3状态不能访问Ring0的<strong>内核地址空间，</strong>包括代码和数据；<strong>当一个进程因为系统调用陷入内核代码中执行时处于内核运行态（内核态），此时特权级最高，为0级。</strong>执行的内核代码会使用当前进程的内核栈，每个进程都有自己的内核栈。</p>
+<h2 id="2-3用户态和内核态的切换："><a href="#2-3用户态和内核态的切换：" class="headerlink" title="2.3用户态和内核态的切换："></a>2.3用户态和内核态的切换：</h2><p><strong>进程大部分时间是运行在用户态下的，在其需要操作系统帮助完成一些用户态自己没有特权和能力完成的操作时就会切换到内核态。</strong></p>
+<p><strong>切换到内核的方式有：</strong>系统调用、发生异常、外围设备的中断。</p>
+<h1 id="3-死锁的条件及解决方法"><a href="#3-死锁的条件及解决方法" class="headerlink" title="3.死锁的条件及解决方法"></a>3.死锁的条件及解决方法</h1><h2 id="3-1死锁的产生条件"><a href="#3-1死锁的产生条件" class="headerlink" title="3.1死锁的产生条件"></a>3.1死锁的产生条件</h2><ol>
+<li>死锁问题的情景</li>
+</ol>
+<p>例如：系统中只有一台扫描仪R1和一台刻录机R2.有两个进程P1和P2，他们都准备将扫描的文档刻录到光盘上，进程P1先请求扫描仪并获得成功，进程P2先请求刻录机并获得成功。后来P1又请求刻录机，因为刻录机被分配给了了P2而导致阻塞；P2又请求扫描仪，因为扫描仪被分配给了P1而导致阻塞。双方都希望对方能释放资源而成全自己，但是双方都不让步，然后就一直僵持下去。</p>
+<p>再例如哲学家进餐问题也是死锁的问题场景。</p>
+<ol start="2">
+<li><strong>死锁产生的四个必要条件</strong></li>
+</ol>
+<p>只要其中任意一个不成立，则死锁就不会发生。</p>
+<p>（1）互斥条件：即在一段时间内，一个资源只能被一个进程占用。</p>
+<p>（2）请求和保持条件：进程已经获得了某种资源，但又提出了新的资源的要求，而该资源已经被其他进程占有，此时请求进程被阻塞，但对自己保持的资源不放。</p>
+<p>（3）不可抢占资源：进程已获得的资源在未使用完成之前不能被其他进程抢占。</p>
+<p>（4）循环等待条件：在发生死锁时，必然存在一个循环链。</p>
+<h2 id="3-2解决死锁的方法"><a href="#3-2解决死锁的方法" class="headerlink" title="3.2解决死锁的方法"></a>3.2解决死锁的方法</h2><p><strong>1.预防死锁</strong></p>
+<p>去破坏产生死锁的四个必要条件中的一个或几个来预防死锁的产生。</p>
+<p>由于互斥条件是保护临界资源的一种措施，所以不仅不能改变，还要加以保证。所以只能破坏其他三个条件。</p>
+<p>（1）破坏“请求和保持条件”</p>
+<p>第一种协议：进程必须一次性的申请所需的所有资源，并且系统有足够的资源分配给他，否则就不分配。</p>
+<p>这种协议的优点是简单，易行且安全，但存在很大的问题，比如资源严重浪费和是进程发生饥饿现象。</p>
+<p>第二种协议：允许一个进程只获得运行初期的所需资源，在进程运行过程中，将运行完成的资源释放，然后再请求其他所需资源。</p>
+<p>（2）破坏“不可抢占条件”</p>
+<p>将不可抢占变成可抢占的资源，实现起来较为复杂，且需要付出很大的代价。</p>
+<p>（3）破坏“循环条件”</p>
+<p>将循环条件改为层次分配策略</p>
+<p><strong>2.避免死锁</strong></p>
+<p>在资源的动态分配过程中，防止系统进入不安全状态，以避免发生死锁。</p>
+<p>安全状态：只要存在一种可以顺利完成任务的顺序就属于安全状态。</p>
+<p>不安全状态：没有任意一种顺序使任务顺利完成。</p>
+<p><strong>3.检测死锁</strong></p>
+<p>通过检测机构检测出死锁的发生，然后采取适当的措施。</p>
+<p><strong>4.解除死锁</strong></p>
+<p>当检测到死锁已经发生时，撤销一些进程，回收他们的资源，将他们分配给其他需要的进程，使其继续运行。解除死锁的方法：</p>
+<p>（1）抢占资源：从一个或多个进程中抢占足够数量的资源，分配给死锁进程。</p>
+<p>（2）终止进程：终止系统中的一个或多个死锁进程，直至打破循环环路，使系统从死锁状态解脱出来。</p>
+<h1 id="4-操作系统内存管理方式"><a href="#4-操作系统内存管理方式" class="headerlink" title="4.操作系统内存管理方式"></a>4.操作系统内存管理方式</h1><h2 id="4-1内存管理的概念"><a href="#4-1内存管理的概念" class="headerlink" title="4.1内存管理的概念"></a>4.1内存管理的概念</h2><h3 id="4-1-1分页存储"><a href="#4-1-1分页存储" class="headerlink" title="4.1.1分页存储"></a>4.1.1分页存储</h3><p><strong>0.思维导图</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.1.01.png" style="zoom:80%;">
+
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.1.02.png" style="zoom:80%;">
+
+<p><strong>1.为什么要分页</strong></p>
+<p>内部碎片：</p>
+<p>内部碎片就是已经被分配出去（能明确指出属于哪个进程）却不能被利用的内存空间；</p>
+<p>内部碎片是处于（操作系统分配的用于装载某一进程的内存）区域内部或页面内部的存储块。占有这些区域或页面的进程并不使用这个存储块。而在进程占有这块存储块时，系统无法利用它。直到进程释放它，或进程结束时，系统才有可能利用这个存储块。</p>
+<p>外部碎片：</p>
+<p>外部碎片指的是还没有被分配出去（不属于任何进程），但由于太小了无法分配给申请内存空间的新进程的内存空闲区域。</p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.1.03.png" style="zoom:80%;">
+
+<p><strong>2.基本分页存储管理的思想</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub\MyBlogs\source\_posts\2021-03-15-操作系统\4.1.1.03.png" style="zoom:80%;">
+
+<p><strong>3.如何实现地址的转换</strong></p>
+<p>因为内存分页后，页面的大小是确定的，比如是50B；</p>
+<p>假如需要访问逻辑地址为80的内存单元；</p>
+<p>用80/50=1，也就是在1号页；</p>
+<p>用80%50=30，也就是页内偏移量为30；</p>
+<p>再加上该页面在内存中的起始地址，就能得到逻辑地址到物理地址的映射。</p>
+<p><strong>4.分页存储的逻辑结构</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub\MyBlogs\source\_posts\2021-03-15-操作系统\4.1.1.05.png" style="zoom:80%;">
+
+<p><strong>5.如何知道页面在内存中的起始地址</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub\MyBlogs\source\_posts\2021-03-15-操作系统\4.1.1.06.png" style="zoom:80%;">
+
+<p><strong>6.分页存储管理的基本地址变换结构</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub\MyBlogs\source\_posts\2021-03-15-操作系统\4.1.1.07.png" style="zoom:80%;">
+
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub\MyBlogs\source\_posts\2021-03-15-操作系统\4.1.1.08.png" style="zoom:80%;">
+
+<h3 id="4-1-2快表机制"><a href="#4-1-2快表机制" class="headerlink" title="4.1.2快表机制"></a>4.1.2快表机制</h3><img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub\MyBlogs\source\_posts\2021-03-15-操作系统\4.1.2.01.png" style="zoom:80%;">
+
+<p><img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub\MyBlogs\source\_posts\2021-03-15-操作系统\4.1.2.02.png" style="zoom:80%;"><img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/2021-03-15-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C4.1.3.01.png"></p>
+<h3 id="4-1-3二级页表的原理"><a href="#4-1-3二级页表的原理" class="headerlink" title="4.1.3二级页表的原理"></a>4.1.3二级页表的原理</h3><p><img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub\MyBlogs\source\_posts\2021-03-15-操作系统\4.1.2.02.png" style="zoom:80%;"><img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/2021-03-15-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C4.1.3.01.png"></p>
+<h3 id="4-1-4分段存储"><a href="#4-1-4分段存储" class="headerlink" title="4.1.4分段存储"></a>4.1.4分段存储</h3><p><strong>0.思维导图</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub\MyBlogs\source\_posts\2021-03-15-操作系统\4.1.4.01.png" style="zoom:80%;">
+
+<p><img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/GitHub\MyBlogs\source\_posts\2021-03-15-操作系统\4.1.4.02.png" style="zoom:80%;"><img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/2021-03-15-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C4.1.4.03.png"></p>
+<p><strong>1.什么是分段</strong></p>
+<p>按照程序自身的逻辑关系划分为若干个段，每个段都有一个段名，每段从0开始编址。</p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.4.03.png" style="zoom:80%;">
+
+<p><strong>2.段表</strong></p>
+<p><img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/2021-03-15-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C4.1.4.04.png"></p>
+<p><strong>3.地址变换</strong></p>
+<p><img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.4.05.png" style="zoom:80%;"><img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/2021-03-15-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C4.1.4.06.png"></p>
+<p><strong>4.分段、分页管理的对比</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.4.07.png" style="zoom:80%;">
+
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.4.06.png">
+
+<p><strong>分段实现信息共享共享</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.4.08.png" style="zoom:80%;">
+
+<p><strong>为什么分页不方便实现信息共享和保护？</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.4.09.png" style="zoom:80%;">
+
+<p><strong>4.1.5段页式存储管理</strong></p>
+<p><strong>1.分页、分段的优缺点分析</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.5.01.png" style="zoom:80%;">
+
+<p><strong>2.分段+分页=段页式管理</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.5.02.png" style="zoom:80%;">
+
+<p><strong>3.段页式管理的逻辑地址结构</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.5.03.png" style="zoom:80%;">
+
+<p><strong>4.段页式存储的段表、页表</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.1.5.04.png" style="zoom:80%;">
+
+<h2 id="4-2虚拟内存的概念"><a href="#4-2虚拟内存的概念" class="headerlink" title="4.2虚拟内存的概念"></a>4.2虚拟内存的概念</h2><p><strong>1.传统存储管理的特征、缺点</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.01.png" style="zoom:80%;">
+
+<p><strong>2.局部性原理</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.02.png" style="zoom:80%;">
+
+<p><strong>3.虚拟内存的定义和特征</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.03.png" style="zoom:80%;">
+
+<p><strong>4.如何实现虚拟内存技术</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.04.png" style="zoom:80%;">
+
+<p><strong>4.2.1请求分页管理方式</strong></p>
+<p><strong>1.知识总览</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.01.png" style="zoom:80%;">
+
+<p><strong>2.请求页表与基本页表的区别</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.02.png" style="zoom:80%;">
+
+<p><strong>3.缺页中断机构</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.03.png" style="zoom:80%;">
+
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.04.png" style="zoom:80%;">
+
+<p><strong>只看这个图也可以，对上面的总结</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.05.png" style="zoom:80%;">
+
+<p><strong>4.地址变换机构</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.07.png" style="zoom:80%;">
+
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.08.png" style="zoom:80%;">
+
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.2.1.09.png" style="zoom:80%;">
+
+<h2 id="4-3页面置换算法"><a href="#4-3页面置换算法" class="headerlink" title="4.3页面置换算法"></a><strong>4.3页面置换算法</strong></h2><p><strong>0.思维导图</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.01.png" style="zoom:80%;">
+
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.02.png" style="zoom:80%;">
+
+<p><strong>1.最佳置换算法—OPT</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.03.png" style="zoom:80%;">
+
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.04.png" style="zoom:80%;">
+
+<p><strong>2.先进先出置换算法—FIFO</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.05.png" style="zoom:80%;">
+
+<p><strong>FIFO的改进策略：</strong>即给每个页面增加一个R位，表示最近访问过，每次先从链表头开始查找，如果R置1位，清除R位并且把该页面节点放到链表结尾；如果R是0，那么就是又老又没用到，替换掉。</p>
+<p><strong>3.最近最久未使用置换算法—LRU</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.06.png" style="zoom:80%;">
+
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.07.png" style="zoom:80%;">
+
+<p><strong>4.时钟置换算法—CLOCK</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.08.png" style="zoom:80%;">
+
+<p><strong>5.改造型时钟置换算法</strong></p>
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.10.png" style="zoom:80%;">
+
+<img src="/2021/03/15/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/4.3.09.png" style="zoom:80%;">
+    </div>
+
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"><i class="fa fa-tag"></i>  基础知识</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/13/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="prev" title="计算机网络">
+      <i class="fa fa-chevron-left"></i> 计算机网络
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/16/MySQL/" rel="next" title="MySQL">
+      MySQL <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%8D%8F%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">1.进程、线程与协程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">1.1基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB%E4%B8%8E%E8%81%94%E7%B3%BB"><span class="nav-number">1.2.</span> <span class="nav-text">1.2进程与线程的区别与联系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3%E8%BF%9B%E7%A8%8B%E7%A9%BA%E9%97%B4"><span class="nav-number">1.3.</span> <span class="nav-text">1.3进程空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="nav-number">1.4.</span> <span class="nav-text">1.4线程间的通信方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%92%8C%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-number">1.5.</span> <span class="nav-text">1.5多进程和多线程的对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6%E7%AB%9E%E6%80%81"><span class="nav-number">1.6.</span> <span class="nav-text">1.6竞态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E5%92%8C%E9%9D%9E%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="nav-number">1.7.</span> <span class="nav-text">1.7线程安全和非线程安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8FIPC"><span class="nav-number">1.8.</span> <span class="nav-text">1.8进程间的通信方式IPC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-8-1%E4%B8%83%E7%A7%8D%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="nav-number">1.8.1.</span> <span class="nav-text">1.8.1七种通信方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-8-2%E8%AF%A6%E7%BB%86%E8%A7%A3%E9%87%8A"><span class="nav-number">1.8.2.</span> <span class="nav-text">1.8.2详细解释</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%94%A8%E6%88%B7%E6%80%81%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%80%81"><span class="nav-number">2.</span> <span class="nav-text">2.用户态与核心态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">2.1基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%92%E5%88%86%E7%94%A8%E6%88%B7%E6%80%81%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%80%81"><span class="nav-number">2.2.</span> <span class="nav-text">2.2为什么要划分用户态与核心态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81%E7%9A%84%E5%88%87%E6%8D%A2%EF%BC%9A"><span class="nav-number">2.3.</span> <span class="nav-text">2.3用户态和内核态的切换：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%AD%BB%E9%94%81%E7%9A%84%E6%9D%A1%E4%BB%B6%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">3.死锁的条件及解决方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1%E6%AD%BB%E9%94%81%E7%9A%84%E4%BA%A7%E7%94%9F%E6%9D%A1%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">3.1死锁的产生条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2%E8%A7%A3%E5%86%B3%E6%AD%BB%E9%94%81%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">3.2解决死锁的方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">4.操作系统内存管理方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">4.1.</span> <span class="nav-text">4.1内存管理的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-1%E5%88%86%E9%A1%B5%E5%AD%98%E5%82%A8"><span class="nav-number">4.1.1.</span> <span class="nav-text">4.1.1分页存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-2%E5%BF%AB%E8%A1%A8%E6%9C%BA%E5%88%B6"><span class="nav-number">4.1.2.</span> <span class="nav-text">4.1.2快表机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-3%E4%BA%8C%E7%BA%A7%E9%A1%B5%E8%A1%A8%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">4.1.3.</span> <span class="nav-text">4.1.3二级页表的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-4%E5%88%86%E6%AE%B5%E5%AD%98%E5%82%A8"><span class="nav-number">4.1.4.</span> <span class="nav-text">4.1.4分段存储</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">4.2.</span> <span class="nav-text">4.2虚拟内存的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="nav-number">4.3.</span> <span class="nav-text">4.3页面置换算法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="老王家的小王呀"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">老王家的小王呀</p>
+  <div class="site-description" itemprop="description">及时当勉励，岁月不待人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangjin1996219" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangjin1996219" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:759161269@qq.com" title="E-Mail → mailto:759161269@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=569200212&auto=0&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王进</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">100k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:31</span>
+
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+   本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+<span class="post-meta-divider">|</span>
+<i class="fa fa-eye"></i><span id="busuanzi_container_site_pv">
+        本站访问量:<span id="busuanzi_value_site_pv"></span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'pQCeFPCYCP9sz6YcISYlyUqk-gzGzoHsz',
+      appKey     : 'RwrssV7QwO3le9kYtuScKNyD',
+      placeholder: "评论一句，前排打call~",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"symbols_count_time":null,"symbols":true,"time":false,"total_symbols":true,"total_time":false,"log":false});</script></body>
+</html>
+<!-- ҳ������С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
