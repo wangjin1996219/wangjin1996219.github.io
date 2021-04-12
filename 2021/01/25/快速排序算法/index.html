@@ -26,8 +26,9 @@
 <meta property="og:site_name" content="Wj-Blog">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://wangjin1996219.github.io/2021/01/25/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/图片.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/01/25/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/GitHub/MyBlogs/source/_posts/2021-02-08-LeetCode热题100-56/图片.png">
 <meta property="article:published_time" content="2021-01-25T13:40:23.000Z">
-<meta property="article:modified_time" content="2021-04-02T08:04:20.025Z">
+<meta property="article:modified_time" content="2021-04-12T11:38:07.413Z">
 <meta property="article:author" content="老王家的小王呀">
 <meta property="article:tag" content="基础算法篇">
 <meta name="twitter:card" content="summary">
@@ -127,7 +128,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">15</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -137,7 +138,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">58</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">50</span></a>
 
   </li>
         <li class="menu-item menu-item-commonweal">
@@ -231,7 +232,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-02 16:04:20" itemprop="dateModified" datetime="2021-04-02T16:04:20+08:00">2021-04-02</time>
+                <time title="修改时间：2021-04-12 19:38:07" itemprop="dateModified" datetime="2021-04-12T19:38:07+08:00">2021-04-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -270,14 +271,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.4k</span>
+              <span>4.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -292,20 +293,74 @@
         <hr>
 <a id="more"></a>
 
-<h1 id="·-算法思想"><a href="#·-算法思想" class="headerlink" title="· 算法思想"></a>· 算法思想</h1><p>快速排序算法的本质同冒泡排序一样，同属于交换排序类。也就是通过不断地比较和移动交换来实现排序，只不过对于快速排序来说增大了记录的比较和移动的距离，将较大的关键字记录从前面直接移动到后面，将较小的从后面直接移动到前面，减少了总的比较次数和移动交换次数。</p>
+<h1 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h1><p>快速排序算法的本质同冒泡排序一样，同属于交换排序类。也就是通过不断地比较和移动交换来实现排序，只不过对于快速排序来说增大了记录的比较和移动的距离，将较大的关键字记录从前面直接移动到后面，将较小的从后面直接移动到前面，减少了总的比较次数和移动交换次数。</p>
 <p><strong>快排的基本思想是：</strong>选定一个分隔点，通过一趟排序将待排记录<code>按照数组中元素与分隔点的逻辑关系分割成独立的两部分</code>，然后按照同样的方式，对两侧的子数组再排序，直到实现整个序列有序的目的。</p>
 <p>例如：对于如图所示的数组进行排序的过程如下</p>
 <img src="/2021/01/25/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/图片.png" style="zoom: 67%;">
 
-<h1 id="·-代码实现"><a href="#·-代码实现" class="headerlink" title="· 代码实现"></a>· 代码实现</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QiuckSort</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] nums = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">50</span>, <span class="number">10</span>, <span class="number">90</span>, <span class="number">30</span>, <span class="number">70</span>, <span class="number">40</span>, <span class="number">80</span>, <span class="number">60</span>, <span class="number">20</span>&#125;;</span><br><span class="line">        QSort(nums, <span class="number">0</span>, nums.length - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i : nums) &#123;</span><br><span class="line">            System.out.print(i+<span class="string">&quot; &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">QSort</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (l &gt; r) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> i = l;</span><br><span class="line">        <span class="keyword">int</span> j = r;</span><br><span class="line">        <span class="keyword">int</span> temp = nums[l];</span><br><span class="line">        <span class="keyword">while</span> (i &lt; j) &#123;</span><br><span class="line">            <span class="keyword">while</span> (i &lt; j &amp;&amp; nums[j] &gt;= nums[l]) j--;</span><br><span class="line">            <span class="keyword">while</span> (i &lt; j &amp;&amp; nums[i] &lt;= nums[l]) i++;</span><br><span class="line">            temp = nums[i];</span><br><span class="line">            nums[i] = nums[j];</span><br><span class="line">            nums[j] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        nums[i] = nums[l];</span><br><span class="line">        nums[l] = temp;</span><br><span class="line">        QSort(nums, l, i - <span class="number">1</span>);</span><br><span class="line">        QSort(nums, i + <span class="number">1</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QiuckSort</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] nums = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">50</span>, <span class="number">10</span>, <span class="number">90</span>, <span class="number">30</span>, <span class="number">70</span>, <span class="number">40</span>, <span class="number">80</span>, <span class="number">60</span>, <span class="number">20</span>&#125;;</span><br><span class="line">        QSort(nums, <span class="number">0</span>, nums.length - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i : nums) &#123;</span><br><span class="line">            System.out.print(i+<span class="string">&quot; &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">QSort</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//l、r分别是每次排序的左右边界</span></span><br><span class="line">        <span class="keyword">if</span> (l &gt; r) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> i = l;</span><br><span class="line">        <span class="keyword">int</span> j = r;</span><br><span class="line">        <span class="keyword">int</span> temp = nums[l];</span><br><span class="line">        <span class="keyword">while</span> (i &lt; j) &#123;</span><br><span class="line">            <span class="comment">//以nums[l]作为分隔点，将元素左右移动</span></span><br><span class="line">            <span class="keyword">while</span> (i &lt; j &amp;&amp; nums[j] &gt;= nums[l]) j--;</span><br><span class="line">            <span class="keyword">while</span> (i &lt; j &amp;&amp; nums[i] &lt;= nums[l]) i++;</span><br><span class="line">            temp = nums[i];</span><br><span class="line">            nums[i] = nums[j];</span><br><span class="line">            nums[j] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        nums[i] = nums[l];</span><br><span class="line">        nums[l] = temp;</span><br><span class="line">        QSort(nums, l, i - <span class="number">1</span>);</span><br><span class="line">        QSort(nums, i + <span class="number">1</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>程序执行结果</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">10</span> <span class="number">20</span> <span class="number">30</span> <span class="number">40</span> <span class="number">50</span> <span class="number">60</span> <span class="number">70</span> <span class="number">80</span> <span class="number">90</span> </span><br><span class="line">Process finished with exit code <span class="number">0</span></span><br></pre></td></tr></table></figure>
 
-<h1 id="·-相关题目"><a href="#·-相关题目" class="headerlink" title="· 相关题目"></a>· 相关题目</h1><blockquote>
+<h1 id="相关题目"><a href="#相关题目" class="headerlink" title="相关题目"></a>相关题目</h1><h2 id="题目一"><a href="#题目一" class="headerlink" title="题目一"></a>题目一</h2><blockquote>
 <p><strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sort-colors">75.颜色分类</a></strong></p>
+<p>给定一个包含红色、白色和蓝色，一共 n 个元素的数组，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。</p>
+<p>此题中，我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。</p>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sortColors</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">    quickSort(nums,<span class="number">0</span>,nums.length-<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] nums,<span class="keyword">int</span> l,<span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(r&lt;=l)&#123;</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> i=l;</span><br><span class="line">        <span class="keyword">int</span> j=r;</span><br><span class="line">        <span class="keyword">int</span> temp=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(i&lt;j)&#123;</span><br><span class="line">            <span class="keyword">while</span>(i&lt;j&amp;&amp;nums[j]&gt;=nums[l]) j--;</span><br><span class="line">            <span class="keyword">while</span>(i&lt;j&amp;&amp;nums[i]&lt;nums[l]) i++;</span><br><span class="line">            temp=nums[i];</span><br><span class="line">            nums[i]=nums[j];</span><br><span class="line">            nums[j]=temp;</span><br><span class="line">        &#125;</span><br><span class="line">        nums[l]=temp;</span><br><span class="line">        nums[i]=nums[l];</span><br><span class="line">        quickSort(nums,l,i);</span><br><span class="line">        quickSort(nums,i+<span class="number">1</span>,r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>快速排序</p>
+<h3 id="代码及注解"><a href="#代码及注解" class="headerlink" title="代码及注解"></a>代码及注解</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sortColors</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">    quickSort(nums,<span class="number">0</span>,nums.length-<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] nums,<span class="keyword">int</span> l,<span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(r&lt;=l)&#123;</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> i=l;</span><br><span class="line">        <span class="keyword">int</span> j=r;</span><br><span class="line">        <span class="keyword">int</span> temp=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(i&lt;j)&#123;</span><br><span class="line">            <span class="keyword">while</span>(i&lt;j&amp;&amp;nums[j]&gt;=nums[l]) j--;</span><br><span class="line">            <span class="keyword">while</span>(i&lt;j&amp;&amp;nums[i]&lt;nums[l]) i++;</span><br><span class="line">            temp=nums[i];</span><br><span class="line">            nums[i]=nums[j];</span><br><span class="line">            nums[j]=temp;</span><br><span class="line">        &#125;</span><br><span class="line">        nums[l]=temp;</span><br><span class="line">        nums[i]=nums[l];</span><br><span class="line">        quickSort(nums,l,i);</span><br><span class="line">        quickSort(nums,i+<span class="number">1</span>,r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="题目二"><a href="#题目二" class="headerlink" title="题目二"></a>题目二</h2><blockquote>
+<p><strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/merge-intervals/">热题100-56. 合并区间</a></strong></p>
+<p>以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。请你合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间。</p>
+</blockquote>
+<h3 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h3><p>两个区间的关系有三种：区间有交集、区间重叠、区间无交集。如图所示：</p>
+<img src="/2021/01/25/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/GitHub\MyBlogs\source\_posts\2021-02-08-LeetCode热题100-56\图片.png" style="zoom: 50%;">
+
+<p>我们可以先对区间的左端点进行排序，如果区间可以合并的话那么排序之后它们应该是连续的，先将第一个区间加入到结果数组res，按排序后的顺序考虑后面的区间。</p>
+<p><strong>可以跟前一个区间合并的条件为：</strong></p>
+<p>区间符合图中1、2情况，<strong>即前一个区间的右端点大于等于该区间的左端点</strong>，此时我们要更新结果数组中区间的右端点值为该区间和结果数组中区间右端点的较大值，然后接着顺序比较后面的区间。</p>
+<p><strong>不能合并的条件为：</strong></p>
+<p>如果<strong>当前区间的左端点在结果数组中最后一个区间的右端点之后</strong>，那么它们不会重合，我们可以直接将这个区间加入结果数组的末尾。</p>
+<p><strong>实现流程：</strong></p>
+<ul>
+<li><p>先按照区间起始位置排序</p>
+</li>
+<li><p>遍历区间</p>
+<p>如果结果数组是空的，或者当前区间的起始位置 &gt; 结果数组中最后区间的终止位置， 则不合并，直接将当前区间加入结果数组</p>
+<p>反之将当前区间合并至结果数组的最后区间</p>
+</li>
+</ul>
+<h3 id="代码及注解-1"><a href="#代码及注解-1" class="headerlink" title="代码及注解"></a>代码及注解</h3><blockquote>
+<p><strong>LeetCode题解：</strong></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[][] merge(<span class="keyword">int</span>[][] intervals) &#123;</span><br><span class="line">        <span class="comment">// 先按照区间起始位置排序</span></span><br><span class="line">        Arrays.sort(intervals, <span class="keyword">new</span> Comparator&lt;<span class="keyword">int</span>[]&gt;() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(<span class="keyword">int</span>[] interval1, <span class="keyword">int</span>[] interval2)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> interval1[<span class="number">0</span>] - interval2[<span class="number">0</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">// 遍历区间</span></span><br><span class="line">        <span class="keyword">int</span>[][] res = <span class="keyword">new</span> <span class="keyword">int</span>[intervals.length][<span class="number">2</span>];</span><br><span class="line">        <span class="keyword">int</span> idx = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span>[] interval: intervals) &#123;</span><br><span class="line">            <span class="comment">// 如果结果数组是空的，或者当前区间的起始位置 &gt; 结果数组中最后区间的终止位置，</span></span><br><span class="line">            <span class="comment">// 则不合并，直接将当前区间加入结果数组。</span></span><br><span class="line">            <span class="keyword">if</span> (idx == -<span class="number">1</span> || interval[<span class="number">0</span>] &gt; res[idx][<span class="number">1</span>]) &#123;</span><br><span class="line">                res[++idx] = interval;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 反之将当前区间合并至结果数组的最后区间</span></span><br><span class="line">                res[idx][<span class="number">1</span>] = Math.max(res[idx][<span class="number">1</span>], interval[<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Arrays.copyOf(res, idx+<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>牛客题解：</strong>差别在于牛客上定义了Interval这个类</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for an interval.</span></span><br><span class="line"><span class="comment"> * public class Interval &#123;</span></span><br><span class="line"><span class="comment"> *     int start;</span></span><br><span class="line"><span class="comment"> *     int end;</span></span><br><span class="line"><span class="comment"> *     Interval() &#123; start = 0; end = 0; &#125;</span></span><br><span class="line"><span class="comment"> *     Interval(int s, int e) &#123; start = s; end = e; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ArrayList&lt;Interval&gt; <span class="title">merge</span><span class="params">(ArrayList&lt;Interval&gt; intervals)</span> </span>&#123;</span><br><span class="line">        Collections.sort(intervals,<span class="keyword">new</span> Comparator&lt;Interval&gt;()&#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Interval o1,Interval o2)</span></span>&#123;</span><br><span class="line">                <span class="keyword">return</span> o1.start-o2.start;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">        ArrayList&lt;Interval&gt; res=<span class="keyword">new</span> ArrayList&lt;Interval&gt;();</span><br><span class="line">        <span class="keyword">int</span> index=-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(Interval j:intervals)&#123;</span><br><span class="line">            <span class="keyword">if</span>(index==-<span class="number">1</span>||res.get(index).end&lt;j.start)&#123;</span><br><span class="line">                res.add(j);</span><br><span class="line">                index++;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                res.get(index).end = Math.max(res.get(index).end, j.end);</span><br><span class="line">                    </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="题目三"><a href="#题目三" class="headerlink" title="题目三"></a>题目三</h2><blockquote>
+<p><strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof/">剑指 Offer-45. 把数组排成最小的数</a></strong></p>
+<p>输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。</p>
+</blockquote>
+<h3 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h3><p>将数组排成最小的数，我们最直观的想法是小数在前，大数在后，但是这样的排序组成的数组不一定是最小的数字，例如：10,9，这两个数字组成的最小数字应该是109而不是910。因此需要定义一种排序规则，使组成的数字最小。</p>
+<p><strong>主要是定义的这种排序规则：</strong></p>
+<p>若我们另两个数字为a，b，两个数字的组合有三种情况：</p>
+<ol>
+<li>当ab&gt;ba时，我们定义b应该在前；</li>
+<li>当ba&gt;ab时，我们定义a应该在前；</li>
+<li>当ab=ba时，两数相同，谁在前都可以。</li>
+</ol>
+<p>那么程序中的排序部分应该写成：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>((strs[j] + strs[l]).compareTo(strs[l] + strs[j]) &gt;= <span class="number">0</span> &amp;&amp; i &lt; j) j--;</span><br><span class="line"><span class="keyword">while</span>((strs[i] + strs[l]).compareTo(strs[l] + strs[i]) &lt;= <span class="number">0</span> &amp;&amp; i &lt; j) i++;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>Note：</strong>本题除了排序规则之外，还应该在准备工作中将int类型转换为String类型，防止ab组合时溢出，所以这还是一个隐形的大数问题。</p>
+</blockquote>
+<h3 id="代码及注解-2"><a href="#代码及注解-2" class="headerlink" title="代码及注解"></a>代码及注解</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">minNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        String[] strs = <span class="keyword">new</span> String[nums.length];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++)</span><br><span class="line">            strs[i] = String.valueOf(nums[i]);</span><br><span class="line">        fastSort(strs, <span class="number">0</span>, strs.length - <span class="number">1</span>);</span><br><span class="line">        StringBuilder res = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">for</span>(String s : strs)</span><br><span class="line">            res.append(s);</span><br><span class="line">        <span class="keyword">return</span> res.toString();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fastSort</span><span class="params">(String[] strs, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(l &gt;= r) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> i = l, j = r;</span><br><span class="line">        String tmp = strs[i];</span><br><span class="line">        <span class="keyword">while</span>(i &lt; j) &#123;</span><br><span class="line">            <span class="keyword">while</span>((strs[j] + strs[l]).compareTo(strs[l] + strs[j]) &gt;= <span class="number">0</span> &amp;&amp; i &lt; j) j--;</span><br><span class="line">            <span class="keyword">while</span>((strs[i] + strs[l]).compareTo(strs[l] + strs[i]) &lt;= <span class="number">0</span> &amp;&amp; i &lt; j) i++;</span><br><span class="line">            tmp = strs[i];</span><br><span class="line">            strs[i] = strs[j];</span><br><span class="line">            strs[j] = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        strs[i] = strs[l];</span><br><span class="line">        strs[l] = tmp;</span><br><span class="line">        fastSort(strs, l, i - <span class="number">1</span>);</span><br><span class="line">        fastSort(strs, i + <span class="number">1</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -337,12 +392,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/01/25/%E5%89%91%E6%8C%87offer-13/" rel="prev" title="机器人的运动范围">
-      <i class="fa fa-chevron-left"></i> 机器人的运动范围
+    <a href="/2021/01/25/%E6%95%B0%E7%BB%84/" rel="prev" title="数组">
+      <i class="fa fa-chevron-left"></i> 数组
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/01/27/%E5%89%91%E6%8C%87offer-45/" rel="next" title="把数组排成最小的数">
-      把数组排成最小的数 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/01/28/%E5%89%91%E6%8C%87offer-66/" rel="next" title="构建乘积数组">
+      构建乘积数组 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -403,7 +458,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%C2%B7-%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3"><span class="nav-number">1.</span> <span class="nav-text">· 算法思想</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%C2%B7-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">· 代码实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%C2%B7-%E7%9B%B8%E5%85%B3%E9%A2%98%E7%9B%AE"><span class="nav-number">3.</span> <span class="nav-text">· 相关题目</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3"><span class="nav-number">1.</span> <span class="nav-text">算法思想</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E9%A2%98%E7%9B%AE"><span class="nav-number">3.</span> <span class="nav-text">相关题目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E4%B8%80"><span class="nav-number">3.1.</span> <span class="nav-text">题目一</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">3.1.1.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%B3%A8%E8%A7%A3"><span class="nav-number">3.1.2.</span> <span class="nav-text">代码及注解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E4%BA%8C"><span class="nav-number">3.2.</span> <span class="nav-text">题目二</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%B3%A8%E8%A7%A3-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">代码及注解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E4%B8%89"><span class="nav-number">3.3.</span> <span class="nav-text">题目三</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-2"><span class="nav-number">3.3.1.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%B3%A8%E8%A7%A3-2"><span class="nav-number">3.3.2.</span> <span class="nav-text">代码及注解</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
       <div class="site-overview-wrap sidebar-panel">
@@ -418,7 +473,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -431,7 +486,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -477,13 +532,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">197k</span>
+    <span title="站点总字数">321k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:59</span>
+    <span title="站点阅读时长">4:51</span>
 
 </div>
 <div class="powered-by">
