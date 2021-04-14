@@ -152,11 +152,19 @@
     <link href="http://wangjin1996219.github.io/2021/03/25/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/"/>
     <id>http://wangjin1996219.github.io/2021/03/25/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/</id>
     <published>2021-03-25T08:46:12.000Z</published>
-    <updated>2021-03-25T08:46:12.835Z</updated>
+    <updated>2021-04-13T09:06:15.271Z</updated>
+    
+    <content type="html"><![CDATA[<hr><a id="more"></a><h1 id="相关题目"><a href="#相关题目" class="headerlink" title="相关题目"></a>相关题目</h1><h2 id="题目一"><a href="#题目一" class="headerlink" title="题目一"></a>题目一</h2><h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>通过维护一个单调栈来实现获取滑动窗口内的最大值只需要 <strong><em>O(1)</em></strong> 的时间复杂度</p><h3 id="代码及注释"><a href="#代码及注释" class="headerlink" title="代码及注释"></a>代码及注释</h3>]]></content>
+    
+    
+    <summary type="html">&lt;hr&gt;</summary>
     
     
     
+    <category term="LeetCode题解" scheme="http://wangjin1996219.github.io/categories/LeetCode%E9%A2%98%E8%A7%A3/"/>
     
+    
+    <category term="滑动窗口" scheme="http://wangjin1996219.github.io/tags/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/"/>
     
   </entry>
   
@@ -207,11 +215,19 @@
     <link href="http://wangjin1996219.github.io/2021/03/25/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/"/>
     <id>http://wangjin1996219.github.io/2021/03/25/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/</id>
     <published>2021-03-25T08:44:20.000Z</published>
-    <updated>2021-03-25T08:44:20.067Z</updated>
+    <updated>2021-04-13T12:38:10.457Z</updated>
+    
+    <content type="html"><![CDATA[<hr><a id="more"></a><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h2><p>队列是一种先进先出的数据结构，常用于BFS广度优点遍历</p><p>创建语句：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//双端队列：</span></span><br><span class="line">Deque&lt;Integer&gt; dq=<span class="keyword">new</span> LinkedList&lt;Integer&gt;();</span><br></pre></td></tr></table></figure><h2 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h2><p>栈的特点是先进后出，常用于二叉树的迭代遍历或者DFS深度优先遍历</p><p>创建语句：<strong>常用双端队列来实现栈</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//双端队列：</span></span><br><span class="line">Deque&lt;Integer&gt; dq=<span class="keyword">new</span> LinkedList&lt;Integer&gt;();</span><br></pre></td></tr></table></figure><p><strong>双端队列实现队列和栈的常用方法：</strong></p><img src="/2021/03/25/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/GitHub\MyBlogs\source\_posts\2021-03-25-栈和队列\队列.png" style="zoom:60%;"><h1 id="相关题目"><a href="#相关题目" class="headerlink" title="相关题目"></a>相关题目</h1><h2 id="题目一"><a href="#题目一" class="headerlink" title="题目一"></a>题目一</h2><blockquote><p><strong><a href="https://leetcode-cn.com/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof/">剑指 Offer-59 - I. 滑动窗口的最大值</a></strong></p><p>给定一个数组 <code>nums</code> 和滑动窗口的大小 <code>k</code>，请找出所有滑动窗口里的最大值。</p></blockquote><h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>通过维护一个单调栈来实现获取滑动窗口内的最大值只需要 <strong><em>O(1)</em></strong> 的时间复杂度</p><p>通过for循环遍历数组中的元素</p><ul><li><p><strong>删除首位元素：</strong>通过当前的下标 i 来判断队列中的首位元素是否超出了滑动窗口区间，是就删除首位</p></li><li><p><strong>删除尾部元素：</strong>如果新增值大于队列尾部值，删除队列中比新增值小的值，如果新增值大于队列中所有值，删除所有，然后把新增值放到队列首位，保证队列一直是从大到小；如果小于队尾元素，直接插入</p><p>（因为经过第一步每次已经将超出窗口区间的元素删除了，如果新加入的元素大于区间内的元素，那么这些小的元素不可能是当前区间的最小值了；如果小于队尾元素，该元素虽然不是当前区间的最小值，但是前面的元素移出窗口区间时，它有可能成为后面某一窗口的最大值）</p></li><li><p><strong>尾部插入新值：</strong>这个虽然是尾部插入，但是有的已经插入到队首了</p></li><li><p><strong>将最大值插入到结果集合：</strong>依然是通过当前的下标 i 来判断当前是否形成了窗口区间，如果已经形成，就会取出队首元素，也就是当前窗口的最大值插入到结果集合中</p></li></ul><h3 id="代码及注释"><a href="#代码及注释" class="headerlink" title="代码及注释"></a>代码及注释</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] maxSlidingWindow(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> k) &#123;</span><br><span class="line">    <span class="keyword">int</span> n=nums.length;<span class="comment">//得到给定数组的长度</span></span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">0</span>)  <span class="keyword">return</span> nums;<span class="comment">//如果给定数组长度为0，返回一个空数组</span></span><br><span class="line">    <span class="keyword">int</span>[] res=<span class="keyword">new</span> <span class="keyword">int</span>[n-k+<span class="number">1</span>];<span class="comment">//通过计算得到返回数组的长度为n-k+1</span></span><br><span class="line"></span><br><span class="line">    Deque&lt;Integer&gt; dq=<span class="keyword">new</span> LinkedList&lt;&gt;();<span class="comment">//创建deque双端队列</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;<span class="comment">//for循环遍历每一个给定数组的元素</span></span><br><span class="line">        <span class="keyword">if</span>(!dq.isEmpty()&amp;&amp;dq.getFirst()&lt;(i-k+<span class="number">1</span>))&#123;<span class="comment">//当滑动窗口的长度达到k时，每次应该先执行删除队头的操作，当dq不为空，且dq中队头元素的下标超出dq长度范围时，执行删除操作</span></span><br><span class="line">            dq.removeFirst();</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">while</span>(!dq.isEmpty()&amp;&amp;nums[i]&gt;=nums[dq.getLast()])&#123;<span class="comment">//执行完删除队头操作之后，执行删除队尾操作，比较添加元素和deque队尾元素的值，当该元素大于deque队列中的值时，也就是它前面的元素不可能是当前和以后的滑动窗口范围内最大值，这时删除所有比它小的元素，当该元素小于队尾元素值时，直接加入，因为它虽然不是当前滑动窗口的最大值，但是有可能是后面的滑动窗口的最大值</span></span><br><span class="line">        dq.removeLast();</span><br><span class="line">    &#125;</span><br><span class="line">    dq.addLast(i);<span class="comment">//执行添加操作，因为每次都要执行添加操作，所以不用加条件判断</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(i&gt;=k-<span class="number">1</span>)&#123;<span class="comment">//当滑动窗口的值达到k的长度时，将队头的值（也就是最大值）添加到数组</span></span><br><span class="line">        res[i-k+<span class="number">1</span>]=nums[dq.getFirst()];</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">&lt;hr&gt;</summary>
     
     
     
+    <category term="LeetCode题解" scheme="http://wangjin1996219.github.io/categories/LeetCode%E9%A2%98%E8%A7%A3/"/>
     
+    
+    <category term="栈和队列" scheme="http://wangjin1996219.github.io/tags/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/"/>
     
   </entry>
   
