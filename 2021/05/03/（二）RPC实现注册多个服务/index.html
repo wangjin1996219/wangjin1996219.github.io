@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wangjin1996219.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="（二）RPC实现注册多个服务">
+<meta property="og:url" content="http://wangjin1996219.github.io/2021/05/03/%EF%BC%88%E4%BA%8C%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E6%B3%A8%E5%86%8C%E5%A4%9A%E4%B8%AA%E6%9C%8D%E5%8A%A1/index.html">
+<meta property="og:site_name" content="Wj-Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-03T08:10:30.000Z">
+<meta property="article:modified_time" content="2021-05-13T14:54:09.213Z">
+<meta property="article:author" content="老王家的小王呀">
+<meta property="article:tag" content="RPC项目">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://wangjin1996219.github.io/2021/05/03/%EF%BC%88%E4%BA%8C%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E6%B3%A8%E5%86%8C%E5%A4%9A%E4%B8%AA%E6%9C%8D%E5%8A%A1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>（二）RPC实现注册多个服务 | Wj-Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Wj-Blog" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wj-Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">27</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">67</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/05/03/%EF%BC%88%E4%BA%8C%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E6%B3%A8%E5%86%8C%E5%A4%9A%E4%B8%AA%E6%9C%8D%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="老王家的小王呀">
+      <meta itemprop="description" content="及时当勉励，岁月不待人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wj-Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          （二）RPC实现注册多个服务
+        </h1>
+
+        <div class="post-meta">
+        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-03 16:10:30" itemprop="dateCreated datePublished" datetime="2021-05-03T16:10:30+08:00">2021-05-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-13 22:54:09" itemprop="dateModified" datetime="2021-05-13T22:54:09+08:00">2021-05-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">开源项目</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/05/03/%EF%BC%88%E4%BA%8C%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E6%B3%A8%E5%86%8C%E5%A4%9A%E4%B8%AA%E6%9C%8D%E5%8A%A1/" class="post-meta-item leancloud_visitors" data-flag-title="（二）RPC实现注册多个服务" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/05/03/%EF%BC%88%E4%BA%8C%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E6%B3%A8%E5%86%8C%E5%A4%9A%E4%B8%AA%E6%9C%8D%E5%8A%A1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/05/03/%EF%BC%88%E4%BA%8C%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E6%B3%A8%E5%86%8C%E5%A4%9A%E4%B8%AA%E6%9C%8D%E5%8A%A1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<a id="more"></a>
+
+<h1 id="1-rpc-core-服务注册表"><a href="#1-rpc-core-服务注册表" class="headerlink" title="1. rpc-core 服务注册表"></a>1. rpc-core 服务注册表</h1><p>上一节中，我们使用 JDK 序列化和 Socket 实现了一个最基本的 RPC 框架，当服务端测试时，在注册完 <code>helloService</code> 后，服务器就自行启动了，也就是说，一个服务器只能注册一个服务，这种设计大大降低了服务端的作用。</p>
+<p>我们要实现服务端可以注册多个服务，就要实现服务注册和服务端启动的解耦。</p>
+<p>创建一个 ServiceRegistry 接口，这个接口具有两个功能：</p>
+<ul>
+<li>将一个服务注册进注册表</li>
+<li>根据服务名称获取服务实体</li>
+</ul>
+<p>其实就是充当一个容器，这个容器很简单，就是保存一些本地服务的信息，并且在获得一个服务名字的时候能够返回这个服务的信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ServiceRegistry</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 将一个服务注册进注册表</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> service 待注册的服务实体</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> &lt;T&gt; 服务实体类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">register</span><span class="params">(T service)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据服务名称获取服务实体</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> serviceName 服务名称</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 服务实体</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">Object <span class="title">getService</span><span class="params">(String serviceName)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接口的实现类：<code>DefaultServiceRegistry</code></p>
+<blockquote>
+<p>注：<code>getCanonicalName()</code>返回 Java 语言规范定义的底层类的规范名称，可以理解为返回的是正常的包含路径的类名</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultServiceRegistry</span> <span class="keyword">implements</span> <span class="title">ServiceRegistry</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(DefaultServiceRegistry.class);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//服务名与提供服务的对象的对应关系</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; serviceMap = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;();</span><br><span class="line">    <span class="comment">//保存当前有哪些对象已经被注册</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Set&lt;String&gt; registeredService = ConcurrentHashMap.newKeySet();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 服务的注册功能</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> service 待注册的服务实体</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">register</span><span class="params">(T service)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//获取服务对象实现的接口的完整类名作为注册的服务名（ConcurrentHashMap中的键值）</span></span><br><span class="line">        String serviceName = service.getClass().getCanonicalName();</span><br><span class="line">        <span class="keyword">if</span>(registeredService.contains(serviceName)) <span class="keyword">return</span>;</span><br><span class="line">        <span class="comment">//当服务不存在时，注册服务</span></span><br><span class="line">        registeredService.add(serviceName);</span><br><span class="line">        <span class="comment">//获取该对象实现的接口数组</span></span><br><span class="line">        Class&lt;?&gt;[] interfaces = service.getClass().getInterfaces();</span><br><span class="line">        <span class="keyword">if</span>(interfaces.length == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RpcException(RpcError.SERVICE_NOT_IMPLEMENT_ANY_INTERFACE);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//将服务实现的接口的类名</span></span><br><span class="line">        <span class="keyword">for</span>(Class&lt;?&gt; i : interfaces) &#123;</span><br><span class="line">            serviceMap.put(i.getCanonicalName(), service);</span><br><span class="line">        &#125;</span><br><span class="line">        logger.info(<span class="string">&quot;向接口: &#123;&#125; 注册服务: &#123;&#125;&quot;</span>, interfaces, serviceName);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 服务获取功能的实现</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> serviceName 服务名称</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> Object <span class="title">getService</span><span class="params">(String serviceName)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//根据服务的名称，从ConcurrentHashMap中获取服务并返回对应服务</span></span><br><span class="line">        Object service = serviceMap.get(serviceName);</span><br><span class="line">        <span class="keyword">if</span>(service == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RpcException(RpcError.SERVICE_NOT_FOUND);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> service;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-tset-server-注册与启动解耦"><a href="#2-tset-server-注册与启动解耦" class="headerlink" title="2.tset-server 注册与启动解耦"></a>2.tset-server 注册与启动解耦</h1><p>上一章中我们的 RPCServer 代码逻辑为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RpcServer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ExecutorService threadPool;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(RpcServer.class);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RpcServer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> corePoolSize = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">int</span> maximumPoolSize = <span class="number">50</span>;</span><br><span class="line">        <span class="keyword">long</span> keepAliveTime = <span class="number">60</span>;</span><br><span class="line">        BlockingQueue&lt;Runnable&gt; workingQueue = <span class="keyword">new</span> ArrayBlockingQueue&lt;&gt;(<span class="number">100</span>);</span><br><span class="line">        ThreadFactory threadFactory = Executors.defaultThreadFactory();</span><br><span class="line">        threadPool = <span class="keyword">new</span> ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, workingQueue, threadFactory);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Object service, <span class="keyword">int</span> port)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(port)) &#123;</span><br><span class="line">            logger.info(<span class="string">&quot;服务器正在启动...&quot;</span>);</span><br><span class="line">            Socket socket;</span><br><span class="line">            <span class="keyword">while</span>((socket = serverSocket.accept()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                logger.info(<span class="string">&quot;客户端连接！Ip为：&quot;</span> + socket.getInetAddress());</span><br><span class="line">                threadPool.execute(<span class="keyword">new</span> WorkerThread(socket, service));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            logger.error(<span class="string">&quot;连接时有错误发生：&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这就使得，我们在注册一个服务时，会同时启动服务端，也就导致了一个服务器只能提供一个服务。</p>
+<p>为了<strong>降低服务的注册和服务器启动的耦合度</strong>，我们不会把 ServiceRegistry 和某一个 RpcServer 绑定在一起，而是在创建 RpcServer 对象时，传入一个 ServiceRegistry 作为这个服务的注册表（ServiceRegistry 是已经注册好服务的）。</p>
+<p>那么 RpcServer 这个类现在就变成了这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RpcServer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(RpcServer.class);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CORE_POOL_SIZE = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAXIMUM_POOL_SIZE = <span class="number">50</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> KEEP_ALIVE_TIME = <span class="number">60</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BLOCKING_QUEUE_CAPACITY = <span class="number">100</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ExecutorService threadPool;</span><br><span class="line">    <span class="keyword">private</span> RequestHandler requestHandler = <span class="keyword">new</span> RequestHandler();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ServiceRegistry serviceRegistry;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RpcServer</span><span class="params">(ServiceRegistry serviceRegistry)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.serviceRegistry = serviceRegistry;</span><br><span class="line">        BlockingQueue&lt;Runnable&gt; workingQueue = <span class="keyword">new</span> ArrayBlockingQueue&lt;&gt;(BLOCKING_QUEUE_CAPACITY);</span><br><span class="line">        ThreadFactory threadFactory = Executors.defaultThreadFactory();</span><br><span class="line">        threadPool = <span class="keyword">new</span> ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_TIME, TimeUnit.SECONDS, workingQueue, threadFactory);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">(<span class="keyword">int</span> port)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(port)) &#123;</span><br><span class="line">            logger.info(<span class="string">&quot;服务器启动……&quot;</span>);</span><br><span class="line">            Socket socket;</span><br><span class="line">            <span class="keyword">while</span>((socket = serverSocket.accept()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                logger.info(<span class="string">&quot;消费者连接: &#123;&#125;:&#123;&#125;&quot;</span>, socket.getInetAddress(), socket.getPort());</span><br><span class="line">                threadPool.execute(<span class="keyword">new</span> RequestHandlerThread(socket, requestHandler, serviceRegistry));</span><br><span class="line">            &#125;</span><br><span class="line">            threadPool.shutdown();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            logger.error(<span class="string">&quot;服务器启动时有错误发生:&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在创建 RpcServer 时需要传入一个已经注册好服务的 ServiceRegistry，而原来的 register 方法也被改成了 start 方法，因为服务的注册已经不由 RpcServer 处理了，它只需要启动就行了。</p>
+<p>而在每一个请求处理线程（RequestHandlerThread）中也就需要传入 ServiceRegistry 了，这里把处理线程和处理逻辑分成了两个类：RequestHandlerThread 只是一个线程，从ServiceRegistry 获取到提供服务的对象后，就会把 RpcRequest 和服务对象直接交给 RequestHandler 去处理，反射等过程被放到了 RequestHandler 里。</p>
+<p><strong>RequesthandlerThread类：</strong>处理线程，接受对象等</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestHandlerThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(RequestHandlerThread.class);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Socket socket;</span><br><span class="line">    <span class="keyword">private</span> RequestHandler requestHandler;</span><br><span class="line">    <span class="keyword">private</span> ServiceRegistry serviceRegistry;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RequestHandlerThread</span><span class="params">(Socket socket, RequestHandler requestHandler, ServiceRegistry serviceRegistry)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.socket = socket;</span><br><span class="line">        <span class="keyword">this</span>.requestHandler = requestHandler;</span><br><span class="line">        <span class="keyword">this</span>.serviceRegistry = serviceRegistry;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(socket.getInputStream());</span><br><span class="line">             ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(socket.getOutputStream())) &#123;</span><br><span class="line">            <span class="comment">//从输入流中获取rpcRequest请求的信息</span></span><br><span class="line">            RpcRequest rpcRequest = (RpcRequest) objectInputStream.readObject();</span><br><span class="line">            <span class="comment">//从rpcRequest中提取需要调用的接口名称</span></span><br><span class="line">            String interfaceName = rpcRequest.getInterfaceName();</span><br><span class="line">            <span class="comment">//根据接口名称从服务注册表中获取服务</span></span><br><span class="line">            Object service = serviceRegistry.getService(interfaceName);</span><br><span class="line">            <span class="comment">//调用requestHandler来处理服务</span></span><br><span class="line">            Object result = requestHandler.handle(rpcRequest, service);</span><br><span class="line">            objectOutputStream.writeObject(RpcResponse.success(result));</span><br><span class="line">            objectOutputStream.flush();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException | ClassNotFoundException e) &#123;</span><br><span class="line">            logger.error(<span class="string">&quot;调用或发送时有错误发生：&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>RequestHandler：</strong>通过反射进行方法调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(RequestHandler.class);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">handle</span><span class="params">(RpcRequest rpcRequest, Object service)</span> </span>&#123;</span><br><span class="line">        Object result = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//通过封装的invokeTargetMethod方法获取返回值</span></span><br><span class="line">            result = invokeTargetMethod(rpcRequest, service);</span><br><span class="line">            logger.info(<span class="string">&quot;服务:&#123;&#125; 成功调用方法:&#123;&#125;&quot;</span>, rpcRequest.getInterfaceName(), rpcRequest.getMethodName());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalAccessException | InvocationTargetException e) &#123;</span><br><span class="line">            logger.error(<span class="string">&quot;调用或发送时有错误发生：&quot;</span>, e);</span><br><span class="line">        &#125; <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * invoke通过函数名反射调用相应的函数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> rpcRequest</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> service</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IllegalAccessException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> InvocationTargetException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Object <span class="title">invokeTargetMethod</span><span class="params">(RpcRequest rpcRequest, Object service)</span> <span class="keyword">throws</span> IllegalAccessException, InvocationTargetException </span>&#123;</span><br><span class="line">        Method method;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            method = service.getClass().getMethod(rpcRequest.getMethodName(), rpcRequest.getParamTypes());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">            <span class="keyword">return</span> RpcResponse.fail(ResponseCode.METHOD_NOT_FOUND);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> method.invoke(service, rpcRequest.getParameters());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-测试"><a href="#3-测试" class="headerlink" title="3.测试"></a>3.测试</h1><h2 id="3-1服务器端"><a href="#3-1服务器端" class="headerlink" title="3.1服务器端"></a>3.1服务器端</h2><p>实现了注册服务与服务器启动的解耦，一个服务器可以注册多个服务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//向注册表中注册服务</span></span><br><span class="line">        HelloService helloService = <span class="keyword">new</span> HelloServiceImpl();</span><br><span class="line">        ServiceRegistry serviceRegistry = <span class="keyword">new</span> DefaultServiceRegistry();</span><br><span class="line">        serviceRegistry.register(helloService);</span><br><span class="line">        <span class="comment">//将注册表放入服务器中</span></span><br><span class="line">        RpcServer rpcServer = <span class="keyword">new</span> RpcServer(serviceRegistry);</span><br><span class="line">        <span class="comment">//启动服务器</span></span><br><span class="line">        rpcServer.start(<span class="number">9000</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2客户端"><a href="#3-2客户端" class="headerlink" title="3.2客户端"></a>3.2客户端</h2><p>没有变化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        RpcClientProxy proxy = <span class="keyword">new</span> RpcClientProxy(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">9000</span>);</span><br><span class="line">        HelloService helloService = proxy.getProxy(HelloService.class);</span><br><span class="line">        HelloObject object = <span class="keyword">new</span> HelloObject(<span class="number">12</span>, <span class="string">&quot;This is a message&quot;</span>);</span><br><span class="line">        String res = helloService.hello(object);</span><br><span class="line">        System.out.println(res);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RPC%E9%A1%B9%E7%9B%AE/" rel="tag"><i class="fa fa-tag"></i>  RPC项目</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/01/%EF%BC%88%E4%B8%80%EF%BC%89RPC%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/" rel="prev" title="（一）RPC的介绍及初步实现">
+      <i class="fa fa-chevron-left"></i> （一）RPC的介绍及初步实现
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/03/%EF%BC%88%E4%B8%89%EF%BC%89RPC%E5%AE%9E%E7%8E%B0Netty%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/" rel="next" title="（三）RPC实现Netty网络通信">
+      （三）RPC实现Netty网络通信 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-rpc-core-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E8%A1%A8"><span class="nav-number">1.</span> <span class="nav-text">1. rpc-core 服务注册表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-tset-server-%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%90%AF%E5%8A%A8%E8%A7%A3%E8%80%A6"><span class="nav-number">2.</span> <span class="nav-text">2.tset-server 注册与启动解耦</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%B5%8B%E8%AF%95"><span class="nav-number">3.</span> <span class="nav-text">3.测试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF"><span class="nav-number">3.1.</span> <span class="nav-text">3.1服务器端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">3.2.</span> <span class="nav-text">3.2客户端</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="老王家的小王呀"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">老王家的小王呀</p>
+  <div class="site-description" itemprop="description">及时当勉励，岁月不待人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangjin1996219" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangjin1996219" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:759161269@qq.com" title="E-Mail → mailto:759161269@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=569200212&auto=0&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王进</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">687k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">10:25</span>
+
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+   本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+<span class="post-meta-divider">|</span>
+<i class="fa fa-eye"></i><span id="busuanzi_container_site_pv">
+        本站访问量:<span id="busuanzi_value_site_pv"></span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'pQCeFPCYCP9sz6YcISYlyUqk-gzGzoHsz',
+      appKey     : 'RwrssV7QwO3le9kYtuScKNyD',
+      placeholder: "评论一句，前排打call~",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"symbols_count_time":null,"symbols":true,"time":false,"total_symbols":true,"total_time":false,"log":false});</script></body>
+</html>
+<!-- ҳ������С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

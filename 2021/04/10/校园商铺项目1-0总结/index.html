@@ -26,7 +26,7 @@
 <meta property="og:site_name" content="Wj-Blog">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-04-09T16:58:18.000Z">
-<meta property="article:modified_time" content="2021-04-14T09:17:32.358Z">
+<meta property="article:modified_time" content="2021-04-29T07:42:30.412Z">
 <meta property="article:author" content="老王家的小王呀">
 <meta property="article:tag" content="校园商铺1.0">
 <meta name="twitter:card" content="summary">
@@ -125,17 +125,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">19</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">27</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">52</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">67</span></a>
 
   </li>
         <li class="menu-item menu-item-commonweal">
@@ -229,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-14 17:17:32" itemprop="dateModified" datetime="2021-04-14T17:17:32+08:00">2021-04-14</time>
+                <time title="修改时间：2021-04-29 15:42:30" itemprop="dateModified" datetime="2021-04-29T15:42:30+08:00">2021-04-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,14 +268,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.7k</span>
+              <span>5.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -290,16 +290,16 @@
         <hr>
 <a id="more"></a>
 
-<h1 id="开发准备（完成）"><a href="#开发准备（完成）" class="headerlink" title="开发准备（完成）"></a>开发准备（完成）</h1><p>开发环境的准备</p>
+<h1 id="1-开发准备（完成）"><a href="#1-开发准备（完成）" class="headerlink" title="1.开发准备（完成）"></a>1.开发准备（完成）</h1><p>开发环境的准备</p>
 <p>开发工具的配置</p>
 <p>创建一个Maven项目</p>
-<h1 id="项目设计和框架搭建（完成）"><a href="#项目设计和框架搭建（完成）" class="headerlink" title="项目设计和框架搭建（完成）"></a>项目设计和框架搭建（完成）</h1><p>对系统的功能模块进行了大致划分</p>
+<h1 id="2-项目设计和框架搭建（完成）"><a href="#2-项目设计和框架搭建（完成）" class="headerlink" title="2.项目设计和框架搭建（完成）"></a>2.项目设计和框架搭建（完成）</h1><p>对系统的功能模块进行了大致划分</p>
 <p>设计并创建实体类的表结构</p>
 <p>配置Maven</p>
 <p>自底向上方法完成SSM的各项配置</p>
 <p>实现一个查询区域的功能</p>
-<h1 id="Logback配置与使用（完成）"><a href="#Logback配置与使用（完成）" class="headerlink" title="Logback配置与使用（完成）"></a>Logback配置与使用（完成）</h1><p>主要是日志的配置和初步验证配置的可行性</p>
-<h1 id="店铺注册功能模块（完成）"><a href="#店铺注册功能模块（完成）" class="headerlink" title="店铺注册功能模块（完成）"></a>店铺注册功能模块（完成）</h1><p><strong>店铺注册的流程：</strong>用户进入店铺注册的界面，根据js代码中的逻辑，会通过一个url路由到后端的Controller层的方法，该方法用于获取店铺的区域列表和店铺类别，将结果封装成json对象返回到前端，将该信息填入到对应的控件中，用户选择列表信息，并填入其它需要填入的信息，以及验证码信息，将前端的信息封装成json返回后端，验证码信息会由一个工具类CodeUtil对比用户输入的和图片的能否对应上，然后对店铺信息和店铺的图片信息进行转换处理，对图片信息进行处理时，要用到ImageUtil和PathUtil工具类，最后将返回结果封装成json返回给前端。</p>
+<h1 id="3-Logback配置与使用（完成）"><a href="#3-Logback配置与使用（完成）" class="headerlink" title="3.Logback配置与使用（完成）"></a>3.Logback配置与使用（完成）</h1><p>主要是日志的配置和初步验证配置的可行性</p>
+<h1 id="4-店铺注册功能模块（完成）"><a href="#4-店铺注册功能模块（完成）" class="headerlink" title="4.店铺注册功能模块（完成）"></a>4.店铺注册功能模块（完成）</h1><p><strong>店铺注册的流程：</strong>用户进入店铺注册的界面，根据js代码中的逻辑，会通过一个url路由到后端的Controller层的方法，该方法用于获取店铺的区域列表和店铺类别，将结果封装成json对象返回到前端，将该信息填入到对应的控件中，用户选择列表信息，并填入其它需要填入的信息，以及验证码信息，将前端的信息封装成json返回后端，验证码信息会由一个工具类CodeUtil对比用户输入的和图片的能否对应上，然后对店铺信息和店铺的图片信息进行转换处理，对图片信息进行处理时，要用到ImageUtil和PathUtil工具类，最后将返回结果封装成json返回给前端。</p>
 <p><strong>验证码的实现：</strong></p>
 <ol>
 <li>在pom.xml加入kaptcha的jar包</li>
@@ -308,8 +308,42 @@
 <li>在js文件里读取控件内容，将验证码内容读取保存到json中，通过ajax传到后台</li>
 <li>后端的CodeUtil工具类用于比较图片中实际的验证码与输入的验证码是否一致（图片中的验证码是从请求会话中得到的）</li>
 </ol>
-<h1 id="主从库同步与读写分离（完成）"><a href="#主从库同步与读写分离（完成）" class="headerlink" title="主从库同步与读写分离（完成）"></a>主从库同步与读写分离（完成）</h1><ol>
-<li>修改主服务器配置文件和从服务器配置文件，实现主从同步；</li>
+<h1 id="5-主从库同步与读写分离（完成）"><a href="#5-主从库同步与读写分离（完成）" class="headerlink" title="5.主从库同步与读写分离（完成）"></a>5.主从库同步与读写分离（完成）</h1><h2 id="5-1为什么要用主从同步技术？"><a href="#5-1为什么要用主从同步技术？" class="headerlink" title="5.1为什么要用主从同步技术？"></a>5.1为什么要用主从同步技术？</h2><p>这里主要是出于对平台<strong>优化</strong>的目的，为以后的高并发场景做准备。</p>
+<p>当网站发生较大的并发访问时，单单靠一台服务器来处理如此多的数据库连接操作，数据库就会崩溃，甚至发生数据的丢失。</p>
+<p>这时候我就考虑减少数据库的连接来减轻数据库的压力。</p>
+<p>将原主机上的MySQL作为主库，在服务器上部署MySQL作为从库，实现主从同步。其中主数据库负责写的操作，从数据库负责读的操作（slave不能进行写的操作，因为可能造成数据的不一致，但是会进行被动的写操作，也就是在数据同步的时候），这样就可以很大程度上减少数据库的连接，减轻主数据库的负载，实现负载均衡。此外，主从同步技术还有以下优点：</p>
+<ul>
+<li>数据分布：随意开始或停止复制，并在不同地理位置分布数据</li>
+<li>负载均衡：降低单个服务器的压力</li>
+<li>高可用和故障切换：帮助应用程序避免单点失败，容错性更高</li>
+</ul>
+<blockquote>
+<p>NOTE：MySQL数据库支持的并发连接的最大数量为16384（还有的说是几百）</p>
+</blockquote>
+<h2 id="5-2MySQL主从复制的几种方式"><a href="#5-2MySQL主从复制的几种方式" class="headerlink" title="5.2MySQL主从复制的几种方式"></a>5.2MySQL主从复制的几种方式</h2><p>MySQL默认采用<strong>基于语句的复制</strong>，效率比较高。  </p>
+<ul>
+<li><p>基于语句的复制（statement-based）：在主服务器上执行的SQL语句，在从服务器上执行同样的语句。            </p>
+<p>优点：实现简单，二进制日志文件较小</p>
+<p>缺点：对于一些特殊的语句，比如包含主库当前时间戳的语句，所以还需要额外记录每条语句在执行时的相关信息，来保证slave上执行时，能够得到与主库相同的结果</p>
+</li>
+<li><p>基于行的复制（row-based）：（会将每一行中发生改变的实际数据记录到日志中）把改变的内容复制过去，而不是把命令在从服务器上执行一遍. 从mysql5.0开始支持</p>
+<p>优点：对于任何语句都能正确工作</p>
+<p>缺点：二进制日志文件可能会很大</p>
+</li>
+<li><p>混合类型的复制（mixed-based）: 默认采用基于语句的复制，一旦发现基于语句的无法精确的复制时，就会采用基于行的复制。</p>
+</li>
+</ul>
+<h2 id="5-3MySQL主从复制的模式"><a href="#5-3MySQL主从复制的模式" class="headerlink" title="5.3MySQL主从复制的模式"></a>5.3MySQL主从复制的模式</h2><p><strong>异步复制：</strong>主库在执行完客户端提交的事务后会立即将结果返给给客户端，并不关心从库是否已经接收并处理；主节点不会主动push bin log到从节点；</p>
+<p><strong>半同步模式：</strong>这种模式下<strong>主节点只需要接收到其中一台从节点的返回信息，就会commit</strong>；否则需要等待直到超时时间然后切换成异步模式再提交；这样做的目的可以使主从数据库的数据延迟缩小，可以提高数据安全性。半同步模式不是mysql内置的，需要装插件开启半同步模式。</p>
+<p><strong>全同步模式</strong>：全同步模式是指<strong>主节点和从节点全部执行了commit并确认</strong>才会向客户端返回成功。</p>
+<h2 id="5-4MySQL中binlog的日志格式"><a href="#5-4MySQL中binlog的日志格式" class="headerlink" title="5.4MySQL中binlog的日志格式"></a>5.4MySQL中binlog的日志格式</h2><p>MySQL中binlog日志支持三种格式类型：</p>
+<ul>
+<li>STATEMENT：基于SQL语句的复制（statement-based replication, SBR）</li>
+<li>ROW：基于行的复制（row-based replication, RBR）</li>
+<li>MIXED：混合模式复制（mixed-based replication, MBR）</li>
+</ul>
+<h2 id="5-5项目中的具体实现"><a href="#5-5项目中的具体实现" class="headerlink" title="5.5项目中的具体实现"></a>5.5项目中的具体实现</h2><ol>
+<li>修改主服务器配置文件和从服务器配置文件，实现MySQL主从同步；</li>
 <li>在Spring中DataSource有一个抽象类AbstractRoutingDataSource，他能够根据不同的路由找到不同的数据源，类中的determineCurrentLookupKey方法就是决定目标数据源的；</li>
 <li>因此创建DynamicDataSource类让它继承抽象类AbstractRoutingDataSource，重写determineCurrentLookupKey方法，调用DynamicDataSourceHolder类中的getDbType()方法，实现不同数据源的选择；</li>
 <li>创建DynamicDataSourceHolder类决定返回的数据源是master还是slave（用到了ThreadLocal保证线程安全）；</li>
@@ -319,7 +353,7 @@
 <li>在jdbc.properties配置文件中，配置主从库数据源的地址；</li>
 </ol>
 <p><strong>流程：</strong>当我们插入一条数据时，Mybatis会根据SQL语句将DynamicDataSourceHolder初始化，将该线程的数据源设定为主库，Spring通过SpringDao.xml的配置，通过dataSource中的targetDataSource选择数据源，而这个对象就是dynamicDataSource中的targetDataSources该对象的key是master或slave分别对应两个数据库连接池，通过determineCurrentLookupKey方法选择了数据源之后，取出键值key，对应的哪个连接池就是哪个连接池。</p>
-<h1 id="店铺编辑功能和列表功能（完成）"><a href="#店铺编辑功能和列表功能（完成）" class="headerlink" title="店铺编辑功能和列表功能（完成）"></a>店铺编辑功能和列表功能（完成）</h1><p>实现了两个模块功能：</p>
+<h1 id="6-店铺编辑功能和列表功能（完成）"><a href="#6-店铺编辑功能和列表功能（完成）" class="headerlink" title="6.店铺编辑功能和列表功能（完成）"></a>6.店铺编辑功能和列表功能（完成）</h1><p>实现了两个模块功能：</p>
 <ol>
 <li><p>店铺编辑功能（类似于店铺注册功能）</p>
 </li>
@@ -327,7 +361,7 @@
 <p>分页实现：加了一个工具类，将页号转换成行号，也就是将前台的第几页+页面大小转换成从第几行取一个页面大小的数据量</p>
 </li>
 </ol>
-<h1 id="商品类别模块"><a href="#商品类别模块" class="headerlink" title="商品类别模块"></a>商品类别模块</h1><h1 id="商品模块"><a href="#商品模块" class="headerlink" title="商品模块"></a>商品模块</h1><h1 id="前端展示系统"><a href="#前端展示系统" class="headerlink" title="前端展示系统"></a>前端展示系统</h1><h1 id="阿里云部署及远程微信开发调试（完成）"><a href="#阿里云部署及远程微信开发调试（完成）" class="headerlink" title="阿里云部署及远程微信开发调试（完成）"></a>阿里云部署及远程微信开发调试（完成）</h1><ul>
+<h1 id="7-商品类别模块"><a href="#7-商品类别模块" class="headerlink" title="7.商品类别模块"></a>7.商品类别模块</h1><h1 id="8-商品模块"><a href="#8-商品模块" class="headerlink" title="8.商品模块"></a>8.商品模块</h1><h1 id="9-前端展示系统"><a href="#9-前端展示系统" class="headerlink" title="9.前端展示系统"></a>9.前端展示系统</h1><h1 id="10-阿里云部署及远程微信开发调试（完成）"><a href="#10-阿里云部署及远程微信开发调试（完成）" class="headerlink" title="10.阿里云部署及远程微信开发调试（完成）"></a>10.阿里云部署及远程微信开发调试（完成）</h1><ul>
 <li><p>购买阿里云服务器</p>
 </li>
 <li><p>在服务器上搭建项目运行环境</p>
@@ -357,15 +391,26 @@
 <p>这样，当用户关注我们的公众号时，通过微信浏览器访问我们的服务器，就会自动创建账号，下次该用户再次访问时，通过判断用户的openId，就会实现微信的自动登录。</p>
 </li>
 </ul>
-<h1 id="项目升级（完成）"><a href="#项目升级（完成）" class="headerlink" title="项目升级（完成）"></a>项目升级（完成）</h1><p><strong>对项目中的关键信息进行DES加密：</strong></p>
+<h1 id="11-项目升级（完成）"><a href="#11-项目升级（完成）" class="headerlink" title="11.项目升级（完成）"></a>11.项目升级（完成）</h1><p><strong>对项目中的关键信息进行DES加密：</strong></p>
 <ol>
 <li>创建加密和解密的工具类：DESUtil；</li>
 <li>将JDBC.properties文件中的数据库连接的账号、密码信息都改为加密后的密文；</li>
 <li>创建类，用于解密关键字段；</li>
 <li>更改spring-dao.xml中的配置，将含有加密字段的文件路径放入解密类的bean中。</li>
 </ol>
-<p><strong>引入Redis缓存：</strong></p>
+<h1 id="12-引入Redis缓存"><a href="#12-引入Redis缓存" class="headerlink" title="12.引入Redis缓存"></a>12.引入Redis缓存</h1><h2 id="12-1为什么有了Mysq还要用Redis"><a href="#12-1为什么有了Mysq还要用Redis" class="headerlink" title="12.1为什么有了Mysq还要用Redis"></a>12.1为什么有了Mysq还要用Redis</h2><p>MySQL作为持久化存储的数据库，相对薄弱的地方在于每次请求访问数据库时，都存在着I/O操作，反复频繁的访问数据库时，就会因为大量的I/O操作、以及反复的连接数据库导致运行效率过慢。</p>
+<p>使用Redis主要有两方面的考虑：</p>
+<p><strong>高性能：</strong></p>
+<p>Redis将数据保存在内存中，操作缓存就是直接操作内存，所以速度相当快。如果数据库中的对应数据改变的之后，同步改变缓存中相应的数据即可！</p>
+<p><strong>高并发：</strong></p>
+<p>直接操作缓存能够承受的请求是远远大于直接访问数据库的，所以我们可以考虑把数据库中的部分数据转移到缓存中去，这样用户的一部分请求会直接到缓存这里而不用经过数据库。</p>
+<h2 id="12-2Redis与memcached"><a href="#12-2Redis与memcached" class="headerlink" title="12.2Redis与memcached"></a>12.2Redis与memcached</h2><p><strong>为什么项目中使用Redis而不是memcached？</strong></p>
 <ol>
+<li><strong>Redis支持更丰富的数据类型（支持更复杂的应用场景）</strong>：Redis不仅仅支持简单的k/v类型的数据，同时还提供list，set，zset，hash等数据结构的存储。memcache支持简单的数据类型，String。</li>
+<li><strong>Redis支持数据的持久化，可以将内存中的数据保持在磁盘中，重启的时候可以再次加载进行使用,而Memecache把数据全部存在内存之中。</strong>也就是在数据恢复中更具有优势。</li>
+<li><strong>集群模式</strong>：memcached没有原生的集群模式，需要依靠客户端来实现往集群中分片写入数据；但是 redis 目前是原生支持 cluster 模式的.</li>
+</ol>
+<h2 id="12-3项目中的具体实现"><a href="#12-3项目中的具体实现" class="headerlink" title="12.3项目中的具体实现"></a>12.3项目中的具体实现</h2><ol>
 <li><p>引入Jedis的jar包：Jedis是redis的客户端，它封装了redis的操作，用于Java和redis服务器进行通信的；</p>
 </li>
 <li><p>创建redis.properties：定义连接redis的账户密码等字段</p>
@@ -374,7 +419,7 @@
 <p>创建Redis连接池对象：通过接口JedisPollWriper初始化连接池对象</p>
 <p>创建Redis工具类JedisUtil，封装好Redis的连接以进行相关的操作</p>
 <p>​     <strong>JedisUtil工具类：</strong>封装好Redis的连接以进行相关的操作，工具类中包含以下几个内部类：</p>
-<p>​          1、Keys：主要封装了对redis中的键值对中的键操作的方法，比如：清空所有的Key，删除keys对应的记录等，方法的实现主  要还是通过jedis对象中的方法对redis中的内容进行操作</p>
+<p>​          1、Keys：主要封装了对redis中的键值对中的键操作的方法，比如：清空所有的Key，删除keys对应的记录等，方法的实现主要还是通过jedis对象中的方法对redis中的内容进行操作</p>
 <p>​          2、Strings：主要封装了一些根据string操作对象的值查询value，添加记录等的方法</p>
 <p>创建Redis数据类型如string、map、list等的bean用于注入</p>
 </li>
@@ -502,7 +547,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E5%87%86%E5%A4%87%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">开发准备（完成）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E8%AE%BE%E8%AE%A1%E5%92%8C%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">项目设计和框架搭建（完成）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Logback%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BD%BF%E7%94%A8%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">Logback配置与使用（完成）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%97%E9%93%BA%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD%E6%A8%A1%E5%9D%97%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">店铺注册功能模块（完成）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%BA%93%E5%90%8C%E6%AD%A5%E4%B8%8E%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">主从库同步与读写分离（完成）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%97%E9%93%BA%E7%BC%96%E8%BE%91%E5%8A%9F%E8%83%BD%E5%92%8C%E5%88%97%E8%A1%A8%E5%8A%9F%E8%83%BD%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">店铺编辑功能和列表功能（完成）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%95%86%E5%93%81%E7%B1%BB%E5%88%AB%E6%A8%A1%E5%9D%97"><span class="nav-number">7.</span> <span class="nav-text">商品类别模块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%95%86%E5%93%81%E6%A8%A1%E5%9D%97"><span class="nav-number">8.</span> <span class="nav-text">商品模块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E5%B1%95%E7%A4%BA%E7%B3%BB%E7%BB%9F"><span class="nav-number">9.</span> <span class="nav-text">前端展示系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%BF%E9%87%8C%E4%BA%91%E9%83%A8%E7%BD%B2%E5%8F%8A%E8%BF%9C%E7%A8%8B%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E8%B0%83%E8%AF%95%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">10.</span> <span class="nav-text">阿里云部署及远程微信开发调试（完成）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E5%8D%87%E7%BA%A7%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">11.</span> <span class="nav-text">项目升级（完成）</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%BC%80%E5%8F%91%E5%87%86%E5%A4%87%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">1.开发准备（完成）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E9%A1%B9%E7%9B%AE%E8%AE%BE%E8%AE%A1%E5%92%8C%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">2.项目设计和框架搭建（完成）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Logback%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BD%BF%E7%94%A8%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">3.Logback配置与使用（完成）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%BA%97%E9%93%BA%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD%E6%A8%A1%E5%9D%97%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">4.店铺注册功能模块（完成）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E4%B8%BB%E4%BB%8E%E5%BA%93%E5%90%8C%E6%AD%A5%E4%B8%8E%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">5.主从库同步与读写分离（完成）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E6%8A%80%E6%9C%AF%EF%BC%9F"><span class="nav-number">5.1.</span> <span class="nav-text">5.1为什么要用主从同步技术？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">5.2.</span> <span class="nav-text">5.2MySQL主从复制的几种方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E7%9A%84%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.3.</span> <span class="nav-text">5.3MySQL主从复制的模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4MySQL%E4%B8%ADbinlog%E7%9A%84%E6%97%A5%E5%BF%97%E6%A0%BC%E5%BC%8F"><span class="nav-number">5.4.</span> <span class="nav-text">5.4MySQL中binlog的日志格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-5%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.5.</span> <span class="nav-text">5.5项目中的具体实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E5%BA%97%E9%93%BA%E7%BC%96%E8%BE%91%E5%8A%9F%E8%83%BD%E5%92%8C%E5%88%97%E8%A1%A8%E5%8A%9F%E8%83%BD%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">6.店铺编辑功能和列表功能（完成）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E5%95%86%E5%93%81%E7%B1%BB%E5%88%AB%E6%A8%A1%E5%9D%97"><span class="nav-number">7.</span> <span class="nav-text">7.商品类别模块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-%E5%95%86%E5%93%81%E6%A8%A1%E5%9D%97"><span class="nav-number">8.</span> <span class="nav-text">8.商品模块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-%E5%89%8D%E7%AB%AF%E5%B1%95%E7%A4%BA%E7%B3%BB%E7%BB%9F"><span class="nav-number">9.</span> <span class="nav-text">9.前端展示系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-%E9%98%BF%E9%87%8C%E4%BA%91%E9%83%A8%E7%BD%B2%E5%8F%8A%E8%BF%9C%E7%A8%8B%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E8%B0%83%E8%AF%95%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">10.</span> <span class="nav-text">10.阿里云部署及远程微信开发调试（完成）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-%E9%A1%B9%E7%9B%AE%E5%8D%87%E7%BA%A7%EF%BC%88%E5%AE%8C%E6%88%90%EF%BC%89"><span class="nav-number">11.</span> <span class="nav-text">11.项目升级（完成）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-%E5%BC%95%E5%85%A5Redis%E7%BC%93%E5%AD%98"><span class="nav-number">12.</span> <span class="nav-text">12.引入Redis缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#12-1%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%89%E4%BA%86Mysq%E8%BF%98%E8%A6%81%E7%94%A8Redis"><span class="nav-number">12.1.</span> <span class="nav-text">12.1为什么有了Mysq还要用Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-2Redis%E4%B8%8Ememcached"><span class="nav-number">12.2.</span> <span class="nav-text">12.2Redis与memcached</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-3%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">12.3.</span> <span class="nav-text">12.3项目中的具体实现</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
       <div class="site-overview-wrap sidebar-panel">
@@ -517,20 +562,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -576,13 +621,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">360k</span>
+    <span title="站点总字数">687k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:28</span>
+    <span title="站点阅读时长">10:25</span>
 
 </div>
 <div class="powered-by">

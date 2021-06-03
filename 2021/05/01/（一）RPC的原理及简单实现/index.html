@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wangjin1996219.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="（一）RPC的介绍及初步实现">
+<meta property="og:url" content="http://wangjin1996219.github.io/2021/05/01/%EF%BC%88%E4%B8%80%EF%BC%89RPC%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Wj-Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/05/01/%EF%BC%88%E4%B8%80%EF%BC%89RPC%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/GitHub/MyBlogs/source/_posts/2021-05-01-RPC的原理/RPC1.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/05/01/%EF%BC%88%E4%B8%80%EF%BC%89RPC%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/GitHub/MyBlogs/source/_posts/2021-05-01-RPC的原理/RPC2.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/05/01/%EF%BC%88%E4%B8%80%EF%BC%89RPC%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/GitHub/MyBlogs/source/_posts/2021-05-01-RPC的原理/RPC3.png">
+<meta property="article:published_time" content="2021-05-01T14:30:32.000Z">
+<meta property="article:modified_time" content="2021-05-21T14:14:31.337Z">
+<meta property="article:author" content="老王家的小王呀">
+<meta property="article:tag" content="RPC项目">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://wangjin1996219.github.io/2021/05/01/%EF%BC%88%E4%B8%80%EF%BC%89RPC%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/GitHub/MyBlogs/source/_posts/2021-05-01-RPC的原理/RPC1.png">
+
+<link rel="canonical" href="http://wangjin1996219.github.io/2021/05/01/%EF%BC%88%E4%B8%80%EF%BC%89RPC%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>（一）RPC的介绍及初步实现 | Wj-Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Wj-Blog" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wj-Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">27</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">67</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/05/01/%EF%BC%88%E4%B8%80%EF%BC%89RPC%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="老王家的小王呀">
+      <meta itemprop="description" content="及时当勉励，岁月不待人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wj-Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          （一）RPC的介绍及初步实现
+        </h1>
+
+        <div class="post-meta">
+        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-01 22:30:32" itemprop="dateCreated datePublished" datetime="2021-05-01T22:30:32+08:00">2021-05-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-21 22:14:31" itemprop="dateModified" datetime="2021-05-21T22:14:31+08:00">2021-05-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">开源项目</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/05/01/%EF%BC%88%E4%B8%80%EF%BC%89RPC%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/" class="post-meta-item leancloud_visitors" data-flag-title="（一）RPC的介绍及初步实现" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/05/01/%EF%BC%88%E4%B8%80%EF%BC%89RPC%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/05/01/%EF%BC%88%E4%B8%80%EF%BC%89RPC%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<a id="more"></a>
+
+<blockquote>
+<p><strong>该项目文章引用自声哥和 Guide 哥！（我只是个搬运工！）</strong></p>
+</blockquote>
+<h1 id="1-RPC介绍"><a href="#1-RPC介绍" class="headerlink" title="1.RPC介绍"></a>1.RPC介绍</h1><h2 id="1-1什么是RPC"><a href="#1-1什么是RPC" class="headerlink" title="1.1什么是RPC"></a>1.1什么是RPC</h2><p>RPC（Remote Procedure Call Protocol）远程过程调用协议。一个通俗的描述是：<strong>客户端在不知道调用细节的情况下，调用存在于远程计算机上的某个对象，就像调用本地应用程序中的对象一样</strong>。比较正式的描述是：一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。那么我们至少从这样的描述中挖掘出几个要点：</p>
+<ol>
+<li><strong>RPC是协议：</strong>既然是协议就只是一套规范，那么就需要有人遵循这套规范来进行实现。目前典型的RPC实现包括：Dubbo、Thrift、GRPC、Hetty等。这里要说明一下，目前技术的发展趋势来看，实现了RPC协议的应用工具往往都会附加其他重要功能，例如Dubbo还包括了服务治等功能。</li>
+<li><strong>网络协议和网络IO模型对其透明：</strong>既然RPC的客户端认为自己是在调用本地对象。那么传输层使用的是TCP/UDP还是HTTP协议，又或者是一些其他的网络协议它就不需要关心了。既然网络协议对其透明，那么调用过程中，使用的是哪一种网络IO模型调用者也不需要关心。</li>
+<li><strong>信息格式对其透明：</strong>我们知道在本地应用程序中，对于某个对象的调用需要传递一些参数，并且会返回一个调用结果。至于被调用的对象内部是如何使用这些参数，并计算出处理结果的，调用方是不需要关心的。那么对于远程调用来说，这些参数会以某种信息格式传递给网络上的另外一台计算机，这个信息格式是怎样构成的，调用方是不需要关心的。</li>
+<li><strong>应该有跨语言能力：</strong>为什么这样说呢？因为调用方实际上也不清楚远程服务器的应用程序是使用什么语言运行的。那么对于调用方来说，无论服务器方使用的是什么语言，本次调用都应该成功，并且返回值也应该按照调用方程序语言所能理解的形式进行描述。</li>
+</ol>
+<h2 id="1-2RPC的原理"><a href="#1-2RPC的原理" class="headerlink" title="1.2RPC的原理"></a>1.2RPC的原理</h2><img src="/2021/05/01/%EF%BC%88%E4%B8%80%EF%BC%89RPC%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/GitHub\MyBlogs\source\_posts\2021-05-01-RPC的原理\RPC1.png" style="zoom:90%;">
+
+<p><strong>一次完整的RPC调用流程（同步调用，异步另说）如下：</strong></p>
+<p>1）服务消费方（client）调用以本地调用方式调用服务；<br>2）client stub接收到调用后负责将方法、参数等组装成能够进行网络传输的消息体；<br>3）client stub找到服务地址，并将消息发送到服务端；<br>4）server stub收到消息后进行解码；<br>5）server stub根据解码结果调用本地的服务；<br>6）本地服务执行并将结果返回给server stub；<br>7）server stub将返回结果打包成消息并发送至消费方；<br>8）client stub接收到消息，并进行解码；<br>9）服务消费方得到最终结果。</p>
+<p><strong>RPC框架的目标就是要2~8这些步骤都封装起来，这些细节对用户来说是透明的，不可见的。</strong></p>
+<p><strong>RPC实现的基本流程：</strong></p>
+<p>客户端和服务端都可以访问到通用的接口，但是只有服务端有这个接口的实现类，客户端调用这个接口的方式，是通过网络传输，告诉服务端我要调用这个接口，服务端收到之后找到这个接口的实现类，并且执行，将执行的结果返回给客户端，作为客户端调用接口方法的返回值。</p>
+<h1 id="2-常见的RPC框架"><a href="#2-常见的RPC框架" class="headerlink" title="2.常见的RPC框架"></a>2.常见的RPC框架</h1><h1 id="3-Socket-网络通信基础"><a href="#3-Socket-网络通信基础" class="headerlink" title="3. Socket 网络通信基础"></a>3. Socket 网络通信基础</h1><h2 id="3-1-Socket-套接字-介绍"><a href="#3-1-Socket-套接字-介绍" class="headerlink" title="3.1 Socket(套接字)介绍"></a>3.1 Socket(套接字)介绍</h2><p>Socket是一个抽象概念，应用程序可以通过它发送或接收数据。在使用 Socket 进行网络通信的时候，通过 Socket 就可以让我们的数据在网络中传输。操 作套接字的时候，和我们读写文件很像。套接字是IP地址与端口的组合，套接字 Socket=（IP地址：端口号）。</p>
+<p>要通过互联网进行通信，至少需要一对套接字： </p>
+<ol>
+<li><p>运行于服务器端的Server Socket </p>
+</li>
+<li><p>运行于客户机端的Client Socket 在Java 开发中使用Socket 时会常用到两个类，都在 java.net 包中：</p>
+<p>Socket : 一般用于客户端 </p>
+<p>Server Socket : 用于服务端</p>
+</li>
+</ol>
+<h2 id="3-2-Socket-网络通信过程"><a href="#3-2-Socket-网络通信过程" class="headerlink" title="3.2 Socket 网络通信过程"></a>3.2 Socket 网络通信过程</h2><ol>
+<li><p>建立服务端并且监听客户端请求 </p>
+</li>
+<li><p>客户端请求，服务端和客户端建立连接 </p>
+</li>
+<li><p>两端之间可以传递数据</p>
+</li>
+<li><p>关闭资源 </p>
+</li>
+</ol>
+<p>对应到服务端和客户端的话，是下面这样的。 </p>
+<p><strong>服务器端：</strong></p>
+<ol>
+<li><p>创建 ServerSocket 对象并且绑定地址（ip）和端口号(port)： server.bind(new InetSocketAddress(host, port))</p>
+</li>
+<li><p>通过 <strong>accept()</strong> 方法监听客户端请求 </p>
+<p>ServerSocket 的 <strong>accept（）方法是阻塞方法</strong>，也就是说  ServerSocket  在调用 accept（) 等待客户端的连接请求时会阻塞，直到收到客户端发 送的连接请求才会继续往下执行代码。</p>
+</li>
+<li><p>连接建立后，通过输入流读取客户端发送的请求信息 </p>
+</li>
+<li><p>通过输出流向客户端发送响应信息 </p>
+</li>
+<li><p>关闭相关资源 </p>
+</li>
+</ol>
+<p><strong>客户端：</strong></p>
+<ol>
+<li>创建 Socket 对象并且连接指定的服务器的地址（ip）和端口号(port)： socket.connect(inetSocketAddress) </li>
+<li>连接建立后，通过输出流向服务器端发送请求信息 </li>
+<li>通过输入流获取服务器响应的信息 </li>
+<li>关闭相关资源</li>
+</ol>
+<h1 id="4-静态代理与动态代理-JDK-CGLIB"><a href="#4-静态代理与动态代理-JDK-CGLIB" class="headerlink" title="4.静态代理与动态代理(JDK/CGLIB)"></a>4.静态代理与动态代理(JDK/CGLIB)</h1><h1 id="5-RPC框架的设计"><a href="#5-RPC框架的设计" class="headerlink" title="5.RPC框架的设计"></a>5.RPC框架的设计</h1><h2 id="5-1简单的RPC框架"><a href="#5-1简单的RPC框架" class="headerlink" title="5.1简单的RPC框架"></a>5.1简单的RPC框架</h2><img src="/2021/05/01/%EF%BC%88%E4%B8%80%EF%BC%89RPC%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/GitHub\MyBlogs\source\_posts\2021-05-01-RPC的原理\RPC2.png" style="zoom:110%;">
+
+<p><strong>一个最简单的RPC框架的实现流程：（消费者client和生产者server）</strong></p>
+<p>Server 向注册中心注册服务，Client 能够从注册中心获取服务相关的信息，然后再通过网络请求服务提供端 Server（打 call 的过程）</p>
+<h2 id="5-2完整的RPC框架"><a href="#5-2完整的RPC框架" class="headerlink" title="5.2完整的RPC框架"></a>5.2完整的RPC框架</h2><img src="/2021/05/01/%EF%BC%88%E4%B8%80%EF%BC%89RPC%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/GitHub\MyBlogs\source\_posts\2021-05-01-RPC的原理\RPC3.png" style="zoom:90%;">
+
+<p>可以注意到，完成的RPC框架的实现需要以下几部分功能：</p>
+<ol>
+<li><p><strong>服务注册中心</strong></p>
+<p>在分布式架构中，有一个重要的组件，就是服务注册中心，它用于保存多个服务提供者的信息，每个服务提供者在启动时都需要向注册中心注册自己所拥有的服务。这样客户端在发起 RPC 时，就可以直接去向注册中心请求服务提供者的信息，如果拿来的这个挂了，还可以重新请求，并且在这种情况下可以很方便地实现负载均衡。</p>
+<p>常见的注册中心有 Eureka、Zookeeper 和 Nacos。</p>
+<p>注册中心负责服务地址的注册与查找，相当于目录服务。 服务端启动的时候将服务名称及其对应的**地址(ip+port)**注册到注册中心，服务消费端根据服务名称找到对应的服务地址。有了服务地址之 后，服务消费端就可以通过网络请求服务端了。</p>
+</li>
+</ol>
+<ol start="2">
+<li><p><strong>网络传输</strong></p>
+<p>我们要调用远程的方法，就要发送网络请求来传递目标类和方法的信息以及方法的参数等数据到服务提供端</p>
+<p>网络传输的具体实现：</p>
+<ul>
+<li><p>使用 Socket ： Java 中最原始、最基础的网络通信方式。但是，<strong>Socket 是 阻塞 IO、性能低并且功能单一</strong>。</p>
+</li>
+<li><p>使用同步非阻塞的 I/O 模型 NIO ，但是用它来进行网络编程真的太麻烦了。可以使用基于 NIO 的网络编程框架 <strong>Netty</strong>。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>序列化与反序列化</strong></p>
+<p>要在网络传输数据就要涉及到序列化。</p>
+<p>因为网络传输的数据必须是二进制的。因此，我们的 Java 对象没办法直接在网络中传输。为了能够 让 Java 对象在网络中传输我们需要将其序列化为二进制的数据。我们最终需要的还是目标 Java 对 象，因此我们还要将二进制的数据“解析”为目标 Java 对象，也就是对二进制数据再进行一次反序 列化。 </p>
+<p>另外，不仅网络传输的时候需要用到序列化和反序列化，将对象存储到文件、数据库等场景都需要 用到序列化和反序列化。</p>
+<p><strong>实现序列化与反序列化的方式：</strong></p>
+<p>JDK 自带的序列化，只需实现 <code>java.io.Serializable</code> 接口即可，不过这种方式不推荐，因为不支 持跨语言调用并且性能比较差。 </p>
+<p>现在比较常用序列化的有</p>
+<ul>
+<li><p>hessian</p>
+</li>
+<li><p><strong>kyro</strong></p>
+</li>
+<li><p>protostuff</p>
+</li>
+</ul>
+</li>
+<li><p><strong>动态代理</strong></p>
+<p>RPC 的主要目的就是让我们调用远程方法像调用本地方法一 样简单，我们<strong>不需要关心远程方法调用的细节</strong>比如网络传输。</p>
+<p><strong>怎样才能屏蔽程方法调用的底层细节呢？</strong></p>
+<p>就是动态代理。简单来说，当你调用远程方法的时候，<strong>实际会通过代理对象来传输网络请求</strong>。</p>
+</li>
+<li><p><strong>负载均衡</strong></p>
+<p>我们的系统中的某个服务的访问量特别大，我们将这个服务部署在了多台服务器上，当 客户端发起请求的时候，多台服务器都可以处理这个请求。那么，如何正确选择处理该请求的服务 器就很关键。假如，你就要一台服务器来处理该服务的请求，那该服务部署在多台服务器的意义就 不复存在了。负载均衡就是为了避免单个服务器响应同一请求，容易造成服务器宕机、崩溃等问题。</p>
+</li>
+<li><p><strong>传输协议</strong></p>
+<p>我们还需要设计一个私有的 RPC 协议，这个协议是客户端（服务消费方）和服务端（服务提供方） 交流的基础。 </p>
+<p>简单来说：<strong>通过设计协议，我们定义需要传输哪些类型的数据， 并且还会规定每一种类型的数据应该占多少字节。这样我们在接收到二级制数据之后，就可以正确的解析出我们需要的数据。</strong>这有一点像密文传输的感觉。</p>
+<p>通常一些标准的 RPC 协议包含下面这些内容：</p>
+<ul>
+<li><p><strong>魔数 ：</strong> 通常是 4 个字节。这个魔数主要是为了筛选来到服务端的数据包，有了这个魔数之后， 服务端首先取出前面四个字节进行比对，能够在第一时间识别出这个数据包并非是遵循自定义协 议的，也就是无效数据包，为了安全考虑可以直接关闭连接以节省资源。 </p>
+</li>
+<li><p><strong>序列化器编号 ：</strong>标识序列化的方式，比如是使用 Java 自带的序列化，还是 json，kyro 等序列化 方式。</p>
+</li>
+<li><p><strong>消息体长度 ：</strong>运行时计算出来。</p>
+</li>
+</ul>
+<p>等…….</p>
+</li>
+</ol>
+<h1 id="6-初步实现RPC"><a href="#6-初步实现RPC" class="headerlink" title="6.初步实现RPC"></a>6.初步实现RPC</h1><h2 id="6-1-rpc-api-包下创建通用接口"><a href="#6-1-rpc-api-包下创建通用接口" class="headerlink" title="6.1 rpc-api 包下创建通用接口"></a>6.1 rpc-api 包下创建通用接口</h2><p>在 rpc-api 包下创建通用接口，也就是<strong>服务端与客户端的公共调用接口</strong></p>
+<blockquote>
+<p><strong>接口HelloService</strong></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> top.wangjin.rpc.api;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">HelloService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">String <span class="title">hello</span><span class="params">(HelloObject object)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>hello方法需要传递一个对象，HelloObject对象，定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="comment">//这个对象需要实现Serializable接口，因为它需要在调用过程中从客户端传递给服务端</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloObject</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个对象需要实现<code>Serializable</code>接口，因为它需要在调用过程中从客户端传递给服务端。</p>
+<blockquote>
+<p>注：</p>
+<p>@Data 注解作用是自动生成get和set方法</p>
+<p>@AllArgsConstructor 使用后添加一个构造函数，该构造函数含有所有已声明字段属性参数</p>
+<p>@NoArgsConstructor 使用后创建一个无参构造函数</p>
+</blockquote>
+<h2 id="6-2-test-server-包下实现通用接口"><a href="#6-2-test-server-包下实现通用接口" class="headerlink" title="6.2 test-server 包下实现通用接口"></a>6.2 test-server 包下实现通用接口</h2><p>接着我们在服务端对这个接口进行实现，实现的方式也很简单，返回一个字符串就行：</p>
+<blockquote>
+<p><strong>HelloServiceImpl 实现类</strong></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloServiceImpl</span> <span class="keyword">implements</span> <span class="title">HelloService</span> </span>&#123;</span><br><span class="line">    <span class="comment">//创建日志对象</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(HelloServiceImpl.class);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">(HelloObject object)</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">&quot;接收到：&#123;&#125;&quot;</span>, object.getMessage());</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;这是调用的返回值，id=&quot;</span> + object.getId();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-3-rpc-common-包下定义传输协议"><a href="#6-3-rpc-common-包下定义传输协议" class="headerlink" title="6.3 rpc-common 包下定义传输协议"></a>6.3 rpc-common 包下定义传输协议</h2><p>当我们想要调用服务端的某个接口的方法时，为了让服务端唯一确定需要调用的接口的方法。我们将请求封装成实体类 <strong>RpcRequest</strong> ，然后到服务端解析，找到对应的接口中的方法，传入相应的参数。</p>
+<blockquote>
+<p><strong>RpcRequest 实体类</strong></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@Builder</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RpcRequest</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求号</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String requestId;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 待调用接口名称</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String interfaceName;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 待调用方法名称</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String methodName;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 调用方法的参数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Object[] parameters;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 调用方法的参数类型</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Class&lt;?&gt;[] paramTypes;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否是心跳包</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Boolean heartBeat;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：</p>
+<p>@Builder标签的作用之一是为了解决在某个类有很多构造函数的情况，也省去写很多构造函数的麻烦</p>
+<p>在设计模式中的思想是：用一个内部类去实例化一个对象，避免一个类出现过多构造函数</p>
+</blockquote>
+<p>那么服务器调用完这个方法后，需要给客户端返回哪些信息呢？如果调用成功的话，显然需要返回值，如果调用失败了，就需要失败的信息，这里封装成一个       **RpcResponse **对象：</p>
+<blockquote>
+<p><strong>RpcResponse 实体类</strong></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RpcResponse</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 响应对应的请求号</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String requestId;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 响应状态码</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Integer statusCode;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 响应状态补充信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 响应数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">RpcResponse&lt;T&gt; <span class="title">success</span><span class="params">(T data)</span> </span>&#123;</span><br><span class="line">        RpcResponse&lt;T&gt; response = <span class="keyword">new</span> RpcResponse&lt;&gt;();</span><br><span class="line">        response.setStatusCode(ResponseCode.SUCCESS.getCode());</span><br><span class="line">        response.setData(data);</span><br><span class="line">        <span class="keyword">return</span> response;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">RpcResponse&lt;T&gt; <span class="title">fail</span><span class="params">(ResponseCode code)</span> </span>&#123;</span><br><span class="line">        RpcResponse&lt;T&gt; response = <span class="keyword">new</span> RpcResponse&lt;&gt;();</span><br><span class="line">        response.setStatusCode(code.getCode());</span><br><span class="line">        response.setMessage(code.getMessage());</span><br><span class="line">        <span class="keyword">return</span> response;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>RpcResponse 实体类中包含两个静态的方法：</p>
+<p>一个用于请求成功处理时，返回的 RpcResponse 对象</p>
+<p>一个用于请求处理失败时，返回的 RpcResponse 对象</p>
+<p>ResponseCode 枚举类，用于初始化 RpcResponse 对象中的 statusCode 和 message 属性：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">ResponseCode</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    SUCCESS(<span class="number">200</span>, <span class="string">&quot;调用方法成功&quot;</span>),</span><br><span class="line">    FAIL(<span class="number">500</span>, <span class="string">&quot;调用方法失败&quot;</span>),</span><br><span class="line">    METHOD_NOT_FOUND(<span class="number">500</span>, <span class="string">&quot;未找到指定方法&quot;</span>),</span><br><span class="line">    CLASS_NOT_FOUND(<span class="number">500</span>, <span class="string">&quot;未找到指定类&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> code;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String message;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-4-rpc-core-包"><a href="#6-4-rpc-core-包" class="headerlink" title="6.4 rpc-core 包"></a>6.4 rpc-core 包</h2><h3 id="6-4-1动态代理实现客户端"><a href="#6-4-1动态代理实现客户端" class="headerlink" title="6.4.1动态代理实现客户端"></a>6.4.1动态代理实现客户端</h3><p>客户端方面，由于在客户端这一侧我们并没有接口的具体实现类，就没有办法直接生成实例对象。这时，我们可以通过动态代理的方式生成实例，并且调用方法时生成需要的RpcRequest对象并且发送给服务端。</p>
+<p>采用JDK动态代理，代理类是需要实现<code>InvocationHandler</code>接口的。</p>
+<p>需要传递host和port来指明服务端的位置。并且使用getProxy()方法来生成代理对象。</p>
+<p><code>InvocationHandler</code>接口需要实现invoke()方法，来指明代理对象的方法被调用时的动作。在这里，我们显然就需要生成一个RpcRequest对象，发送出去，然后返回从服务端接收到的结果即可：</p>
+<blockquote>
+<p><strong>RpcClientProxy 类</strong></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RpcClientProxy</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String host;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> port;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RpcClientProxy</span><span class="params">(String host, <span class="keyword">int</span> port)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.host = host;</span><br><span class="line">        <span class="keyword">this</span>.port = port;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="comment">//获取代理对象</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getProxy</span><span class="params">(Class&lt;T&gt; clazz)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (T) Proxy.newProxyInstance(clazz.getClassLoader(), <span class="keyword">new</span> Class&lt;?&gt;[]&#123;clazz&#125;, <span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        RpcRequest rpcRequest = RpcRequest.builder()</span><br><span class="line">                .interfaceName(method.getDeclaringClass().getName())</span><br><span class="line">                .methodName(method.getName())</span><br><span class="line">                .parameters(args)</span><br><span class="line">                .paramTypes(method.getParameterTypes())</span><br><span class="line">                .build();</span><br><span class="line">        RpcClient rpcClient = <span class="keyword">new</span> RpcClient();</span><br><span class="line">        <span class="keyword">return</span> ((RpcResponse) rpcClient.sendRequest(rpcRequest, host, port)).getData();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：</p>
+<p>@SuppressWarnings(“unchecked”)<br>告诉编译器<strong>忽略 unchecked 警告信息</strong>，如使用List，ArrayList等未进行参数化产生的警告信息。</p>
+</blockquote>
+<p>发送的逻辑使用了一个RpcClient对象来实现，这个对象的作用，就是将一个对象发过去，并且接受返回的对象。</p>
+<p>代码实现逻辑很简单，直接使用Java的序列化方式，通过Socket传输。创建一个Socket，获取ObjectOutputStream对象，然后把需要发送的对象传进去即可，接收时获取ObjectInputStream对象，readObject()方法就可以获得一个返回的对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RpcClient</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(RpcClient.class);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">sendRequest</span><span class="params">(RpcRequest rpcRequest, String host, <span class="keyword">int</span> port)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (Socket socket = <span class="keyword">new</span> Socket(host, port)) &#123;</span><br><span class="line">            ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(socket.getOutputStream());</span><br><span class="line">            ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(socket.getInputStream());</span><br><span class="line">            objectOutputStream.writeObject(rpcRequest);</span><br><span class="line">            objectOutputStream.flush();</span><br><span class="line">            <span class="keyword">return</span> objectInputStream.readObject();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException | ClassNotFoundException e) &#123;</span><br><span class="line">            logger.error(<span class="string">&quot;调用时有错误发生：&quot;</span>, e);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-4-2服务端的实现"><a href="#6-4-2服务端的实现" class="headerlink" title="6.4.2服务端的实现"></a>6.4.2服务端的实现</h3><p>使用一个ServerSocket通过accep() 方法监听客户端请求，如果发来了请求就创建一个线程，在新线程中处理调用（这里创建线程采用线程池）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RpcServer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ExecutorService threadPool;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(RpcServer.class);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//创建线程池</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RpcServer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> corePoolSize = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">int</span> maximumPoolSize = <span class="number">50</span>;</span><br><span class="line">        <span class="keyword">long</span> keepAliveTime = <span class="number">60</span>;</span><br><span class="line">        BlockingQueue&lt;Runnable&gt; workingQueue = <span class="keyword">new</span> ArrayBlockingQueue&lt;&gt;(<span class="number">100</span>);</span><br><span class="line">        ThreadFactory threadFactory = Executors.defaultThreadFactory();</span><br><span class="line">        threadPool = <span class="keyword">new</span> ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, workingQueue, threadFactory);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//使用一个ServerSocket通过accep() 方法监听客户端请求，如果发来了请求就创建一个线程，在新线程中处理调用。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Object service, <span class="keyword">int</span> port)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(port)) &#123;</span><br><span class="line">            logger.info(<span class="string">&quot;服务器正在启动...&quot;</span>);</span><br><span class="line">            Socket socket;</span><br><span class="line">            <span class="keyword">while</span>((socket = serverSocket.accept()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                logger.info(<span class="string">&quot;客户端连接！Ip为：&quot;</span> + socket.getInetAddress());</span><br><span class="line">                threadPool.execute(<span class="keyword">new</span> WorkerThread(socket, service));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            logger.error(<span class="string">&quot;连接时有错误发生：&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>线程的所进行的处理如下所示：将客户端传入的请求解析，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WorkerThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(WorkerThread.class);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Socket socket;</span><br><span class="line">    <span class="keyword">private</span> Object service;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WorkerThread</span><span class="params">(Socket socket, Object service)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.socket = socket;</span><br><span class="line">        <span class="keyword">this</span>.service = service;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(socket.getInputStream());</span><br><span class="line">             ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(socket.getOutputStream())) &#123;</span><br><span class="line">            RpcRequest rpcRequest = (RpcRequest) objectInputStream.readObject();</span><br><span class="line">            Method method = service.getClass().getMethod(rpcRequest.getMethodName(), rpcRequest.getParamTypes());</span><br><span class="line">            Object returnObject = method.invoke(service, rpcRequest.getParameters());</span><br><span class="line">            objectOutputStream.writeObject(RpcResponse.success(returnObject));</span><br><span class="line">            objectOutputStream.flush();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException | ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) &#123;</span><br><span class="line">            logger.error(<span class="string">&quot;调用或发送时有错误发生：&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-5测试"><a href="#6-5测试" class="headerlink" title="6.5测试"></a>6.5测试</h2><h3 id="6-5-1服务器端"><a href="#6-5-1服务器端" class="headerlink" title="6.5.1服务器端"></a>6.5.1服务器端</h3><p>服务端侧，我们已经在上面实现了一个HelloService的实现类HelloServiceImpl的实现类了，我们只需要创建一个RpcServer并且把这个实现类注册进去就行了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//注入HelloServiceImpl实例</span></span><br><span class="line">        HelloService helloService = <span class="keyword">new</span> HelloServiceImpl();</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        RpcServer rpcServer = <span class="keyword">new</span> RpcServer();</span><br><span class="line">        rpcServer.register(helloService, <span class="number">9000</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-5-2客户端"><a href="#6-5-2客户端" class="headerlink" title="6.5.2客户端"></a>6.5.2客户端</h3><p>客户端方面，我们需要通过动态代理，生成代理对象，并且调用，动态代理会自动帮我们向服务端发送请求。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        RpcClientProxy proxy = <span class="keyword">new</span> RpcClientProxy(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">9000</span>);</span><br><span class="line">        HelloService helloService = proxy.getProxy(HelloService.class);</span><br><span class="line">        HelloObject object = <span class="keyword">new</span> HelloObject(<span class="number">12</span>, <span class="string">&quot;This is a message&quot;</span>);</span><br><span class="line">        String res = helloService.hello(object);</span><br><span class="line">        System.out.println(res);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RPC%E9%A1%B9%E7%9B%AE/" rel="tag"><i class="fa fa-tag"></i>  RPC项目</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="prev" title="数据结构">
+      <i class="fa fa-chevron-left"></i> 数据结构
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/03/%EF%BC%88%E4%BA%8C%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E6%B3%A8%E5%86%8C%E5%A4%9A%E4%B8%AA%E6%9C%8D%E5%8A%A1/" rel="next" title="（二）RPC实现注册多个服务">
+      （二）RPC实现注册多个服务 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-RPC%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">1.RPC介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1%E4%BB%80%E4%B9%88%E6%98%AFRPC"><span class="nav-number">1.1.</span> <span class="nav-text">1.1什么是RPC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2RPC%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">1.2RPC的原理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%B8%B8%E8%A7%81%E7%9A%84RPC%E6%A1%86%E6%9E%B6"><span class="nav-number">2.</span> <span class="nav-text">2.常见的RPC框架</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Socket-%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%80"><span class="nav-number">3.</span> <span class="nav-text">3. Socket 网络通信基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-Socket-%E5%A5%97%E6%8E%A5%E5%AD%97-%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 Socket(套接字)介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-Socket-%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E8%BF%87%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 Socket 网络通信过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E9%9D%99%E6%80%81%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86-JDK-CGLIB"><span class="nav-number">4.</span> <span class="nav-text">4.静态代理与动态代理(JDK&#x2F;CGLIB)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-RPC%E6%A1%86%E6%9E%B6%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">5.</span> <span class="nav-text">5.RPC框架的设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1%E7%AE%80%E5%8D%95%E7%9A%84RPC%E6%A1%86%E6%9E%B6"><span class="nav-number">5.1.</span> <span class="nav-text">5.1简单的RPC框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2%E5%AE%8C%E6%95%B4%E7%9A%84RPC%E6%A1%86%E6%9E%B6"><span class="nav-number">5.2.</span> <span class="nav-text">5.2完整的RPC框架</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E5%88%9D%E6%AD%A5%E5%AE%9E%E7%8E%B0RPC"><span class="nav-number">6.</span> <span class="nav-text">6.初步实现RPC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-rpc-api-%E5%8C%85%E4%B8%8B%E5%88%9B%E5%BB%BA%E9%80%9A%E7%94%A8%E6%8E%A5%E5%8F%A3"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 rpc-api 包下创建通用接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-test-server-%E5%8C%85%E4%B8%8B%E5%AE%9E%E7%8E%B0%E9%80%9A%E7%94%A8%E6%8E%A5%E5%8F%A3"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 test-server 包下实现通用接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-rpc-common-%E5%8C%85%E4%B8%8B%E5%AE%9A%E4%B9%89%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE"><span class="nav-number">6.3.</span> <span class="nav-text">6.3 rpc-common 包下定义传输协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-rpc-core-%E5%8C%85"><span class="nav-number">6.4.</span> <span class="nav-text">6.4 rpc-core 包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-1%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E5%AE%9E%E7%8E%B0%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">6.4.1.</span> <span class="nav-text">6.4.1动态代理实现客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-2%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">6.4.2.</span> <span class="nav-text">6.4.2服务端的实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-5%E6%B5%8B%E8%AF%95"><span class="nav-number">6.5.</span> <span class="nav-text">6.5测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-1%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF"><span class="nav-number">6.5.1.</span> <span class="nav-text">6.5.1服务器端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-2%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">6.5.2.</span> <span class="nav-text">6.5.2客户端</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="老王家的小王呀"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">老王家的小王呀</p>
+  <div class="site-description" itemprop="description">及时当勉励，岁月不待人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangjin1996219" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangjin1996219" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:759161269@qq.com" title="E-Mail → mailto:759161269@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=569200212&auto=0&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王进</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">687k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">10:25</span>
+
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+   本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+<span class="post-meta-divider">|</span>
+<i class="fa fa-eye"></i><span id="busuanzi_container_site_pv">
+        本站访问量:<span id="busuanzi_value_site_pv"></span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'pQCeFPCYCP9sz6YcISYlyUqk-gzGzoHsz',
+      appKey     : 'RwrssV7QwO3le9kYtuScKNyD',
+      placeholder: "评论一句，前排打call~",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"symbols_count_time":null,"symbols":true,"time":false,"total_symbols":true,"total_time":false,"log":false});</script></body>
+</html>
+<!-- ҳ������С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

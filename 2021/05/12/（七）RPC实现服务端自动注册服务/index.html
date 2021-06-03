@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wangjin1996219.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="（七）RPC实现服务端自动注册服务">
+<meta property="og:url" content="http://wangjin1996219.github.io/2021/05/12/%EF%BC%88%E4%B8%83%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E6%9C%8D%E5%8A%A1/index.html">
+<meta property="og:site_name" content="Wj-Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-12T14:46:06.000Z">
+<meta property="article:modified_time" content="2021-06-01T11:44:23.125Z">
+<meta property="article:author" content="老王家的小王呀">
+<meta property="article:tag" content="RPC项目">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://wangjin1996219.github.io/2021/05/12/%EF%BC%88%E4%B8%83%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E6%9C%8D%E5%8A%A1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>（七）RPC实现服务端自动注册服务 | Wj-Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Wj-Blog" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wj-Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">27</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">67</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/05/12/%EF%BC%88%E4%B8%83%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E6%9C%8D%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="老王家的小王呀">
+      <meta itemprop="description" content="及时当勉励，岁月不待人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wj-Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          （七）RPC实现服务端自动注册服务
+        </h1>
+
+        <div class="post-meta">
+        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-12 22:46:06" itemprop="dateCreated datePublished" datetime="2021-05-12T22:46:06+08:00">2021-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-01 19:44:23" itemprop="dateModified" datetime="2021-06-01T19:44:23+08:00">2021-06-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">开源项目</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/05/12/%EF%BC%88%E4%B8%83%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E6%9C%8D%E5%8A%A1/" class="post-meta-item leancloud_visitors" data-flag-title="（七）RPC实现服务端自动注册服务" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/05/12/%EF%BC%88%E4%B8%83%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E6%9C%8D%E5%8A%A1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/05/12/%EF%BC%88%E4%B8%83%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E6%9C%8D%E5%8A%A1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<a id="more"></a>
+
+<p>到目前为止，客户端看起来挺完美了，但是在服务端，我们却需要手动创建服务对象，并且手动进行注册，如果服务端提供了很多服务，这个操作就会变得很繁琐。本节就会介绍如何基于注解进行服务的自动注册。</p>
+<h1 id="1-如何定义自己的注解"><a href="#1-如何定义自己的注解" class="headerlink" title="1.如何定义自己的注解"></a>1.如何定义自己的注解</h1><p><strong>元注解：</strong>元注解的作用就是负责注解其他注解。Java5.0定义了4个标准的meta-annotation类型，它们被用来提供对其它 annotation类型作说明。Java5.0定义的元注解：</p>
+<ol>
+<li>@Target</li>
+<li>@Retention</li>
+<li>@Documented</li>
+<li>@Inherited</li>
+</ol>
+<p><strong>每个元注解的作用和相应分参数的使用说明：</strong></p>
+<p><strong>@Target：</strong>用于描述注解的使用范围（即：被描述的注解可以用在什么地方）</p>
+<p>取值(ElementType)有：</p>
+<ol>
+<li>CONSTRUCTOR:用于描述构造器</li>
+<li>FIELD:用于描述域</li>
+<li>LOCAL_VARIABLE:用于描述局部变量</li>
+<li>METHOD:用于描述方法</li>
+<li>PACKAGE:用于描述包</li>
+<li>PARAMETER:用于描述参数</li>
+<li>TYPE:用于描述类、接口(包括注解类型) 或enum声明</li>
+</ol>
+<p><strong>@Retention：</strong>表示需要在什么级别保存该注释信息，用于描述注解的生命周期（即：被描述的注解在什么范围内有效）</p>
+<p>取值（RetentionPoicy）有：</p>
+<ol>
+<li>SOURCE:在源文件中有效（即源文件保留）</li>
+<li>CLASS:在class文件中有效（即class保留）</li>
+<li>RUNTIME:在运行时有效（即运行时保留）</li>
+</ol>
+<h1 id="2-定义注解"><a href="#2-定义注解" class="headerlink" title="2.定义注解"></a>2.定义注解</h1><p>我们需要定义两个注解：Service 和 ServiceScan</p>
+<p><strong>Service.java</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.TYPE)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Service &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">name</span><span class="params">()</span> <span class="keyword">default</span> &quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>ServiceScan.java</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.TYPE)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ServiceScan &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> &quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>@Service 放在一个类上，标识这个类提供一个服务，@ServiceScan 放在启动的入口类上（main 方法所在的类），标识服务的扫描的包的范围。Service 注解的值定义为该服务的名称，默认值是该类的完整类名，而 ServiceScan 的值定义为扫描范围的根包，默认值为入口类所在的包，扫描时会扫描该包及其子包下所有的类，找到标记有 Service 的类，并注册。</p>
+<h1 id="3-工具类-ReflectUtil"><a href="#3-工具类-ReflectUtil" class="headerlink" title="3.工具类 ReflectUtil"></a>3.工具类 ReflectUtil</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectUtil</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getStackTrace</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        StackTraceElement[] stack = <span class="keyword">new</span> Throwable().getStackTrace();</span><br><span class="line">        <span class="keyword">return</span> stack[stack.length - <span class="number">1</span>].getClassName();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Set&lt;Class&lt;?&gt;&gt; getClasses(String packageName) &#123;</span><br><span class="line">        Set&lt;Class&lt;?&gt;&gt; classes = <span class="keyword">new</span> LinkedHashSet&lt;&gt;();</span><br><span class="line">        <span class="keyword">boolean</span> recursive = <span class="keyword">true</span>;</span><br><span class="line">        String packageDirName = packageName.replace(<span class="string">&#x27;.&#x27;</span>, <span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">        Enumeration&lt;URL&gt; dirs;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            dirs = Thread.currentThread().getContextClassLoader().getResources(</span><br><span class="line">                    packageDirName);</span><br><span class="line">            <span class="comment">// 循环迭代下去</span></span><br><span class="line">            <span class="keyword">while</span> (dirs.hasMoreElements()) &#123;</span><br><span class="line">                <span class="comment">// 获取下一个元素</span></span><br><span class="line">                URL url = dirs.nextElement();</span><br><span class="line">                <span class="comment">// 得到协议的名称</span></span><br><span class="line">                String protocol = url.getProtocol();</span><br><span class="line">                <span class="comment">// 如果是以文件的形式保存在服务器上</span></span><br><span class="line">                <span class="keyword">if</span> (<span class="string">&quot;file&quot;</span>.equals(protocol)) &#123;</span><br><span class="line">                    <span class="comment">// 获取包的物理路径</span></span><br><span class="line">                    String filePath = URLDecoder.decode(url.getFile(), <span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">                    <span class="comment">// 以文件的方式扫描整个包下的文件 并添加到集合中</span></span><br><span class="line">                    findAndAddClassesInPackageByFile(packageName, filePath,</span><br><span class="line">                            recursive, classes);</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;jar&quot;</span>.equals(protocol)) &#123;</span><br><span class="line">                    <span class="comment">// 如果是jar包文件</span></span><br><span class="line">                    <span class="comment">// 定义一个JarFile</span></span><br><span class="line">                    JarFile jar;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        <span class="comment">// 获取jar</span></span><br><span class="line">                        jar = ((JarURLConnection) url.openConnection())</span><br><span class="line">                                .getJarFile();</span><br><span class="line">                        <span class="comment">// 从此jar包 得到一个枚举类</span></span><br><span class="line">                        Enumeration&lt;JarEntry&gt; entries = jar.entries();</span><br><span class="line">                        <span class="comment">// 同样的进行循环迭代</span></span><br><span class="line">                        <span class="keyword">while</span> (entries.hasMoreElements()) &#123;</span><br><span class="line">                            <span class="comment">// 获取jar里的一个实体 可以是目录 和一些jar包里的其他文件 如META-INF等文件</span></span><br><span class="line">                            JarEntry entry = entries.nextElement();</span><br><span class="line">                            String name = entry.getName();</span><br><span class="line">                            <span class="comment">// 如果是以/开头的</span></span><br><span class="line">                            <span class="keyword">if</span> (name.charAt(<span class="number">0</span>) == <span class="string">&#x27;/&#x27;</span>) &#123;</span><br><span class="line">                                <span class="comment">// 获取后面的字符串</span></span><br><span class="line">                                name = name.substring(<span class="number">1</span>);</span><br><span class="line">                            &#125;</span><br><span class="line">                            <span class="comment">// 如果前半部分和定义的包名相同</span></span><br><span class="line">                            <span class="keyword">if</span> (name.startsWith(packageDirName)) &#123;</span><br><span class="line">                                <span class="keyword">int</span> idx = name.lastIndexOf(<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">                                <span class="comment">// 如果以&quot;/&quot;结尾 是一个包</span></span><br><span class="line">                                <span class="keyword">if</span> (idx != -<span class="number">1</span>) &#123;</span><br><span class="line">                                    <span class="comment">// 获取包名 把&quot;/&quot;替换成&quot;.&quot;</span></span><br><span class="line">                                    packageName = name.substring(<span class="number">0</span>, idx)</span><br><span class="line">                                            .replace(<span class="string">&#x27;/&#x27;</span>, <span class="string">&#x27;.&#x27;</span>);</span><br><span class="line">                                &#125;</span><br><span class="line">                                <span class="comment">// 如果可以迭代下去 并且是一个包</span></span><br><span class="line">                                <span class="keyword">if</span> ((idx != -<span class="number">1</span>) || recursive) &#123;</span><br><span class="line">                                    <span class="comment">// 如果是一个.class文件 而且不是目录</span></span><br><span class="line">                                    <span class="keyword">if</span> (name.endsWith(<span class="string">&quot;.class&quot;</span>)</span><br><span class="line">                                            &amp;&amp; !entry.isDirectory()) &#123;</span><br><span class="line">                                        <span class="comment">// 去掉后面的&quot;.class&quot; 获取真正的类名</span></span><br><span class="line">                                        String className = name.substring(</span><br><span class="line">                                                packageName.length() + <span class="number">1</span>, name</span><br><span class="line">                                                        .length() - <span class="number">6</span>);</span><br><span class="line">                                        <span class="keyword">try</span> &#123;</span><br><span class="line">                                            <span class="comment">// 添加到classes</span></span><br><span class="line">                                            classes.add(Class</span><br><span class="line">                                                    .forName(packageName + <span class="string">&#x27;.&#x27;</span></span><br><span class="line">                                                            + className));</span><br><span class="line">                                        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">                                            <span class="comment">// log</span></span><br><span class="line">                                            <span class="comment">// .error(&quot;添加用户自定义视图类错误 找不到此类的.class文件&quot;);</span></span><br><span class="line">                                            e.printStackTrace();</span><br><span class="line">                                        &#125;</span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                        <span class="comment">// log.error(&quot;在扫描用户定义视图时从jar包获取文件出错&quot;);</span></span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> classes;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">findAndAddClassesInPackageByFile</span><span class="params">(String packageName,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                         String packagePath, <span class="keyword">final</span> <span class="keyword">boolean</span> recursive, Set&lt;Class&lt;?&gt;&gt; classes)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 获取此包的目录 建立一个File</span></span><br><span class="line">        File dir = <span class="keyword">new</span> File(packagePath);</span><br><span class="line">        <span class="comment">// 如果不存在或者 也不是目录就直接返回</span></span><br><span class="line">        <span class="keyword">if</span> (!dir.exists() || !dir.isDirectory()) &#123;</span><br><span class="line">            <span class="comment">// log.warn(&quot;用户定义包名 &quot; + packageName + &quot; 下没有任何文件&quot;);</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 如果存在 就获取包下的所有文件 包括目录</span></span><br><span class="line">        File[] dirfiles = dir.listFiles(<span class="keyword">new</span> FileFilter() &#123;</span><br><span class="line">            <span class="comment">// 自定义过滤规则 如果可以循环(包含子目录) 或则是以.class结尾的文件(编译好的java类文件)</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">accept</span><span class="params">(File file)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> (recursive &amp;&amp; file.isDirectory())</span><br><span class="line">                        || (file.getName().endsWith(<span class="string">&quot;.class&quot;</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">// 循环所有文件</span></span><br><span class="line">        <span class="keyword">for</span> (File file : dirfiles) &#123;</span><br><span class="line">            <span class="comment">// 如果是目录 则继续扫描</span></span><br><span class="line">            <span class="keyword">if</span> (file.isDirectory()) &#123;</span><br><span class="line">                findAndAddClassesInPackageByFile(packageName + <span class="string">&quot;.&quot;</span></span><br><span class="line">                                + file.getName(), file.getAbsolutePath(), recursive,</span><br><span class="line">                        classes);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 如果是java类文件 去掉后面的.class 只留下类名</span></span><br><span class="line">                String className = file.getName().substring(<span class="number">0</span>,</span><br><span class="line">                        file.getName().length() - <span class="number">6</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="comment">// 添加到集合中去</span></span><br><span class="line">                    <span class="comment">//classes.add(Class.forName(packageName + &#x27;.&#x27; + className));</span></span><br><span class="line">                    <span class="comment">//经过回复同学的提醒，这里用forName有一些不好，会触发static方法，没有使用classLoader的load干净</span></span><br><span class="line">                    classes.add(Thread.currentThread().getContextClassLoader().loadClass(packageName + <span class="string">&#x27;.&#x27;</span> + className));</span><br><span class="line">                &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">                    <span class="comment">// log.error(&quot;添加用户自定义视图类错误 找不到此类的.class文件&quot;);</span></span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主要就是 <code>getClasses</code> 方法，传入一个包名，用于扫描该包及其子包下所有的类，并将其 Class 对象放入一个 Set 中返回。</p>
+<h1 id="4-扫描服务"><a href="#4-扫描服务" class="headerlink" title="4.扫描服务"></a>4.扫描服务</h1><p>扫描服务这一步是一个比较公共的方法，无论是 Socket 还是 Netty 的服务端都需要这个方法，于是我对项目做了一点重构，使用了一个抽象类 AbstractRpcServer 实现了 RpcServer 接口，而 NettyServer 和 SocketServer 继承自 AbstractRpcServer，将 scanServices 方法放在抽象类中，而 start 方法则由具体实现类来实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractRpcServer</span> <span class="keyword">implements</span> <span class="title">RpcServer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> Logger logger = LoggerFactory.getLogger(<span class="keyword">this</span>.getClass());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> String host;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">int</span> port;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> ServiceRegistry serviceRegistry;</span><br><span class="line">    <span class="keyword">protected</span> ServiceProvider serviceProvider;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scanServices</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//获取启动类，也就是main方法所在的类</span></span><br><span class="line">        String mainClassName = ReflectUtil.getStackTrace();</span><br><span class="line">        Class&lt;?&gt; startClass;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//Class.forName(xxx.xx.xx) 返回具体类</span></span><br><span class="line">            startClass = Class.forName(mainClassName);</span><br><span class="line">            <span class="keyword">if</span>(!startClass.isAnnotationPresent(ServiceScan.class)) &#123;</span><br><span class="line">                logger.error(<span class="string">&quot;启动类缺少 @ServiceScan 注解&quot;</span>);</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RpcException(RpcError.SERVICE_SCAN_PACKAGE_NOT_FOUND);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">            logger.error(<span class="string">&quot;出现未知错误&quot;</span>);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RpcException(RpcError.UNKNOWN_ERROR);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//获取注解的值</span></span><br><span class="line">        String basePackage = startClass.getAnnotation(ServiceScan.class).value();</span><br><span class="line">        <span class="keyword">if</span>(<span class="string">&quot;&quot;</span>.equals(basePackage)) &#123;</span><br><span class="line">            basePackage = mainClassName.substring(<span class="number">0</span>, mainClassName.lastIndexOf(<span class="string">&quot;.&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//获取到所有的 Class ，逐个判断是否有 Service 注解</span></span><br><span class="line">        <span class="comment">//如果有的话，通过反射创建该对象，并且调用 publishService 注册即可</span></span><br><span class="line">        Set&lt;Class&lt;?&gt;&gt; classSet = ReflectUtil.getClasses(basePackage);</span><br><span class="line">        <span class="keyword">for</span>(Class&lt;?&gt; clazz : classSet) &#123;</span><br><span class="line">            <span class="keyword">if</span>(clazz.isAnnotationPresent(Service.class)) &#123;</span><br><span class="line">                String serviceName = clazz.getAnnotation(Service.class).name();</span><br><span class="line">                Object obj;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    obj = clazz.newInstance();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InstantiationException | IllegalAccessException e) &#123;</span><br><span class="line">                    logger.error(<span class="string">&quot;创建 &quot;</span> + clazz + <span class="string">&quot; 时有错误发生&quot;</span>);</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(<span class="string">&quot;&quot;</span>.equals(serviceName)) &#123;</span><br><span class="line">                    Class&lt;?&gt;[] interfaces = clazz.getInterfaces();</span><br><span class="line">                    <span class="keyword">for</span> (Class&lt;?&gt; oneInterface: interfaces)&#123;</span><br><span class="line">                        publishService(obj, oneInterface.getCanonicalName());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    publishService(obj, serviceName);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">publishService</span><span class="params">(T service, String serviceName)</span> </span>&#123;</span><br><span class="line">        serviceProvider.addServiceProvider(service, serviceName);</span><br><span class="line">        serviceRegistry.register(serviceName, <span class="keyword">new</span> InetSocketAddress(host, port));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先需要获得要扫描的包的范围，就需要获取到 ServiceScan 注解的值，而我们前面说过，这个注解是加在启动类上的，那么，我们怎么知道启动类是哪一个呢？答案是通过调用栈。方法的调用和返回是通过方法调用栈来实现的，当调用一个方法时，该方法入栈，该方法返回时，该方法出站，控制回到栈顶的方法。那么，main 方法一定位于调用栈的最底端，在 ReflectUtils 中，我写了一个 getStackTrace 方法（名字起得不好），用于获取 main 所在的类。通过 Class 对象的 isAnnotationPresent 方法来判断该类是否有 ServiceScan 注解。如果有，通过startClass.getAnnotation(ServiceScan.class).value(); 获取注解的值。</p>
+<p>当获得扫描的范围后，就可以通过ReflectUtil.getClasses(basePackage) 获取到所有的 Class 了，逐个判断是否有 Service 注解，如果有的话，通过反射创建该对象，并且调用 publishService 注册即可。</p>
+
+    </div>
+
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RPC%E9%A1%B9%E7%9B%AE/" rel="tag"><i class="fa fa-tag"></i>  RPC项目</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/12/%EF%BC%88%E5%85%AD%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E6%B3%A8%E9%94%80%E6%9C%8D%E5%8A%A1%E5%92%8C%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5/" rel="prev" title="（六）RPC实现自动注销服务和负载均衡策略">
+      <i class="fa fa-chevron-left"></i> （六）RPC实现自动注销服务和负载均衡策略
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/13/%EF%BC%88%E5%85%AB%EF%BC%89RPC%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" rel="next" title="（八）RPC项目总结">
+      （八）RPC项目总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89%E8%87%AA%E5%B7%B1%E7%9A%84%E6%B3%A8%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">1.如何定义自己的注解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">2.定义注解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%B7%A5%E5%85%B7%E7%B1%BB-ReflectUtil"><span class="nav-number">3.</span> <span class="nav-text">3.工具类 ReflectUtil</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%89%AB%E6%8F%8F%E6%9C%8D%E5%8A%A1"><span class="nav-number">4.</span> <span class="nav-text">4.扫描服务</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="老王家的小王呀"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">老王家的小王呀</p>
+  <div class="site-description" itemprop="description">及时当勉励，岁月不待人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangjin1996219" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangjin1996219" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:759161269@qq.com" title="E-Mail → mailto:759161269@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=569200212&auto=0&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王进</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">687k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">10:25</span>
+
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+   本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+<span class="post-meta-divider">|</span>
+<i class="fa fa-eye"></i><span id="busuanzi_container_site_pv">
+        本站访问量:<span id="busuanzi_value_site_pv"></span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'pQCeFPCYCP9sz6YcISYlyUqk-gzGzoHsz',
+      appKey     : 'RwrssV7QwO3le9kYtuScKNyD',
+      placeholder: "评论一句，前排打call~",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"symbols_count_time":null,"symbols":true,"time":false,"total_symbols":true,"total_time":false,"log":false});</script></body>
+</html>
+<!-- ҳ������С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

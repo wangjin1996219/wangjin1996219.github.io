@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wangjin1996219.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="（四）RPC实现Kryo序列化">
+<meta property="og:url" content="http://wangjin1996219.github.io/2021/05/06/%EF%BC%88%E5%9B%9B%EF%BC%89RPC%E5%AE%9E%E7%8E%B0Kryo%E5%BA%8F%E5%88%97%E5%8C%96/index.html">
+<meta property="og:site_name" content="Wj-Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/05/06/%EF%BC%88%E5%9B%9B%EF%BC%89RPC%E5%AE%9E%E7%8E%B0Kryo%E5%BA%8F%E5%88%97%E5%8C%96/GitHub/MyBlogs/source/_posts/2021-05-06-（四）RPC实现Kryo序列化/hession.png">
+<meta property="article:published_time" content="2021-05-06T13:39:24.000Z">
+<meta property="article:modified_time" content="2021-05-26T10:11:38.348Z">
+<meta property="article:author" content="老王家的小王呀">
+<meta property="article:tag" content="RPC项目">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://wangjin1996219.github.io/2021/05/06/%EF%BC%88%E5%9B%9B%EF%BC%89RPC%E5%AE%9E%E7%8E%B0Kryo%E5%BA%8F%E5%88%97%E5%8C%96/GitHub/MyBlogs/source/_posts/2021-05-06-（四）RPC实现Kryo序列化/hession.png">
+
+<link rel="canonical" href="http://wangjin1996219.github.io/2021/05/06/%EF%BC%88%E5%9B%9B%EF%BC%89RPC%E5%AE%9E%E7%8E%B0Kryo%E5%BA%8F%E5%88%97%E5%8C%96/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>（四）RPC实现Kryo序列化 | Wj-Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Wj-Blog" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wj-Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">27</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">67</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/05/06/%EF%BC%88%E5%9B%9B%EF%BC%89RPC%E5%AE%9E%E7%8E%B0Kryo%E5%BA%8F%E5%88%97%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="老王家的小王呀">
+      <meta itemprop="description" content="及时当勉励，岁月不待人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wj-Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          （四）RPC实现Kryo序列化
+        </h1>
+
+        <div class="post-meta">
+        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-06 21:39:24" itemprop="dateCreated datePublished" datetime="2021-05-06T21:39:24+08:00">2021-05-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-26 18:11:38" itemprop="dateModified" datetime="2021-05-26T18:11:38+08:00">2021-05-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">开源项目</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/05/06/%EF%BC%88%E5%9B%9B%EF%BC%89RPC%E5%AE%9E%E7%8E%B0Kryo%E5%BA%8F%E5%88%97%E5%8C%96/" class="post-meta-item leancloud_visitors" data-flag-title="（四）RPC实现Kryo序列化" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/05/06/%EF%BC%88%E5%9B%9B%EF%BC%89RPC%E5%AE%9E%E7%8E%B0Kryo%E5%BA%8F%E5%88%97%E5%8C%96/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/05/06/%EF%BC%88%E5%9B%9B%EF%BC%89RPC%E5%AE%9E%E7%8E%B0Kryo%E5%BA%8F%E5%88%97%E5%8C%96/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<a id="more"></a>
+
+<p>上一章我们实现了一个通用的序列化框架，使得序列化方式具有了较高的扩展性，并且实现了一个基于 JSON 的序列化器。</p>
+<p><strong>基于 JSON 的序列化器的问题：</strong></p>
+<ol>
+<li>在某个类的属性反序列化时，如果属性声明为 Object 的，就会造成反序列化出错，通常会把 Object 属性直接反序列化成 String 类型，就需要其他参数辅助序列化。</li>
+<li>并且，JSON 序列化器是基于字符串（JSON 串）的，占用空间较大且速度较慢。</li>
+</ol>
+<p><strong>Kryo</strong> 是一个快速高效的 Java 对象序列化框架，主要特点是高性能、高效和易用。</p>
+<p><strong>最重要的两个特点：</strong></p>
+<ol>
+<li>基于字节的序列化，对空间利用率较高，在网络传输时可以减小体积；</li>
+<li>序列化时记录属性对象的类型信息，这样在反序列化时就不会出现之前的问题了。</li>
+</ol>
+<h1 id="1-序列化介绍以及序列化协议选择"><a href="#1-序列化介绍以及序列化协议选择" class="headerlink" title="1.序列化介绍以及序列化协议选择"></a>1.序列化介绍以及序列化协议选择</h1><h2 id="1-1序列化和反序列化相关概念"><a href="#1-1序列化和反序列化相关概念" class="headerlink" title="1.1序列化和反序列化相关概念"></a>1.1序列化和反序列化相关概念</h2><p>如果我们需要持久化Java对象比如将Java对象保存在文件中，或者在网络传输Java对象，这些场景都需要用到序列化。 </p>
+<p>简单来说： </p>
+<ul>
+<li><strong>序列化：</strong> 将数据结构或对象转换成二进制字节流的过程 </li>
+<li><strong>反序列化：</strong>将在序列化过程中所生成的二进制字节流的过程转换成数据结构或者对象的过程 对于Java这种面向对象编程语言来说，我们序列化的都是对象（Object）也就是实例化后的类(Class)，但是在C++这种半面向对象的语言中，struct(结构体)定义的是数据结构类型， 而class 对应的是对象类型。</li>
+</ul>
+<p>综上：<strong>序列化的主要目的是通过网络传输对象或者说是将对象存储到文件系统、数据库、内存中</strong>。</p>
+<p><strong>实际开发中有哪些用到序列化和反序列化的场景</strong></p>
+<ol>
+<li>对象在进行网络传输（比如远程方法调用RPC的时候）之前需要先被序列化，接收到序列化的对象之后需要再进行反序列化； </li>
+<li>将对象存储到文件中的时候需要进行序列化，将对象从文件中读取出来需要进行反序列化；</li>
+<li>将对象存储到缓存数据库（如 Redis）时需要用到序列化，将对象从缓存数据库中读取出来需要反序列化。</li>
+</ol>
+<h2 id="1-2常见序列化协议对比"><a href="#1-2常见序列化协议对比" class="headerlink" title="1.2常见序列化协议对比"></a>1.2常见序列化协议对比</h2><p>JDK自带的序列化方式一般不会用 ，因为序列化效率低并且部分版本有安全漏洞。比较常用的序列化协议有 <strong>hessian、kyro、protostuff</strong>。 </p>
+<p>下面提到的都是基于二进制的序列化协议，像 JSON 和 XML这种属于文本类序列化方式。虽然 JSON 和 XML可读性比较好，但是性能较差，一般不会选择。</p>
+<p><strong>JDK自带的序列化方式</strong></p>
+<p>JDK 自带的序列化，只需实现 <code>java.io.Serializable</code> 接口即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Builder</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RpcRequest</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1905122041950251207L</span>;</span><br><span class="line">    <span class="keyword">private</span> String requestId;</span><br><span class="line">    <span class="keyword">private</span> String interfaceName;</span><br><span class="line">    <span class="keyword">private</span> String methodName;</span><br><span class="line">    <span class="keyword">private</span> Object[] parameters;</span><br><span class="line">    <span class="keyword">private</span> Class&lt;?&gt;[] paramTypes;</span><br><span class="line">    <span class="keyword">private</span> RpcMessageTypeEnum rpcMessageTypeEnum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>序列化号 serialVersionUID 属于版本控制的作用。序列化的时候serialVersionUID也会被写入二级制序列，当反序列化时会检查serialVersionUID是否和当前类的serialVersionUID一 致。如果serialVersionUID不一致则会抛出 InvalidClassException 异常。强烈推荐每个序列化类都手动指定其 serialVersionUID ，如果不手动指定，那么编译器会动态生成 默认的序列化号</p>
+</blockquote>
+<p>我们很少或者说几乎不会直接使用这个序列化方式，主要原因有两个：</p>
+<ol>
+<li>**不支持跨语言调用 : ** 如果调用的是其他语言开发的服务的时候就不支持了。</li>
+<li><strong>性能差 ：</strong>相比于其他序列化框架性能更低，主要原因是序列化之后的字节数组体积较大，导致传输成本加大。</li>
+</ol>
+<p><strong>kyro</strong></p>
+<p>Kryo是一个高性能的序列化/反序列化工具，由于其变长存储特性并使用了字节码生成机制，拥有较高的运行速度和较小的字节码体积。</p>
+<p>另外，Kryo 已经是一种非常成熟的序列化实现了，已经在Twitter、Groupon、Yahoo以及多个著名开源项目（如Hive、Storm）中广泛的使用。</p>
+<p><strong>Protobuf</strong></p>
+<p>Protobuf出自于Google，性能还比较优秀，也支持多种语言，同时还是跨平台的。就是在使用中过于繁琐，因为你需要自己定义 IDL 文件和生成对应的序列化代码。这样虽然不然灵 活，但是，另一方面导致protobuf没有序列化漏洞的风险。</p>
+<blockquote>
+<p>Protobuf包含序列化格式的定义、各种语言的库以及一个IDL编译器。正常情况下你需要定义proto文件，然后使用IDL编译器编译成你需要的语言</p>
+</blockquote>
+<p>一个简单的 proto 文件如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> <span class="comment">// protobuf的版本</span></span><br><span class="line"><span class="number">2</span> syntax = <span class="string">&quot;proto3&quot;</span>;</span><br><span class="line"><span class="number">3</span> <span class="comment">// SearchRequest会被编译成不同的编程语言的相应对象，比如Java中的class、Go中的struct</span></span><br><span class="line"><span class="number">4</span> message Person &#123;</span><br><span class="line"><span class="number">5</span> <span class="comment">//string类型字段</span></span><br><span class="line"><span class="number">6</span> string name = <span class="number">1</span>;</span><br><span class="line"><span class="number">7</span> <span class="comment">// int 类型字段</span></span><br><span class="line"><span class="number">8</span> int32 age = <span class="number">2</span>;</span><br><span class="line"><span class="number">9</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>ProtoStuff</strong></p>
+<p>由于Protobuf的易用性，它的哥哥 Protostuff  诞生了。 </p>
+<p>protostuff 基于Google protobuf，但是提供了更多的功能和更简易的用法。虽然更加易用，但是不代表 ProtoStuff 性能更差。</p>
+<p><strong>hession</strong></p>
+<p>hessian 是一个轻量级的,自定义描述的二进制RPC协议。hessian是一个比较老的序列化实现了，并且同样也是跨语言的。</p>
+<img src="/2021/05/06/%EF%BC%88%E5%9B%9B%EF%BC%89RPC%E5%AE%9E%E7%8E%B0Kryo%E5%BA%8F%E5%88%97%E5%8C%96/GitHub\MyBlogs\source\_posts\2021-05-06-（四）RPC实现Kryo序列化\hession.png" style="zoom:60%;">
+
+<h1 id="2-Kryo序列化"><a href="#2-Kryo序列化" class="headerlink" title="2.Kryo序列化"></a>2.Kryo序列化</h1><h2 id="2-1-rpc-core添加-kryo-依赖"><a href="#2-1-rpc-core添加-kryo-依赖" class="headerlink" title="2.1 rpc-core添加 kryo 依赖"></a>2.1 rpc-core添加 kryo 依赖</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.esotericsoftware<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>kryo<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.0.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-rpc-core-序列化接口"><a href="#2-2-rpc-core-序列化接口" class="headerlink" title="2.2 rpc-core 序列化接口"></a>2.2 rpc-core 序列化接口</h2><p>序列化接口中增加一个选项，返回Kryo序列化序列化器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CommonSerializer</span> </span>&#123;</span><br><span class="line">    <span class="comment">//序列化方法</span></span><br><span class="line">    <span class="keyword">byte</span>[] serialize(Object obj);</span><br><span class="line">    <span class="comment">//反序列化方法</span></span><br><span class="line">    <span class="function">Object <span class="title">deserialize</span><span class="params">(<span class="keyword">byte</span>[] bytes, Class&lt;?&gt; clazz)</span></span>;</span><br><span class="line">    <span class="comment">//通过序列化名称获取序列化码，比如Kryo对应0</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getCode</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> CommonSerializer <span class="title">getByCode</span><span class="params">(<span class="keyword">int</span> code)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (code) &#123;</span><br><span class="line">            <span class="comment">//把 Kryo 的编号设为 0，后续会作为默认的序列化器</span></span><br><span class="line">            <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> KryoSerializer();</span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> JsonSerializer();</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>并在<code>SerializerCode</code>类中加入Kryo的枚举类型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">SerializerCode</span> </span>&#123;</span><br><span class="line">    KRYO(<span class="number">0</span>),</span><br><span class="line">    JSON(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> code;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据接口<code>CommonSerializer</code>，我们的主要任务就是实现其中的主要两个方法，<code>serialize()</code> 和 <code>deserialize()</code> ，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">KryoSerializer</span> <span class="keyword">implements</span> <span class="title">CommonSerializer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(KryoSerializer.class);</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    通过ThreadLocal来保证Kryo的线程安全</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;Kryo&gt; kryoThreadLocal = ThreadLocal.withInitial(() -&gt; &#123;</span><br><span class="line">        <span class="comment">//初始化Kryo对象</span></span><br><span class="line">        Kryo kryo = <span class="keyword">new</span> Kryo();</span><br><span class="line">        <span class="comment">//Kryo对象中注册RpcResponse类和RpcRequest类</span></span><br><span class="line">        kryo.register(RpcResponse.class);</span><br><span class="line">        kryo.register(RpcRequest.class);</span><br><span class="line">        <span class="comment">//开启循环引用</span></span><br><span class="line">        kryo.setReferences(<span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">//关闭注册行为</span></span><br><span class="line">        kryo.setRegistrationRequired(<span class="keyword">false</span>);</span><br><span class="line">        <span class="keyword">return</span> kryo;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 序列化对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> obj</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">byte</span>[] serialize(Object obj) &#123;</span><br><span class="line">        <span class="keyword">try</span> (ByteArrayOutputStream byteArrayOutputStream = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">             <span class="comment">//创建output对象，序列化的目标数组为byteArrayOutputStream字节数组</span></span><br><span class="line">             Output output = <span class="keyword">new</span> Output(byteArrayOutputStream))&#123;</span><br><span class="line">            <span class="comment">//得到线程对应的kryo对象</span></span><br><span class="line">            Kryo kryo = kryoThreadLocal.get();</span><br><span class="line">            <span class="comment">//将对象序写入output对象，完成序列化</span></span><br><span class="line">            kryo.writeObject(output, obj);</span><br><span class="line">            <span class="comment">//防止内存泄漏（因为ThreadLocal中的key是弱引用，value是强引用）</span></span><br><span class="line">            kryoThreadLocal.remove();</span><br><span class="line">            <span class="comment">//调用output的toByte()方法，返回一个字符数组</span></span><br><span class="line">            <span class="keyword">return</span> output.toBytes();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            logger.error(<span class="string">&quot;序列化时有错误发生:&quot;</span>, e);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> SerializeException(<span class="string">&quot;序列化时有错误发生&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">deserialize</span><span class="params">(<span class="keyword">byte</span>[] bytes, Class&lt;?&gt; clazz)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (ByteArrayInputStream byteArrayInputStream = <span class="keyword">new</span> ByteArrayInputStream(bytes);</span><br><span class="line">             <span class="comment">//创建input对象，反序列化的目标数组为byteArrayOutputStream字节数组</span></span><br><span class="line">             Input input = <span class="keyword">new</span> Input(byteArrayInputStream)) &#123;</span><br><span class="line">            <span class="comment">//得到线程对应的kryo对象</span></span><br><span class="line">            Kryo kryo = kryoThreadLocal.get();</span><br><span class="line">            <span class="comment">//将字节数组的数据转换成对应的实体类对象</span></span><br><span class="line">            Object o = kryo.readObject(input, clazz);</span><br><span class="line">            <span class="comment">//防止内存泄漏</span></span><br><span class="line">            kryoThreadLocal.remove();</span><br><span class="line">            <span class="keyword">return</span> o;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            logger.error(<span class="string">&quot;反序列化时有错误发生:&quot;</span>, e);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> SerializeException(<span class="string">&quot;反序列化时有错误发生&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> SerializerCode.valueOf(<span class="string">&quot;KRYO&quot;</span>).getCode();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ThreadLocal-保存-kryo-对象"><a href="#ThreadLocal-保存-kryo-对象" class="headerlink" title="ThreadLocal 保存 kryo 对象"></a>ThreadLocal 保存 kryo 对象</h3><ul>
+<li><p>由于 kryo 不是线程安全的，所以每个线程都使用独立的 kryo，用ThreadLocal作为容器，当每个线程访问这个 <strong>Kryo</strong> 对象时，ThreadLocal 会为每个线程提供一个对象，各个线程互不影响。</p>
+<p><code>withInitial</code> 是一种 Lambda 构造方式，为每个线程创建一个 kryo 局部对象。</p>
+</li>
+<li><p>另一方面，因为 Kryo 实例的创建/初始化是相当昂贵的，所以在多线程的情况下，您应该池化 Kryo 实例。一个非常简单的解决方案是使用 ThreadLocal 将 Kryo实例绑定到 Threads。</p>
+</li>
+</ul>
+<h3 id="Kryo-使用"><a href="#Kryo-使用" class="headerlink" title="Kryo 使用"></a>Kryo 使用</h3><p><strong>IO</strong></p>
+<p>Kryo 的 Input 和 Output 接收一个 InputStream 和 OutputStream，Kryo  通常完成字节数组和对象的转换，所以常用的输入输出流实现为 ByteArrayInputStream/ByteArrayOutputStream。</p>
+<p><strong>Reading and writing（读与写）</strong></p>
+<p>Kryo有三组读写对象的方法：</p>
+<p>1.如果不知道对象的具体类，且对象可以为null：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kryo.writeClassAndObject(output, object);</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">Object object = kryo.readClassAndObject(input);</span><br><span class="line"><span class="keyword">if</span> (object <span class="keyword">instanceof</span> SomeClass) &#123;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.如果类已知且对象可以为null：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kryo.writeObjectOrNull(output, someObject);</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">SomeClass someObject = kryo.readObjectOrNull(input, SomeClass.class);</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.如果类已知且对象不能为null:（项目中使用）</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kryo.writeObject(output, someObject);</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">SomeClass someObject = kryo.readObject(input, SomeClass.class);</span><br></pre></td></tr></table></figure>
+
+<p><strong>Register（注册）与References（引用）</strong></p>
+<p>当Kryo写出一个对象的实例时，首先可能需要写出一些标识对象类的东西。默认情况下，写入完整类名，然后写入该对象的字节。后续出现的同一类对象图的对象用变长的int来写（using a variable length int）。写类的名字有点低效，所以类可以事先注册：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Kryo kryo = <span class="keyword">new</span> Kryo();</span><br><span class="line">kryo.register(SomeClass.class);</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">Output output = ...</span><br><span class="line">SomeClass someObject = ...</span><br><span class="line">kryo.writeObject(output, someObject);</span><br></pre></td></tr></table></figure>
+
+<p>这里，SomeClass 注册到了 Kryo，它将该类与一个 int 型的 ID 相关联。当 Kryo 写出 SomeClass 的一个实例时，它会写出这个 int  ID。这比写出类名更有效。在反序列化期间，注册的类必须具有序列化期间相同的 ID 。上面展示的注册方法分配下一个可用的最小整数  ID，这意味着类被注册的顺序十分重要。注册时也可以明确指定特定 ID，这样的话注册顺序就不重要了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Kryo kryo = <span class="keyword">new</span> Kryo();</span><br><span class="line">kryo.register(SomeClass.class, <span class="number">10</span>);</span><br><span class="line">kryo.register(AnotherClass.class, <span class="number">11</span>);</span><br><span class="line">kryo.register(YetAnotherClass.class, <span class="number">12</span>);</span><br></pre></td></tr></table></figure>
+
+<p>两个值得注意的点：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kryo.setRegistrationRequired(<span class="keyword">false</span>);<span class="comment">// 关闭注册行为</span></span><br><span class="line">kryo.setReferences(<span class="keyword">true</span>);<span class="comment">// 支持循环引用</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>Kryo 支持对注册行为，如 <strong>kryo.register(SomeClazz.class)**，这会赋予该 Class 一个从 0 开始的编号，但 Kryo 使用注册行为最大的问题在于，其不保证同一个 Class 每一次注册的号码相同，这与注册的顺序有关，也就意味着在</strong>不同的机器<strong>、</strong>同一个机器重启前后**都有可能拥有不同的编号，这会导致序列化产生问题，所以在分布式项目中，一般关闭注册行为。</p>
+</li>
+<li><p>还有需要注意的就是 Kryo 对循环引用的支持。References即引用，对A对象序列化时，默认情况下 Kryo会在每个成员对象第一次序列化时写入一个数字，该数字逻辑上就代表了对该成员对象的引用，如果后续有引用指向该成员对象，则直接序列化之前存入的数字即可，而不需要再次序列化对象本身。</p>
+<p>而 “循环引用” 是指，假设有一个 JavaBean，假设是一个销售订单（SalesOrder），这个订单下面有很多子订单，比如 List<SalesOrderLine> ，而销售子订单中又有其中一个包括一个销售订单，那么这就构成了”循环引用”。Kryo 默认是支持循环引用的，当你确定不会有循环引用发生的时候，可以通过 kryo.setReferences(false); 关闭循环引用检测，从而提高一些性能。关闭后虽然序列化速度更快，但是遇到循环引用，就会报 “栈内存溢出” 错误。</SalesOrderLine></p>
+<p>所以，我并不认为关闭它是一件好的选择，**大多数情况下，请保持 kryo.setReferences(true)**。</p>
+</li>
+</ul>
+<h1 id="2-3测试"><a href="#2-3测试" class="headerlink" title="2.3测试"></a>2.3测试</h1><p><strong>替换序列化器</strong></p>
+<p>我们只需要把 NettyServer 和 NettyClient 责任链中的 CommonEncoder 传入的参数改成 KryoSerializer 即可使用 Kryo 序列化。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pipeline.addLast(<span class="keyword">new</span> CommonEncoder(<span class="keyword">new</span> JsonSerializer()));</span><br><span class="line"><span class="comment">//将序列化器变成 KryoSerializer</span></span><br><span class="line">pipeline.addLast(<span class="keyword">new</span> CommonEncoder(<span class="keyword">new</span> KryoSerializer()));</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RPC%E9%A1%B9%E7%9B%AE/" rel="tag"><i class="fa fa-tag"></i>  RPC项目</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/03/%EF%BC%88%E4%B8%89%EF%BC%89RPC%E5%AE%9E%E7%8E%B0Netty%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/" rel="prev" title="（三）RPC实现Netty网络通信">
+      <i class="fa fa-chevron-left"></i> （三）RPC实现Netty网络通信
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/07/%EF%BC%88%E4%BA%94%EF%BC%89RPC%E5%AE%9E%E7%8E%B0%E5%9F%BA%E4%BA%8ENacos%E7%9A%84%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83/" rel="next" title="（五）RPC实现基于Nacos的注册中心">
+      （五）RPC实现基于Nacos的注册中心 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E5%BA%8F%E5%88%97%E5%8C%96%E5%8D%8F%E8%AE%AE%E9%80%89%E6%8B%A9"><span class="nav-number">1.</span> <span class="nav-text">1.序列化介绍以及序列化协议选择</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1%E5%BA%8F%E5%88%97%E5%8C%96%E5%92%8C%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">1.1序列化和反序列化相关概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2%E5%B8%B8%E8%A7%81%E5%BA%8F%E5%88%97%E5%8C%96%E5%8D%8F%E8%AE%AE%E5%AF%B9%E6%AF%94"><span class="nav-number">1.2.</span> <span class="nav-text">1.2常见序列化协议对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Kryo%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">2.Kryo序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-rpc-core%E6%B7%BB%E5%8A%A0-kryo-%E4%BE%9D%E8%B5%96"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 rpc-core添加 kryo 依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-rpc-core-%E5%BA%8F%E5%88%97%E5%8C%96%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 rpc-core 序列化接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ThreadLocal-%E4%BF%9D%E5%AD%98-kryo-%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.2.1.</span> <span class="nav-text">ThreadLocal 保存 kryo 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kryo-%E4%BD%BF%E7%94%A8"><span class="nav-number">2.2.2.</span> <span class="nav-text">Kryo 使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-3%E6%B5%8B%E8%AF%95"><span class="nav-number">3.</span> <span class="nav-text">2.3测试</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="老王家的小王呀"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">老王家的小王呀</p>
+  <div class="site-description" itemprop="description">及时当勉励，岁月不待人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangjin1996219" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangjin1996219" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:759161269@qq.com" title="E-Mail → mailto:759161269@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=569200212&auto=0&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王进</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">687k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">10:25</span>
+
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+   本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+<span class="post-meta-divider">|</span>
+<i class="fa fa-eye"></i><span id="busuanzi_container_site_pv">
+        本站访问量:<span id="busuanzi_value_site_pv"></span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'pQCeFPCYCP9sz6YcISYlyUqk-gzGzoHsz',
+      appKey     : 'RwrssV7QwO3le9kYtuScKNyD',
+      placeholder: "评论一句，前排打call~",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"symbols_count_time":null,"symbols":true,"time":false,"total_symbols":true,"total_time":false,"log":false});</script></body>
+</html>
+<!-- ҳ������С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

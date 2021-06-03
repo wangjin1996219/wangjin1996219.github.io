@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wangjin1996219.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Java多线程">
+<meta property="og:url" content="http://wangjin1996219.github.io/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Wj-Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-3/JVM运行时数据区域.png">
+<meta property="og:image" content="https://camo.githubusercontent.com/0f899d9813fbf1b8fc74724089a917ff7bdd93d60e8c4f685f0e850b51969154/687474703a2f2f6d792d626c6f672d746f2d7573652e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f31382d392d31342f32363033383433332e6a7067">
+<meta property="og:image" content="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/19-1-29/Java%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81.png">
+<meta property="og:image" content="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/19-1-29/Java+%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E5%8F%98%E8%BF%81.png">
+<meta property="og:image" content="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-6/synchronized%E5%85%B3%E9%94%AE%E5%AD%97%E5%8E%9F%E7%90%86.png">
+<meta property="og:image" content="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-6/synchronized%E5%85%B3%E9%94%AE%E5%AD%97%E5%8E%9F%E7%90%862.png">
+<meta property="og:image" content="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-6/%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%80%E8%87%B4.png">
+<meta property="og:image" content="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-6/volatile%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E5%8F%AF%E8%A7%81%E6%80%A7.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub/MyBlogs/source/_posts/2021-04-16-Java多线程/工厂.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub/MyBlogs/source/_posts/2021-04-16-Java多线程/线程池.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub/MyBlogs/source/_posts/2021-04-16-Java多线程/线程池流程.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub/MyBlogs/source/_posts/2021-04-16-Java多线程/Executor.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub/MyBlogs/source/_posts/2021-04-16-Java多线程/Executor框架的使用示意图.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub/MyBlogs/source/_posts/2021-04-16-Java多线程/创建线程池1.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub/MyBlogs/source/_posts/2021-04-16-Java多线程/创建线程池2.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub/MyBlogs/source/_posts/2021-04-16-Java多线程/图解线程池实现原理.png">
+<meta property="article:published_time" content="2021-04-16T03:24:37.000Z">
+<meta property="article:modified_time" content="2021-05-18T06:37:13.155Z">
+<meta property="article:author" content="老王家的小王呀">
+<meta property="article:tag" content="Java多线程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-3/JVM运行时数据区域.png">
+
+<link rel="canonical" href="http://wangjin1996219.github.io/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java多线程 | Wj-Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Wj-Blog" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wj-Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">27</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">67</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="老王家的小王呀">
+      <meta itemprop="description" content="及时当勉励，岁月不待人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wj-Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java多线程
+        </h1>
+
+        <div class="post-meta">
+        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-16 11:24:37" itemprop="dateCreated datePublished" datetime="2021-04-16T11:24:37+08:00">2021-04-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-18 14:37:13" itemprop="dateModified" datetime="2021-05-18T14:37:13+08:00">2021-05-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-meta-item leancloud_visitors" data-flag-title="Java多线程" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>28k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>25 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<a id="more"></a>
+
+<h1 id="1-线程与进程"><a href="#1-线程与进程" class="headerlink" title="1.线程与进程"></a>1.线程与进程</h1><p>同操作系统</p>
+<h1 id="2-简述线程与进程的关系"><a href="#2-简述线程与进程的关系" class="headerlink" title="2.简述线程与进程的关系"></a>2.简述线程与进程的关系</h1><h2 id="2-1JVM的角度看线程与进程"><a href="#2-1JVM的角度看线程与进程" class="headerlink" title="2.1JVM的角度看线程与进程"></a>2.1JVM的角度看线程与进程</h2><p>JVM运行时数据区如下图所示：</p>
+<div align="center">  
+<img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-3/JVM运行时数据区域.png" width="600px">
+</div>
+
+<p><strong>线程私有的：</strong></p>
+<ul>
+<li>程序计数器</li>
+<li>虚拟机栈</li>
+<li>本地方法栈</li>
+</ul>
+<p><strong>线程共享的：</strong></p>
+<ul>
+<li>堆</li>
+<li>方法区(JDK1.8 之后的元空间)</li>
+</ul>
+<p><strong>总结：</strong> 线程 是 进程 划分成的更小的运行单位。线程和进程最大的不同在于基本上各进程是独立的，而各线程则不一定，因为同一进程中的线程极有可能会相互影响。线程执行开销小，但不利于资源的管理和保护；而进程正相反，它的创建和切换的开销都比较大，但是资源是相互之间独立的。</p>
+<h3 id="程序计数器（线程私有）"><a href="#程序计数器（线程私有）" class="headerlink" title="程序计数器（线程私有）"></a>程序计数器（线程私有）</h3><p>程序计数器是一块较小的内存空间，可以看作是当前线程所执行的字节码的行号指示器。<strong>字节码解释器工作时通过改变这个计数器的值来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复等功能都需要依赖这个计数器来完成。</strong></p>
+<p>另外，<strong>为了线程切换后能恢复到正确的执行位置，每条线程都需要有一个独立的程序计数器，各线程之间计数器互不影响，独立存储，我们称这类内存区域为“线程私有”的内存。</strong></p>
+<p><strong>从上面的介绍中我们知道程序计数器主要有两个作用：</strong></p>
+<ol>
+<li>字节码解释器通过改变程序计数器来依次读取指令，从而实现代码的流程控制，如：顺序执行、选择、循环、异常处理。</li>
+<li>在多线程的情况下，程序计数器用于记录当前线程执行的位置，从而当线程被切换回来的时候能够知道该线程上次运行到哪儿了。</li>
+</ol>
+<p><strong>注意：程序计数器是唯一一个不会出现OutOfMemoryError的内存区域，它的生命周期随着线程的创建而创建，随着线程的结束而死亡。</strong></p>
+<h3 id="Java-虚拟机栈（线程私有）"><a href="#Java-虚拟机栈（线程私有）" class="headerlink" title="Java 虚拟机栈（线程私有）"></a>Java 虚拟机栈（线程私有）</h3><p><strong>与程序计数器一样，Java虚拟机栈也是线程私有的，它的生命周期和线程相同，描述的是 Java 方法执行的内存模型。</strong></p>
+<p><strong>Java 内存可以粗糙的区分为堆内存（Heap）和栈内存(Stack),其中栈就是现在说的虚拟机栈，或者说是虚拟机栈中局部变量表部分。</strong> （实际上，Java虚拟机栈是由一个个栈帧组成，而每个栈帧中都拥有：局部变量表、操作数栈、动态链接、方法出口信息。）</p>
+<p><strong>局部变量表主要存放了编译器可知的各种数据类型</strong>（boolean、byte、char、short、int、float、long、double）、<strong>对象引用</strong>（reference类型，它不同于对象本身，可能是一个指向对象起始地址的引用指针，也可能是指向一个代表对象的句柄或其他与此对象相关的位置）。</p>
+<p><strong>Java 虚拟机栈会出现两种异常：StackOverFlowError 和 OutOfMemoryError。</strong></p>
+<ul>
+<li><strong>StackOverFlowError：</strong> 若Java虚拟机栈的内存大小不允许动态扩展，那么当线程请求栈的深度超过当前Java虚拟机栈的最大深度的时候，就抛出StackOverFlowError异常。</li>
+<li><strong>OutOfMemoryError：</strong> 若 Java 虚拟机栈的内存大小允许动态扩展，且当线程请求栈时内存用完了，无法再动态扩展了，此时抛出OutOfMemoryError异常。</li>
+</ul>
+<p>Java 虚拟机栈也是线程私有的，每个线程都有各自的Java虚拟机栈，而且随着线程的创建而创建，随着线程的死亡而死亡。</p>
+<h3 id="本地方法栈（线程私有）"><a href="#本地方法栈（线程私有）" class="headerlink" title="本地方法栈（线程私有）"></a>本地方法栈（线程私有）</h3><p>和虚拟机栈所发挥的作用非常相似，区别是： <strong>虚拟机栈为虚拟机执行 Java 方法 （也就是字节码）服务，而本地方法栈则为虚拟机使用到的 Native 方法服务。</strong> 在 HotSpot 虚拟机中和 Java 虚拟机栈合二为一。</p>
+<p>本地方法被执行的时候，在本地方法栈也会创建一个栈帧，用于存放该本地方法的局部变量表、操作数栈、动态链接、出口信息。</p>
+<p>方法执行完毕后相应的栈帧也会出栈并释放内存空间，也会出现 StackOverFlowError 和 OutOfMemoryError 两种异常。</p>
+<h3 id="堆（线程共享）"><a href="#堆（线程共享）" class="headerlink" title="堆（线程共享）"></a>堆（线程共享）</h3><p>Java 虚拟机所管理的内存中最大的一块，Java 堆是所有线程共享的一块内存区域，在虚拟机启动时创建。<strong>此内存区域的唯一目的就是存放对象实例，几乎所有的对象实例以及数组都在这里分配内存。</strong></p>
+<h3 id="方法区（线程共享）"><a href="#方法区（线程共享）" class="headerlink" title="方法区（线程共享）"></a>方法区（线程共享）</h3><p><strong>方法区与 Java 堆一样，是各个线程共享的内存区域，它用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。</strong></p>
+<h3 id="运行时常量池（属于方法区）"><a href="#运行时常量池（属于方法区）" class="headerlink" title="运行时常量池（属于方法区）"></a>运行时常量池（属于方法区）</h3><p>运行时常量池是方法区的一部分。Class 文件中除了有类的版本、字段、方法、接口等描述信息外，还有常量池信息（用于存放编译期生成的各种字面量和符号引用）</p>
+<p>既然运行时常量池时方法区的一部分，自然受到方法区内存的限制，当常量池无法再申请到内存时会抛出 OutOfMemoryError 异常。</p>
+<p><strong>JDK1.7及之后版本的 JVM 已经将运行时常量池从方法区中移了出来，在 Java 堆（Heap）中开辟了一块区域存放运行时常量池。</strong></p>
+<img src="https://camo.githubusercontent.com/0f899d9813fbf1b8fc74724089a917ff7bdd93d60e8c4f685f0e850b51969154/687474703a2f2f6d792d626c6f672d746f2d7573652e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f31382d392d31342f32363033383433332e6a7067" alt="img" style="zoom:80%;">
+
+<p><strong>为什么虚拟机栈和本地方法栈以及程序计数器是线程私有的？</strong></p>
+<ul>
+<li>为了<strong>保证线程中的局部变量不被别的线程访问到</strong>，虚拟机栈和本地方法栈是线程私有的。</li>
+<li>程序计数器私有主要是为了<strong>线程切换后能恢复到正确的执行位置</strong>。</li>
+</ul>
+<h1 id="3-并发与并行的区别"><a href="#3-并发与并行的区别" class="headerlink" title="3.并发与并行的区别"></a>3.并发与并行的区别</h1><ul>
+<li><strong>并发：</strong> 同一<strong>时间段</strong>，多个任务都在执行 (单位时间内不一定同时执行)；</li>
+<li><strong>并行：</strong> <strong>单位时间</strong>内，多个任务同时执行。</li>
+</ul>
+<h1 id="4-为什么要使用多线程"><a href="#4-为什么要使用多线程" class="headerlink" title="4.为什么要使用多线程"></a>4.为什么要使用多线程</h1><p>先从总体上来说：</p>
+<ul>
+<li><strong>从计算机底层来说：</strong> 线程可以比作是轻量级的进程，是程序执行的最小单位,线程间的切换和调度的成本远远小于进程。另外，多核 CPU 时代意味着多个线程可以同时运行，这减少了线程上下文切换的开销。</li>
+<li><strong>从当代互联网发展趋势来说：</strong> 现在的系统动不动就要求百万级甚至千万级的并发量，而多线程并发编程正是开发高并发系统的基础，利用好多线程机制可以大大提高系统整体的并发能力以及性能。</li>
+</ul>
+<p>再深入到计算机底层来探讨：</p>
+<ul>
+<li><strong>单核时代：</strong> 在单核时代多线程主要是为了提高 CPU 和 IO 设备的综合利用率。举个例子：当只有一个线程的时候会导致 CPU 计算时，IO 设备空闲；进行 IO 操作时，CPU 空闲。我们可以简单地说这两者的利用率目前都是 50%左右。但是当有两个线程的时候就不一样了，当一个线程执行 CPU 计算时，另外一个线程可以进行 IO 操作，这样两个的利用率就可以在理想情况下达到 100%了。</li>
+<li><strong>多核时代:</strong> 多核时代多线程主要是为了提高 CPU 利用率。举个例子：假如我们要计算一个复杂的任务，我们只用一个线程的话，CPU 只会一个 CPU 核心被利用到，而创建多个线程就可以让多个 CPU 核心被利用到，这样就提高了 CPU 的利用率。</li>
+</ul>
+<h1 id="5-使用多线程可能带来什么问题"><a href="#5-使用多线程可能带来什么问题" class="headerlink" title="5.使用多线程可能带来什么问题"></a>5.使用多线程可能带来什么问题</h1><p>并发编程不一定总是能提高程序的运行效率，并且可能会带来一些问题：</p>
+<ul>
+<li>内存泄漏</li>
+<li>上下文切换（开销增大）</li>
+<li>死锁（资源分配）</li>
+<li>受限于硬件和软件的资源闲置问题</li>
+</ul>
+<h1 id="6-线程的生命周期和状态"><a href="#6-线程的生命周期和状态" class="headerlink" title="6.线程的生命周期和状态"></a>6.线程的生命周期和状态</h1><p>Java 线程在运行的生命周期中的指定时刻只可能处于下面 6 种不同状态的其中一个状态（图源《Java 并发编程艺术》4.1.4 节）。</p>
+<p><img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/19-1-29/Java%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81.png" alt="Java 线程的状态 "></p>
+<p>线程在生命周期中并不是固定处于某一个状态而是随着代码的执行在不同状态之间切换。Java 线程状态变迁如下图所示（图源《Java 并发编程艺术》4.1.4 节）：</p>
+<p><img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/19-1-29/Java+%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E5%8F%98%E8%BF%81.png" alt="Java 线程状态变迁 "></p>
+<p>由上图可以看出：线程创建之后它将处于 <strong>NEW（新建）</strong> 状态，调用 <code>start()</code> 方法后开始运行，线程这时候处于 <strong>READY（可运行）</strong> 状态。可运行状态的线程获得了 CPU 时间片（timeslice）后就处于 <strong>RUNNING（运行）</strong> 状态。</p>
+<p>当线程执行 <code>wait()</code>方法之后，线程进入 <strong>WAITING（等待）</strong> 状态。进入等待状态的线程需要依靠其他线程的通知才能够返回到运行状态，而 <strong>TIME_WAITING(超时等待)</strong> 状态相当于在等待状态的基础上增加了超时限制，比如通过 <code>sleep（long millis）</code>方法或 <code>wait（long millis）</code>方法可以将 Java 线程置于 TIMED WAITING 状态。当超时时间到达后 Java 线程将会返回到 RUNNABLE 状态。当线程调用同步方法时，在没有获取到锁的情况下，线程将会进入到 <strong>BLOCKED（阻塞）</strong> 状态。线程在执行 Runnable 的<code>run()</code>方法之后将会进入到 <strong>TERMINATED（终止）</strong> 状态。</p>
+<h2 id="6-1sleep-方法和-wait-方法"><a href="#6-1sleep-方法和-wait-方法" class="headerlink" title="6.1sleep() 方法和 wait() 方法"></a>6.1sleep() 方法和 wait() 方法</h2><p><strong>两者的区别：</strong></p>
+<ul>
+<li>两者最主要的区别在于：<strong>sleep 方法没有释放锁，而 wait 方法释放了锁</strong> </li>
+<li>wait 通常被用于线程间交互/通信，sleep 通常被用于暂停执行。（比如wait方法和条件变量结合使用唤醒一个线程，实现线程间的通信）</li>
+<li>wait() 方法被调用后，线程不会自动苏醒，需要别的线程调用同一个对象上的 notify() 或者 notifyAll() 方法。sleep() 方法执行完成后，线程会自动苏醒。或者可以使用 wait(long timeout)超时后线程会自动苏醒。</li>
+</ul>
+<p><strong>两者相同点：</strong></p>
+<ul>
+<li>两者都可以暂停线程的执行</li>
+</ul>
+<h2 id="6-2start-方法和run-方法"><a href="#6-2start-方法和run-方法" class="headerlink" title="6.2start() 方法和run() 方法"></a>6.2start() 方法和run() 方法</h2><p>new 一个 Thread，线程进入了新建状态</p>
+<ul>
+<li><strong>调用 start() 方法：</strong>会启动一个线程并使线程进入了就绪状态，当分配到时间片后就可以开始运行了。 start() 会执行线程的相应准备工作，然后自动执行 run() 方法的内容，这是真正的多线程工作。</li>
+<li><strong>直接执行 run() 方法：</strong>会把 run 方法当成一个 main 线程下的普通方法去执行，并不会在某个线程中执行它，所以这并不是多线程工作。</li>
+</ul>
+<p>run方法其实就是线程的方法体</p>
+<h1 id="7-上下文切换"><a href="#7-上下文切换" class="headerlink" title="7.上下文切换"></a>7.上下文切换</h1><p>当前任务在执行完 CPU 时间片切换到另一个任务之前会先保存自己的状态，以便下次再切换回这个任务时，可以再加载这个任务的状态。<strong>任务从保存到再加载的过程就是一次上下文切换</strong>。</p>
+<p>上下文切换通常是计算密集型的。也就是说，它需要相当可观的处理器时间，在每秒几十上百次的切换中，每次切换都需要纳秒量级的时间。所以，上下文切换对系统来说意味着消耗大量的 CPU 时间，事实上，可能是操作系统中时间消耗最大的操作。</p>
+<p>Linux 相比与其他操作系统（包括其他类 Unix 系统）有很多的优点，其中有一项就是，其上下文切换和模式切换的时间消耗非常少。</p>
+<h1 id="8-线程死锁"><a href="#8-线程死锁" class="headerlink" title="8.线程死锁"></a>8.线程死锁</h1><h2 id="8-1线程死锁条件"><a href="#8-1线程死锁条件" class="headerlink" title="8.1线程死锁条件"></a>8.1线程死锁条件</h2><p>线程死锁描述的是这样一种情况：多个线程同时被阻塞，它们中的一个或者全部都在等待某个资源被释放。由于线程被无限期地阻塞，因此程序不可能正常终止。</p>
+<p>线程死锁的发生离不开下面四个条件：</p>
+<ol>
+<li>互斥条件：该资源任意一个时刻只由一个线程占用。</li>
+<li>请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放。</li>
+<li>不剥夺条件:线程已获得的资源在末使用完之前不能被其他线程强行剥夺，只有自己使用完毕后才释放资源。</li>
+<li>循环等待条件:若干进程之间形成一种头尾相接的循环等待资源关系。</li>
+</ol>
+<h2 id="8-2如何避免线程死锁"><a href="#8-2如何避免线程死锁" class="headerlink" title="8.2如何避免线程死锁"></a>8.2如何避免线程死锁</h2><p>我上面说了产生死锁的四个必要条件，为了避免死锁，我们只要破坏产生死锁的四个条件中的其中一个就可以了。现在我们来挨个分析一下：</p>
+<ol>
+<li><strong>破坏互斥条件</strong> ：这个条件我们没有办法破坏，因为我们用锁本来就是想让他们互斥的（临界资源需要互斥访问）。</li>
+<li><strong>破坏请求与保持条件</strong> ：一次性申请所有的资源。</li>
+<li><strong>破坏不剥夺条件</strong> ：占用部分资源的线程进一步申请其他资源时，如果申请不到，可以主动释放它占有的资源。</li>
+<li><strong>破坏循环等待条件</strong> ：靠按序申请资源来预防。按某一顺序申请资源，释放资源则反序释放。破坏循环等待条件。</li>
+</ol>
+<h1 id="9-synchronized-关键字"><a href="#9-synchronized-关键字" class="headerlink" title="9.synchronized 关键字"></a>9.synchronized 关键字</h1><h2 id="9-1synchronized-关键字的介绍"><a href="#9-1synchronized-关键字的介绍" class="headerlink" title="9.1synchronized 关键字的介绍"></a>9.1synchronized 关键字的介绍</h2><p>synchronized关键字解决的是多个线程之间访问资源的同步性，synchronized关键字可以保证被它修饰的方法或者代码块在任意时刻只能有一个线程执行。</p>
+<h2 id="9-2synchronized关键字最主要的三种使用方式"><a href="#9-2synchronized关键字最主要的三种使用方式" class="headerlink" title="9.2synchronized关键字最主要的三种使用方式"></a>9.2synchronized关键字最主要的三种使用方式</h2><ul>
+<li><strong>修饰实例方法:</strong> 作用于当前对象实例加锁，进入同步代码前要获得当前对象实例的锁</li>
+<li><strong>修饰静态方法:</strong> 也就是给当前类加锁，会作用于类的所有对象实例，因为静态成员不属于任何一个实例对象，是类成员（ static 表明这是该类的一个静态资源，不管new了多少个对象，只有一份）。所以如果一个线程A调用一个实例对象的非静态 synchronized 方法，而线程B需要调用这个实例对象所属类的静态 synchronized 方法，是允许的，不会发生互斥现象，<strong>因为访问静态 synchronized 方法占用的锁是当前类的锁，而访问非静态 synchronized 方法占用的锁是当前实例对象锁</strong>。</li>
+<li><strong>修饰代码块:</strong> 指定加锁对象，对给定对象加锁，进入同步代码块前要获得给定对象的锁。</li>
+</ul>
+<p><strong>总结：</strong> synchronized 关键字加到 static 静态方法和 synchronized(class)代码块上都是是给 Class 类上锁。synchronized 关键字加到实例方法上是给对象实例上锁。尽量不要使用 synchronized(String a) 因为JVM中，字符串常量池具有缓存功能！</p>
+<p>下面以一个常见的面试题为例讲解一下 synchronized 关键字的具体使用：</p>
+<p><strong>双重校验锁实现对象单例（线程安全）</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton uniqueInstance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> Singleton <span class="title">getUniqueInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="comment">//先判断对象是否已经实例过，没有实例化过才进入加锁代码</span></span><br><span class="line">        <span class="keyword">if</span> (uniqueInstance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//类对象加锁</span></span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (uniqueInstance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    uniqueInstance = <span class="keyword">new</span> Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> uniqueInstance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>为什么要用 volatile 关键字修饰uniqueInstance？</strong></p>
+<p>uniqueInstance = new Singleton()——这段代码其实是分为三步执行：</p>
+<ol>
+<li>为 uniqueInstance 分配内存空间</li>
+<li>初始化 uniqueInstance</li>
+<li>将 uniqueInstance 指向分配的内存地址</li>
+</ol>
+<p>由于 JVM 具有指令重排的特性，所以并不能保证这三个操作的先后顺序，执行顺序有可能变成 1-&gt;3-&gt;2。也就是说有可能JVM会为新的Singleton实例分配空间，然后直接赋值给uniqueInstance成员，然后再去初始化这个Singleton实例。指令重排在单线程环境下不会出现问题，但是在多线程环境下会导致一个线程获得还没有初始化的实例。例如，线程 T1 执行了 1 和 3，此时 T2 调用 getUniqueInstance() 后发现 uniqueInstance 不为空，因此返回 uniqueInstance，但此时 uniqueInstance 还未被初始化。</p>
+<p>使用 volatile 可以禁止 JVM 的指令重排，保证在多线程环境下也能正常运行。</p>
+<h2 id="9-3synchronized-关键字的底层原理"><a href="#9-3synchronized-关键字的底层原理" class="headerlink" title="9.3synchronized 关键字的底层原理"></a>9.3synchronized 关键字的底层原理</h2><p><strong>synchronized 关键字底层原理属于 JVM 层面。</strong></p>
+<p><strong>1.synchronized 同步语句块的情况</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedDemo</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;synchronized 代码块&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过 JDK 自带的 javap 命令查看 SynchronizedDemo 类的相关字节码信息：首先切换到类的对应目录执行 <code>javac SynchronizedDemo.java</code> 命令生成编译后的 .class 文件，然后执行<code>javap -c -s -v -l SynchronizedDemo.class</code>。</p>
+<p><img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-6/synchronized%E5%85%B3%E9%94%AE%E5%AD%97%E5%8E%9F%E7%90%86.png" alt="synchronized关键字原理"></p>
+<p>从上面我们可以看出：</p>
+<p><strong>synchronized 同步语句块的实现使用的是 monitorenter 和 monitorexit 指令，其中 monitorenter 指令指向同步代码块的开始位置，monitorexit 指令则指明同步代码块的结束位置。</strong> 当执行 monitorenter 指令时，线程试图获取锁也就是获取 monitor(monitor对象存在于每个Java对象的对象头中，synchronized 锁便是通过这种方式获取锁的，也是为什么Java中任意对象可以作为锁的原因) 的持有权。当计数器为0则可以成功获取，获取后将锁计数器设为1也就是加1。相应的在执行 monitorexit 指令后，将锁计数器设为0，表明锁被释放。如果获取对象锁失败，那当前线程就要阻塞等待，直到锁被另外一个线程释放为止。</p>
+<p><strong>2.synchronized 修饰方法的的情况</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedDemo2</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;synchronized 方法&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>依然获取SynchronizedDemo2类的相关字节码信息：</p>
+<p><img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-6/synchronized%E5%85%B3%E9%94%AE%E5%AD%97%E5%8E%9F%E7%90%862.png" alt="synchronized关键字原理"></p>
+<p>synchronized 修饰的方法并没有 monitorenter 指令和 monitorexit 指令，取得代之的确实是 ACC_SYNCHRONIZED 标识，该标识指明了该方法是一个同步方法，JVM 通过该 ACC_SYNCHRONIZED 访问标志来辨别一个方法是否声明为同步方法，从而执行相应的同步调用。</p>
+<h2 id="9-4-JDK1-6-之后的synchronized-关键字底层做了哪些优化"><a href="#9-4-JDK1-6-之后的synchronized-关键字底层做了哪些优化" class="headerlink" title="9.4 JDK1.6 之后的synchronized 关键字底层做了哪些优化"></a>9.4 JDK1.6 之后的synchronized 关键字底层做了哪些优化</h2><p>JDK1.6 对锁的实现引入了大量的优化，如偏向锁、轻量级锁、自旋锁、适应性自旋锁、锁消除、锁粗化等技术来减少锁操作的开销。</p>
+<p>锁主要存在四种状态，依次是：无锁状态、偏向锁状态、轻量级锁状态、重量级锁状态，他们会随着竞争的激烈而逐渐升级。注意锁可以升级不可降级，这种策略是为了提高获得锁和释放锁的效率。</p>
+<h2 id="9-5-synchronized和ReentrantLock-的区别"><a href="#9-5-synchronized和ReentrantLock-的区别" class="headerlink" title="9.5 synchronized和ReentrantLock 的区别"></a>9.5 synchronized和ReentrantLock 的区别</h2><p><strong>① 两者都是可重入锁</strong></p>
+<p>两者都是可重入锁。“可重入锁”概念是：自己可以再次获取自己的内部锁。比如一个线程获得了某个对象的锁，此时这个对象锁还没有释放，当其再次想要获取这个对象的锁的时候还是可以获取的，如果不可锁重入的话，就会造成死锁。同一个线程每次获取锁，锁的计数器都自增1，所以要等到锁的计数器下降为0时才能释放锁。</p>
+<p><strong>② synchronized 依赖于 JVM 而 ReentrantLock 依赖于 API</strong></p>
+<p>synchronized 是依赖于 JVM 实现的，前面我们也讲到了 虚拟机团队在 JDK1.6 为 synchronized 关键字进行了很多优化，但是这些优化都是在虚拟机层面实现的，并没有直接暴露给我们。ReentrantLock 是 JDK 层面实现的（也就是 API 层面，需要 lock() 和 unlock() 方法配合 try/finally 语句块来完成），所以我们可以通过查看它的源代码，来看它是如何实现的。</p>
+<p><strong>③ ReentrantLock 比 synchronized 增加了一些高级功能</strong></p>
+<p>相比synchronized，ReentrantLock增加了一些高级功能。主要来说主要有三点：<strong>①等待可中断；②可实现公平锁；③可实现选择性通知（锁可以绑定多个条件）</strong></p>
+<ul>
+<li><strong>ReentrantLock提供了一种能够中断等待锁的线程的机制</strong>，通过lock.lockInterruptibly()来实现这个机制。也就是说正在等待的线程可以选择放弃等待，改为处理其他事情。</li>
+<li><strong>ReentrantLock可以指定是公平锁还是非公平锁。而synchronized只能是非公平锁。所谓的公平锁就是先等待的线程先获得锁。</strong> ReentrantLock默认情况是非公平的，可以通过 ReentrantLock类的<code>ReentrantLock(boolean fair)</code>构造方法来制定是否是公平的。</li>
+<li>synchronized关键字与wait()和notify()/notifyAll()方法相结合可以实现等待/通知机制，ReentrantLock类当然也可以实现，但是需要借助于Condition接口与newCondition() 方法。Condition是JDK1.5之后才有的，它具有很好的灵活性，比如可以实现多路通知功能也就是在一个Lock对象中可以创建多个Condition实例（即对象监视器），<strong>线程对象可以注册在指定的Condition中，从而可以有选择性的进行线程通知，在调度线程上更加灵活。 在使用notify()/notifyAll()方法进行通知时，被通知的线程是由 JVM 选择的，用ReentrantLock类结合Condition实例可以实现“选择性通知”</strong> ，这个功能非常重要，而且是Condition接口默认提供的。而synchronized关键字就相当于整个Lock对象中只有一个Condition实例，所有的线程都注册在它一个身上。如果执行notifyAll()方法的话就会通知所有处于等待状态的线程这样会造成很大的效率问题，而Condition实例的signalAll()方法 只会唤醒注册在该Condition实例中的所有等待线程。</li>
+</ul>
+<p>如果你想使用上述功能，那么选择ReentrantLock是一个不错的选择。</p>
+<p><strong>④ 性能已不是选择标准</strong></p>
+<h1 id="10-volatile关键字"><a href="#10-volatile关键字" class="headerlink" title="10.volatile关键字"></a>10.volatile关键字</h1><h2 id="10-1Java内存模型"><a href="#10-1Java内存模型" class="headerlink" title="10.1Java内存模型"></a>10.1Java内存模型</h2><p><strong>注意：</strong>JVM运行程序的实体是线程，而每个线程创建时JVM都会为其创建一个工作内存(有些地方称为栈空间)，用于存储线程私有的数据，而Java内存模型中规定所有变量都存储在主内存，主内存是共享内存区域，所有线程都可以访问，但线程对变量的操作(读取赋值等)必须在工作内存中进行，首先要将变量从主内存拷贝的自己的工作内存空间，然后对变量进行操作，操作完成后再将变量写回主内存，不能直接操作主内存中的变量，工作内存中存储着主内存中的变量副本拷贝</p>
+<p>（我感觉<strong>主内存</strong>可以认为是<strong>堆</strong>，<strong>本地内存</strong>可以认为是<strong>栈</strong>）</p>
+<p>在 JDK1.2 之前，Java的内存模型实现总是从<strong>主存</strong>（即共享内存）读取变量，是不需要进行特别的注意的。而在当前的 Java 内存模型下，线程可以把变量保存<strong>本地内存</strong>（比如机器的寄存器）中，而不是直接在主存中进行读写。这就可能造成一个线程在主存中修改了一个变量的值，而另外一个线程还继续使用它在寄存器中的变量值的拷贝，造成<strong>数据的不一致</strong>。</p>
+<p><img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-6/%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%80%E8%87%B4.png" alt="数据不一致"></p>
+<p>要解决这个问题，就需要把变量声明为<strong>volatile</strong>，这就指示 JVM，这个变量是不稳定的，每次使用它都到主存中进行读取。</p>
+<p>说白了， <strong>volatile</strong> 关键字的主要作用就是保证变量的可见性然后还有一个作用是防止指令重排序。</p>
+<p><img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-6/volatile%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E5%8F%AF%E8%A7%81%E6%80%A7.png" alt="volatile关键字的可见性"></p>
+<h2 id="10-2并发编程的三个重要特性"><a href="#10-2并发编程的三个重要特性" class="headerlink" title="10.2并发编程的三个重要特性"></a>10.2并发编程的三个重要特性</h2><ol>
+<li><strong>原子性</strong> : 一个的操作或者多次操作，要么所有的操作全部都得到执行并且不会收到任何因素的干扰而中断，要么所有的操作都执行，要么都不执行。<code>synchronized </code> 可以保证代码片段的原子性。</li>
+<li><strong>可见性</strong>  ：当一个线程对共享变量进行了修改，那么另外的线程都是立即可以看到修改后的最新值。<code>volatile</code> 关键字可以保证共享变量的可见性。</li>
+<li><strong>有序性</strong> ：代码在执行的过程中的先后顺序，Java 在编译器以及运行期间的优化，代码的执行顺序未必就是编写代码时候的顺序。<code>volatile</code> 关键字可以禁止指令进行重排序优化。（单例模式）</li>
+</ol>
+<h2 id="10-3synchronized-关键字和-volatile-关键字"><a href="#10-3synchronized-关键字和-volatile-关键字" class="headerlink" title="10.3synchronized 关键字和 volatile 关键字"></a>10.3synchronized 关键字和 volatile 关键字</h2><ul>
+<li><strong>volatile关键字</strong>是线程同步的<strong>轻量级实现</strong>，所以<strong>volatile性能肯定比synchronized关键字要好</strong>。但是<strong>volatile关键字只能用于变量而synchronized关键字可以修饰方法以及代码块</strong>。<strong>实际开发中使用 synchronized 关键字的场景还是更多一些</strong>。</li>
+<li><strong>多线程访问volatile关键字不会发生阻塞，而synchronized关键字可能会发生阻塞</strong></li>
+<li><strong>volatile关键字能保证数据的可见性，但不能保证数据的原子性。synchronized关键字两者都能保证。</strong></li>
+<li><strong>volatile关键字主要用于解决变量在多个线程之间的可见性，而 synchronized关键字解决的是多个线程之间访问资源的同步性。</strong></li>
+</ul>
+<h1 id="11-ThreadLocal"><a href="#11-ThreadLocal" class="headerlink" title="11.ThreadLocal"></a>11.ThreadLocal</h1><h2 id="11-1ThreadLocal简介"><a href="#11-1ThreadLocal简介" class="headerlink" title="11.1ThreadLocal简介"></a>11.1ThreadLocal简介</h2><p>通常情况下，我们创建的变量是可以被任何一个线程访问并修改的。<strong>如果想实现每一个线程都有自己的专属本地变量该如何解决呢？</strong>  <strong><code>ThreadLocal</code>类主要解决的就是让每个线程绑定自己的值，可以将<code>ThreadLocal</code>类形象的比喻成存放数据的盒子，盒子中可以存储每个线程的私有数据。</strong></p>
+<p>如果你<strong>创建了一个<code>ThreadLocal</code>变量</strong>，那么<strong>访问这个变量的每个线程都会有这个变量的本地副本</strong>，这也是<code>ThreadLocal</code>变量名的由来。<strong>他们可以使用 <code>get（）</code> 和 <code>set（）</code> 方法来获取默认值或将其值更改为当前线程所存的副本的值，从而避免了线程安全问题</strong>。</p>
+<h2 id="11-2ThreadLocal原理"><a href="#11-2ThreadLocal原理" class="headerlink" title="11.2ThreadLocal原理"></a>11.2ThreadLocal原理</h2><p>从 <code>Thread</code>类源代码入手。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Thread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"> ......</span><br><span class="line"><span class="comment">//与此线程有关的ThreadLocal值。由ThreadLocal类维护</span></span><br><span class="line">ThreadLocal.ThreadLocalMap threadLocals = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//与此线程有关的InheritableThreadLocal值。由InheritableThreadLocal类维护</span></span><br><span class="line">ThreadLocal.ThreadLocalMap inheritableThreadLocals = <span class="keyword">null</span>;</span><br><span class="line"> ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面<code>Thread</code>类 源代码可以看出<code>Thread</code> 类中有一个 <code>threadLocals</code> 和 一个  <code>inheritableThreadLocals</code> 变量，它们都是 <code>ThreadLocalMap</code>  类型的变量,我们可以把 <code>ThreadLocalMap</code>  理解为<code>ThreadLocal</code> 类实现的定制化的 <code>HashMap</code>。默认情况下这两个变量都是null，只有当前线程调用 <code>ThreadLocal</code> 类的 <code>set</code>或<code>get</code>方法时才创建它们，实际上调用这两个方法的时候，我们调用的是<code>ThreadLocalMap</code>类对应的 <code>get()</code>、<code>set() </code>方法。</p>
+<p><code>ThreadLocal</code>类的<code>set()</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">        Thread t = Thread.currentThread();</span><br><span class="line">        ThreadLocalMap map = getMap(t);</span><br><span class="line">        <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">            map.set(<span class="keyword">this</span>, value);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            createMap(t, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">ThreadLocalMap <span class="title">getMap</span><span class="params">(Thread t)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> t.threadLocals;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过上面这些内容，我们足以通过猜测得出结论：<strong>最终的变量是放在了当前线程的 <code>ThreadLocalMap</code> 中，并不是存在 <code>ThreadLocal</code> 上，<code>ThreadLocal</code> 可以理解为只是<code>ThreadLocalMap</code>的封装，传递了变量值。</strong> <code>ThrealLocal</code> 类中可以通过<code>Thread.currentThread()</code>获取到当前线程对象后，直接通过<code>getMap(Thread t)</code>可以访问到该线程的<code>ThreadLocalMap</code>对象。</p>
+<p><strong><code>ThreadLocal</code> 内部维护的是一个类似 <code>Map</code> 的<code>ThreadLocalMap</code> 数据结构，<code>key</code> 为当前对象的 <code>Thread</code> 对象，值为 Object 对象。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ThreadLocalMap(ThreadLocal&lt;?&gt; firstKey, Object firstValue) &#123;</span><br><span class="line"> ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>比如我们在同一个线程中声明了两个 <code>ThreadLocal</code> 对象的话，会使用 <code>Thread</code>内部都是使用仅有那个<code>ThreadLocalMap</code> 存放数据的，<code>ThreadLocalMap</code>的 key 就是 <code>ThreadLocal</code>对象，value 就是 <code>ThreadLocal</code> 对象调用<code>set</code>方法设置的值。</p>
+<h2 id="11-3ThreadLocal-内存泄露问题"><a href="#11-3ThreadLocal-内存泄露问题" class="headerlink" title="11.3ThreadLocal 内存泄露问题"></a>11.3ThreadLocal 内存泄露问题</h2><p><code>ThreadLocalMap</code> 中使用的 key 为 <code>ThreadLocal</code> 的弱引用,而 value 是强引用。所以，如果 <code>ThreadLocal</code> 没有被外部强引用的情况下，在垃圾回收的时候，key 会被清理掉，而 value 不会被清理掉。这样一来，<code>ThreadLocalMap</code> 中就会出现key为null的Entry。假如我们不做任何措施的话，value 永远无法被GC 回收，这个时候就可能会产生内存泄露。ThreadLocalMap实现中已经考虑了这种情况，在调用 <code>set()</code>、<code>get()</code>、<code>remove()</code> 方法的时候，会清理掉 key 为 null 的记录。使用完 <code>ThreadLocal</code>方法后 最好手动调用<code>remove()</code>方法</p>
+<h1 id="12-线程池"><a href="#12-线程池" class="headerlink" title="12.线程池"></a>12.线程池</h1><h2 id="12-1为什么要用线程池"><a href="#12-1为什么要用线程池" class="headerlink" title="12.1为什么要用线程池"></a>12.1为什么要用线程池</h2><ul>
+<li><strong>降低资源消耗：</strong>线程池通常会维护一些线程（数量为 <code>corePoolSize</code>），这些线程被重复使用来执行不同的任务，任务完成后不会销毁。在待处理任务量很大的时候，通过对线程资源的复用，避免了线程的频繁创建与销毁，从而降低了系统资源消耗。</li>
+<li><strong>提高响应速度：</strong>由于线程池维护了一批 <code>alive</code> 状态的线程，当任务到达时，不需要再创建线程，而是直接由这些线程去执行任务，从而减少了任务的等待时间。</li>
+<li><strong>提高线程的可管理性：</strong>使用线程池可以对线程进行统一的分配，调优和监控。</li>
+</ul>
+<h2 id="12-2线程池设计思路"><a href="#12-2线程池设计思路" class="headerlink" title="12.2线程池设计思路"></a>12.2线程池设计思路</h2><p>将线程池的实现类比于工厂的生产流程：</p>
+<img src="/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub\MyBlogs\source\_posts\2021-04-16-Java多线程\工厂.png" style="zoom:110%;">
+
+<p>工厂各部分的映射：</p>
+<ul>
+<li>工厂——线程池</li>
+<li>订单——任务（Runnable）</li>
+<li>正式工人——核心线程</li>
+<li>临时工——普通线程</li>
+<li>仓库（仓库中堆积了生产原料）——任务队列</li>
+<li>调度员——getTask()</li>
+</ul>
+<blockquote>
+<p><strong>getTask()是一个方法，将任务队列中的任务调度给空闲线程</strong></p>
+</blockquote>
+<p>经过映射形成线程池的流程如下：</p>
+<img src="/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub\MyBlogs\source\_posts\2021-04-16-Java多线程\线程池.png" style="zoom:110%;">
+
+<p>那么线程池的流程可以提炼成：</p>
+<img src="/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub\MyBlogs\source\_posts\2021-04-16-Java多线程\线程池流程.png" style="zoom:90%;">
+
+<h2 id="12-3Executor-框架"><a href="#12-3Executor-框架" class="headerlink" title="12.3Executor 框架"></a>12.3Executor 框架</h2><h3 id="12-3-1Executor-框架简介"><a href="#12-3-1Executor-框架简介" class="headerlink" title="12.3.1Executor 框架简介"></a>12.3.1Executor 框架简介</h3><p>Executor 框架是 Java5 之后引进的，在 Java 5 之后，通过JDK提供的 Executor 框架来启动线程比使用 Thread 的 start 方法更好，除了更易管理，效率更好（用线程池实现，节约开销）外。</p>
+<p>此外，Executor 框架不仅包括了线程池的管理，还提供了线程工厂、队列以及拒绝策略等，Executor 框架就是为了更好地控制多线程。</p>
+<p>还有关键的一点：有助于避免 this 逃逸问题。</p>
+<blockquote>
+<p><strong>this 逃逸：</strong>指在构造函数返回之前其他线程就持有该对象的引用. 调用尚未构造完全的对象的方法可能引发令人疑惑的错误。</p>
+</blockquote>
+<h3 id="12-3-2Executor-框架结构（三大部分）"><a href="#12-3-2Executor-框架结构（三大部分）" class="headerlink" title="12.3.2Executor 框架结构（三大部分）"></a>12.3.2Executor 框架结构（三大部分）</h3><img src="/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub\MyBlogs\source\_posts\2021-04-16-Java多线程\Executor.png" style="zoom:90%;">
+
+<p><strong>1) 任务(<code>Runnable</code> /<code>Callable</code>)</strong></p>
+<p>执行任务需要实现的 <strong><code>Runnable</code> 接口</strong> 或 <strong><code>Callable</code>接口</strong>。**<code>Runnable</code> 接口<strong>或 **<code>Callable</code> 接口</strong> 实现类都可以被 <strong><code>ThreadPoolExecutor</code></strong> 或 <strong><code>ScheduledThreadPoolExecutor</code></strong> 执行。</p>
+<p><strong>2) 任务的执行(<code>Executor</code>)</strong></p>
+<p>如下图所示，包括任务执行机制的核心接口 <strong><code>Executor</code></strong> ，以及继承自 <code>Executor</code> 接口的 <strong><code>ExecutorService</code> 接口。<code>ThreadPoolExecutor</code></strong> 和 <strong><code>ScheduledThreadPoolExecutor</code></strong> 这两个关键类实现了 <strong>ExecutorService 接口</strong>。</p>
+<p><strong>3) 异步计算的结果(<code>Future</code>)</strong></p>
+<p><strong><code>Future</code></strong> 接口以及 <code>Future</code> 接口的实现类 <strong><code>FutureTask</code></strong> 类都可以代表异步计算的结果。</p>
+<p>当我们把 <strong><code>Runnable</code>接口</strong> 或 <strong><code>Callable</code> 接口</strong> 的实现类提交给 <strong><code>ThreadPoolExecutor</code></strong> 或 <strong><code>ScheduledThreadPoolExecutor</code></strong> 执行。（调用 <code>submit()</code> 方法时会返回一个 <strong><code>FutureTask</code></strong> 对象）</p>
+<h3 id="12-3-3-Executor-框架的使用示意图"><a href="#12-3-3-Executor-框架的使用示意图" class="headerlink" title="12.3.3 Executor 框架的使用示意图"></a>12.3.3 Executor 框架的使用示意图</h3><img src="/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub\MyBlogs\source\_posts\2021-04-16-Java多线程\Executor框架的使用示意图.png" style="zoom:90%;">
+
+<ol>
+<li><strong>主线程首先要创建实现 <code>Runnable</code> 或者 <code>Callable</code> 接口的任务对象。</strong></li>
+<li><strong>把创建完成的实现 <code>Runnable</code>/<code>Callable</code>接口的对象直接交给 <code>ExecutorService</code> 执行</strong>: <code>ExecutorService.execute（Runnable command）</code>）或者也可以把 <code>Runnable</code> 对象或<code>Callable</code> 对象提交给 <code>ExecutorService</code> 执行（<code>ExecutorService.submit（Runnable task）</code>或 <code>ExecutorService.submit（Callable &lt;T&gt; task）</code>）。</li>
+<li><strong>如果执行 <code>ExecutorService.submit（…）</code>，<code>ExecutorService</code> 将返回一个实现<code>Future</code>接口的对象</strong>（我们刚刚也提到过了执行 <code>execute()</code>方法和 <code>submit()</code>方法的区别，<code>submit()</code>会返回一个 <code>FutureTask 对象）。由于 FutureTask</code> 实现了 <code>Runnable</code>，我们也可以创建 <code>FutureTask</code>，然后直接交给 <code>ExecutorService</code> 执行。</li>
+<li><strong>最后，主线程可以执行 <code>FutureTask.get()</code>方法来等待任务执行完成。主线程也可以执行 <code>FutureTask.cancel（boolean mayInterruptIfRunning）</code>来取消此任务的执行。</strong></li>
+</ol>
+<h3 id="12-3-4ThreadPoolExecutor-类介绍"><a href="#12-3-4ThreadPoolExecutor-类介绍" class="headerlink" title="12.3.4ThreadPoolExecutor 类介绍"></a>12.3.4ThreadPoolExecutor 类介绍</h3><p><strong>1）ThreadPoolExecutor 类构造方法</strong></p>
+<p><code>ThreadPoolExecutor</code> 类中提供的四个构造方法。我们来看最长的那个，其余三个都是在这个构造方法的基础上产生（其他几个构造方法说白点都是给定某些默认参数的构造方法比如默认制定拒绝策略是什么），比较简单。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 用给定的初始参数创建一个新的ThreadPoolExecutor。</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,//线程池的核心线程数量</span></span></span><br><span class="line"><span class="function"><span class="params">                             <span class="keyword">int</span> maximumPoolSize,//线程池的最大线程数</span></span></span><br><span class="line"><span class="function"><span class="params">                             <span class="keyword">long</span> keepAliveTime,//当线程数大于核心线程数时，多余的空闲线程存活的最长时间</span></span></span><br><span class="line"><span class="function"><span class="params">                             TimeUnit unit,//时间单位</span></span></span><br><span class="line"><span class="function"><span class="params">                             BlockingQueue&lt;Runnable&gt; workQueue,//任务队列，用来储存等待执行任务的队列</span></span></span><br><span class="line"><span class="function"><span class="params">                             ThreadFactory threadFactory,//线程工厂，用来创建线程，一般默认即可</span></span></span><br><span class="line"><span class="function"><span class="params">                             RejectedExecutionHandler handler//拒绝策略，当提交的任务过多而不能及时处理时，我们可以定制策略来处理任务</span></span></span><br><span class="line"><span class="function"><span class="params">                              )</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (corePoolSize &lt; <span class="number">0</span> ||</span><br><span class="line">           maximumPoolSize &lt;= <span class="number">0</span> ||</span><br><span class="line">           maximumPoolSize &lt; corePoolSize ||</span><br><span class="line">           keepAliveTime &lt; <span class="number">0</span>)</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException();</span><br><span class="line">       <span class="keyword">if</span> (workQueue == <span class="keyword">null</span> || threadFactory == <span class="keyword">null</span> || handler == <span class="keyword">null</span>)</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">       <span class="keyword">this</span>.corePoolSize = corePoolSize;</span><br><span class="line">       <span class="keyword">this</span>.maximumPoolSize = maximumPoolSize;</span><br><span class="line">       <span class="keyword">this</span>.workQueue = workQueue;</span><br><span class="line">       <span class="keyword">this</span>.keepAliveTime = unit.toNanos(keepAliveTime);</span><br><span class="line">       <span class="keyword">this</span>.threadFactory = threadFactory;</span><br><span class="line">       <span class="keyword">this</span>.handler = handler;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>线程池创建的核心参数：</strong></p>
+<p><strong><code>ThreadPoolExecutor</code> 3 个最重要的参数：</strong></p>
+<ul>
+<li><strong><code>corePoolSize</code> :</strong> 核心线程数线程数定义了最小可以同时运行的线程数量。</li>
+<li><strong><code>maximumPoolSize</code> :</strong> 当队列中存放的任务达到队列容量的时候，当前可以同时运行的线程数量变为最大线程数。</li>
+<li><strong><code>workQueue</code>:</strong> 当新任务来的时候会先判断当前运行的线程数量是否达到核心线程数，如果达到的话，新任务就会被存放在队列中。</li>
+</ul>
+<p><code>ThreadPoolExecutor</code>其他常见参数:</p>
+<ol>
+<li><strong><code>keepAliveTime</code></strong>:当线程池中的线程数量大于 <code>corePoolSize</code> 的时候，如果这时没有新的任务提交，核心线程外的线程不会立即销毁，而是会等待，直到等待的时间超过了 <code>keepAliveTime</code>才会被回收销毁；</li>
+<li><strong><code>unit</code></strong> : <code>keepAliveTime</code> 参数的时间单位。</li>
+<li><strong><code>threadFactory</code></strong> :executor 创建新线程的时候会用到。</li>
+<li><strong><code>handler</code></strong> :拒绝策略。当线程池中线程数达到<code>maximumPoolSize</code>且<code>workQueue</code>打满时，后续提交的任务将被拒绝，<code>handler</code>可以指定用什么方式拒绝任务。</li>
+</ol>
+<p><strong>ThreadPoolExecutor 拒绝策略定义:</strong></p>
+<p>如果当前同时运行的线程数量达到最大线程数量并且队列也已经被放满了任务时，<code>ThreadPoolTaskExecutor</code> 定义一些策略:</p>
+<ul>
+<li>**<code>ThreadPoolExecutor.AbortPolicy</code>**：抛出 <code>RejectedExecutionException</code>来拒绝新任务的处理。</li>
+<li>**<code>ThreadPoolExecutor.CallerRunsPolicy</code>**：直接运行这个任务的<code>run</code>方法，但并非是由线程池的线程处理，而是交由任务的调用线程处理。</li>
+<li><strong><code>ThreadPoolExecutor.DiscardPolicy</code>：</strong> 不处理新任务，直接丢弃掉。</li>
+<li><strong><code>ThreadPoolExecutor.DiscardOldestPolicy</code>：</strong> 将当前处于等待队列列头的等待任务强行取出，然后再试图将当前被拒绝的任务提交到线程池执行。</li>
+</ul>
+<h2 id="12-4线程池的创建方式"><a href="#12-4线程池的创建方式" class="headerlink" title="12.4线程池的创建方式"></a>12.4线程池的创建方式</h2><p><strong>方式一： ThreadPoolExecutor 的构造函数创建（推荐使用）</strong></p>
+<img src="/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub\MyBlogs\source\_posts\2021-04-16-Java多线程\创建线程池1.png" style="zoom:90%;">
+
+<p>我们可以自己直接调用 ThreadPoolExecutor 的构造函数来自己创建线程池。在创建的同时，给 BlockQueue 指定容量就可以了。示例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> ExecutorService executor = <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">13</span>, <span class="number">13</span>,</span><br><span class="line">        <span class="number">60L</span>, TimeUnit.SECONDS,</span><br><span class="line">        <span class="keyword">new</span> ArrayBlockingQueue(<span class="number">13</span>));</span><br></pre></td></tr></table></figure>
+
+<p>这种情况下，一旦提交的线程数超过当前可用线程数时，就会抛出 java.util.concurrent.RejectedExecutionException，这是因为当前线程池使用的队列是有边界队列，队列已经满了便无法继续处理新的请求。但是异常（Exception）总比发生错误（Error）要好。</p>
+<p><strong>方式二：通过 Executor 框架的工具类 Executors 来实现</strong></p>
+<img src="/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub\MyBlogs\source\_posts\2021-04-16-Java多线程\创建线程池2.png" style="zoom:90%;">
+
+<p>通过 Executors 工具类我们可以很轻松的创建我们下面将要说的几种线程池。但是实际上我们一般都不是直接使用 Java 提供好的线程池，另外在《阿里巴巴 Java 开发手册》中强制线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 构造函数 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Executors 返回线程池对象的弊端如下：</span><br><span class="line"></span><br><span class="line">FixedThreadPool 和 SingleThreadExecutor ： 允许请求的队列长度为 Integer.MAX_VALUE,可能堆积大量的请求，从而导致OOM。</span><br><span class="line">CachedThreadPool 和 ScheduledThreadPool ： 允许创建的线程数量为 Integer.MAX_VALUE ，可能会创建大量线程，从而导致OOM。</span><br></pre></td></tr></table></figure>
+
+<h2 id="12-5-Java-提供提供的几种线程池"><a href="#12-5-Java-提供提供的几种线程池" class="headerlink" title="12.5 Java 提供提供的几种线程池"></a>12.5 Java 提供提供的几种线程池</h2><ul>
+<li><strong>FixedThreadPool：</strong> 该方法返回一个固定线程数量的线程池。该线程池中的线程数量始终不变。当有一个新的任务提交时，线程池中若有空闲线程，则立即执行。若没有，则新的任务会被暂存在一个任务队列中，待有线程空闲时，便处理在任务队列中的任务。</li>
+<li><strong>SingleThreadExecutor：</strong> 方法返回一个只有一个线程的线程池。若多余一个任务被提交到该线程池，任务会被保存在一个任务队列中，待线程空闲，按先入先出的顺序执行队列中的任务。</li>
+<li><strong>CachedThreadPool：</strong> 该方法返回一个可根据实际情况调整线程数量的线程池。线程池的线程数量不确定，但若有空闲线程可以复用，则会优先使用可复用的线程。若所有线程均在工作，又有新的任务提交，则会创建新的线程处理任务。所有线程在当前任务执行完毕后，将返回线程池进行复用。</li>
+<li><strong>ScheduledThreadPoolExecutor：</strong> 主要用来在给定的延迟后运行任务，或者定期执行任务。ScheduledThreadPoolExecutor 又分为：ScheduledThreadPoolExecutor（包含多个线程）和 SingleThreadScheduledExecutor （只包含一个线程）两种。</li>
+</ul>
+<h4 id="各种线程池的适用场景介绍"><a href="#各种线程池的适用场景介绍" class="headerlink" title="各种线程池的适用场景介绍"></a>各种线程池的适用场景介绍</h4><ul>
+<li><strong>FixedThreadPool：</strong> 适用于为了满足资源管理需求，而需要限制当前线程数量的应用场景。它适用于负载比较重的服务器；</li>
+<li><strong>SingleThreadExecutor：</strong> 适用于需要保证顺序地执行各个任务并且在任意时间点，不会有多个线程是活动的应用场景；</li>
+<li><strong>CachedThreadPool：</strong> 适用于执行很多的短期异步任务的小程序，或者是负载较轻的服务器；</li>
+<li><strong>ScheduledThreadPoolExecutor：</strong> 适用于需要多个后台执行周期任务，同时为了满足资源管理需求而需要限制后台线程的数量的应用场景；</li>
+<li><strong>SingleThreadScheduledExecutor：</strong> 适用于需要单个后台线程执行周期任务，同时保证顺序地执行各个任务的应用场景。</li>
+</ul>
+<h2 id="12-6ThreadPoolExecutor-使用示例"><a href="#12-6ThreadPoolExecutor-使用示例" class="headerlink" title="12.6ThreadPoolExecutor 使用示例"></a>12.6ThreadPoolExecutor 使用示例</h2><p><strong>Runnable+ThreadPoolExecutor</strong></p>
+<h3 id="12-6-1示例代码"><a href="#12-6-1示例代码" class="headerlink" title="12.6.1示例代码"></a>12.6.1示例代码</h3><p><strong>首先创建一个 <code>Runnable</code> 接口的实现类：</strong><code>MyRunnable.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 这是一个简单的Runnable类，需要大约5秒钟来执行其任务。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> shuang.kou</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String command;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyRunnable</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.command = s;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">&quot; Start. Time = &quot;</span> + <span class="keyword">new</span> Date());</span><br><span class="line">        processCommand();</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">&quot; End. Time = &quot;</span> + <span class="keyword">new</span> Date());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">processCommand</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.command;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>编写测试程序：</strong><code>ThreadPoolExecutorDemo.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.ArrayBlockingQueue;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadPoolExecutorDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CORE_POOL_SIZE = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_POOL_SIZE = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> QUEUE_CAPACITY = <span class="number">100</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Long KEEP_ALIVE_TIME = <span class="number">1L</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//使用阿里巴巴推荐的创建线程池的方式</span></span><br><span class="line">        <span class="comment">//通过ThreadPoolExecutor构造函数自定义参数创建</span></span><br><span class="line">        ThreadPoolExecutor executor = <span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">                CORE_POOL_SIZE,</span><br><span class="line">                MAX_POOL_SIZE,</span><br><span class="line">                KEEP_ALIVE_TIME,</span><br><span class="line">                TimeUnit.SECONDS,</span><br><span class="line">                <span class="keyword">new</span> ArrayBlockingQueue&lt;&gt;(QUEUE_CAPACITY),</span><br><span class="line">                <span class="keyword">new</span> ThreadPoolExecutor.CallerRunsPolicy());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="comment">//创建WorkerThread对象（WorkerThread类实现了Runnable 接口）</span></span><br><span class="line">            Runnable worker = <span class="keyword">new</span> MyRunnable(<span class="string">&quot;&quot;</span> + i);</span><br><span class="line">            <span class="comment">//执行Runnable</span></span><br><span class="line">            executor.execute(worker);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//终止线程池</span></span><br><span class="line">        executor.shutdown();</span><br><span class="line">        <span class="keyword">while</span> (!executor.isTerminated()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;Finished all threads&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到我们上面的代码指定了：</p>
+<ol>
+<li><code>corePoolSize</code>: 核心线程数为 5。</li>
+<li><code>maximumPoolSize</code> ：最大线程数 10</li>
+<li><code>keepAliveTime</code> : 等待时间为 1L。</li>
+<li><code>unit</code>: 等待时间的单位为 TimeUnit.SECONDS。</li>
+<li><code>workQueue</code>：任务队列为 <code>ArrayBlockingQueue</code>，并且容量为 100;</li>
+<li><code>handler</code>:饱和策略为 <code>CallerRunsPolicy</code>。</li>
+</ol>
+<p><strong>Output：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">pool-1-thread-3 Start. Time &#x3D; Sun Apr 12 11:14:37 CST 2020</span><br><span class="line">pool-1-thread-5 Start. Time &#x3D; Sun Apr 12 11:14:37 CST 2020</span><br><span class="line">pool-1-thread-2 Start. Time &#x3D; Sun Apr 12 11:14:37 CST 2020</span><br><span class="line">pool-1-thread-1 Start. Time &#x3D; Sun Apr 12 11:14:37 CST 2020</span><br><span class="line">pool-1-thread-4 Start. Time &#x3D; Sun Apr 12 11:14:37 CST 2020</span><br><span class="line">pool-1-thread-3 End. Time &#x3D; Sun Apr 12 11:14:42 CST 2020</span><br><span class="line">pool-1-thread-4 End. Time &#x3D; Sun Apr 12 11:14:42 CST 2020</span><br><span class="line">pool-1-thread-1 End. Time &#x3D; Sun Apr 12 11:14:42 CST 2020</span><br><span class="line">pool-1-thread-5 End. Time &#x3D; Sun Apr 12 11:14:42 CST 2020</span><br><span class="line">pool-1-thread-1 Start. Time &#x3D; Sun Apr 12 11:14:42 CST 2020</span><br><span class="line">pool-1-thread-2 End. Time &#x3D; Sun Apr 12 11:14:42 CST 2020</span><br><span class="line">pool-1-thread-5 Start. Time &#x3D; Sun Apr 12 11:14:42 CST 2020</span><br><span class="line">pool-1-thread-4 Start. Time &#x3D; Sun Apr 12 11:14:42 CST 2020</span><br><span class="line">pool-1-thread-3 Start. Time &#x3D; Sun Apr 12 11:14:42 CST 2020</span><br><span class="line">pool-1-thread-2 Start. Time &#x3D; Sun Apr 12 11:14:42 CST 2020</span><br><span class="line">pool-1-thread-1 End. Time &#x3D; Sun Apr 12 11:14:47 CST 2020</span><br><span class="line">pool-1-thread-4 End. Time &#x3D; Sun Apr 12 11:14:47 CST 2020</span><br><span class="line">pool-1-thread-5 End. Time &#x3D; Sun Apr 12 11:14:47 CST 2020</span><br><span class="line">pool-1-thread-3 End. Time &#x3D; Sun Apr 12 11:14:47 CST 2020</span><br><span class="line">pool-1-thread-2 End. Time &#x3D; Sun Apr 12 11:14:47 CST 2020</span><br></pre></td></tr></table></figure>
+
+<p><strong>代码输出解释：</strong></p>
+<p>我们在代码中模拟了 10 个任务，我们配置的核心线程数为 5 、等待队列容量为 100 ，所以每次只可能存在 5 个任务同时执行，剩下的 5 个任务会被放到等待队列中去。当前的5个任务中如果有任务被执行完了，线程池就会去拿新的任务执行。</p>
+<h3 id="12-6-2线程池原理分析"><a href="#12-6-2线程池原理分析" class="headerlink" title="12.6.2线程池原理分析"></a>12.6.2线程池原理分析</h3><p>通过代码输出结果可以看出：<strong>线程首先会先执行 5 个任务，然后这些任务有任务被执行完的话，就会去拿新的任务执行。</strong></p>
+<p><strong>为了搞懂线程池的原理，我们需要首先分析一下 <code>execute</code>方法。</strong>在 上面的 Demo 中我们使用 <code>executor.execute(worker)</code>来提交一个任务到线程池中去，这个方法非常重要，下面我们来看看它的源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 存放线程池的运行状态 (runState) 和线程池内有效线程的数量 (workerCount)</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger ctl = <span class="keyword">new</span> AtomicInteger(ctlOf(RUNNING, <span class="number">0</span>));</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">workerCountOf</span><span class="params">(<span class="keyword">int</span> c)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> c &amp; CAPACITY;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//任务队列</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> BlockingQueue&lt;Runnable&gt; workQueue;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable command)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 如果任务为null，则抛出异常。</span></span><br><span class="line">        <span class="keyword">if</span> (command == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">        <span class="comment">// ctl 中保存的线程池当前的一些状态信息</span></span><br><span class="line">        <span class="keyword">int</span> c = ctl.get();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//  下面会涉及到 3 步 操作</span></span><br><span class="line">        <span class="comment">// 1.首先判断当前线程池中之行的任务数量是否小于 corePoolSize</span></span><br><span class="line">        <span class="comment">// 如果小于的话，通过addWorker(command, true)新建一个线程，并将任务(command)添加到该线程中；然后，启动该线程从而执行任务。</span></span><br><span class="line">        <span class="keyword">if</span> (workerCountOf(c) &lt; corePoolSize) &#123;</span><br><span class="line">            <span class="keyword">if</span> (addWorker(command, <span class="keyword">true</span>))</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            c = ctl.get();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 2.如果当前之行的任务数量大于等于 corePoolSize 的时候就会走到这里</span></span><br><span class="line">        <span class="comment">// 通过 isRunning 方法判断线程池状态，线程池处于 RUNNING 状态才会被并且队列可以加入任务，该任务才会被加入进去</span></span><br><span class="line">        <span class="keyword">if</span> (isRunning(c) &amp;&amp; workQueue.offer(command)) &#123;</span><br><span class="line">            <span class="keyword">int</span> recheck = ctl.get();</span><br><span class="line">            <span class="comment">// 再次获取线程池状态，如果线程池状态不是 RUNNING 状态就需要从任务队列中移除任务，并尝试判断线程是否全部执行完毕。同时执行拒绝策略。</span></span><br><span class="line">            <span class="keyword">if</span> (!isRunning(recheck) &amp;&amp; remove(command))</span><br><span class="line">                reject(command);</span><br><span class="line">                <span class="comment">// 如果当前线程池为空就新创建一个线程并执行。</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (workerCountOf(recheck) == <span class="number">0</span>)</span><br><span class="line">                addWorker(<span class="keyword">null</span>, <span class="keyword">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//3. 通过addWorker(command, false)新建一个线程，并将任务(command)添加到该线程中；然后，启动该线程从而执行任务。</span></span><br><span class="line">        <span class="comment">//如果addWorker(command, false)执行失败，则通过reject()执行相应的拒绝策略的内容。</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (!addWorker(command, <span class="keyword">false</span>))</span><br><span class="line">            reject(command);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现原理如下图所示：</p>
+<img src="/2021/04/16/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/GitHub\MyBlogs\source\_posts\2021-04-16-Java多线程\图解线程池实现原理.png" style="zoom:110%;">
+
+<p><strong><code>addWorker</code> 这个方法主要用来创建新的工作线程，如果返回true说明创建和启动工作线程成功，否则的话返回的就是false。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 全局锁，并发操作必备</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">final</span> ReentrantLock mainLock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">   <span class="comment">// 跟踪线程池的最大大小，只有在持有全局锁mainLock的前提下才能访问此集合</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">int</span> largestPoolSize;</span><br><span class="line">   <span class="comment">// 工作线程集合，存放线程池中所有的（活跃的）工作线程，只有在持有全局锁mainLock的前提下才能访问此集合</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">final</span> HashSet&lt;Worker&gt; workers = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">   <span class="comment">//获取线程池状态</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">runStateOf</span><span class="params">(<span class="keyword">int</span> c)</span>     </span>&#123; <span class="keyword">return</span> c &amp; ~CAPACITY; &#125;</span><br><span class="line">   <span class="comment">//判断线程池的状态是否为 Running</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isRunning</span><span class="params">(<span class="keyword">int</span> c)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> c &lt; SHUTDOWN;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 添加新的工作线程到线程池</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> firstTask 要执行</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> core参数为true的话表示使用线程池的基本大小，为false使用线程池最大大小</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> 添加成功就返回true否则返回false</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">addWorker</span><span class="params">(Runnable firstTask, <span class="keyword">boolean</span> core)</span> </span>&#123;</span><br><span class="line">       retry:</span><br><span class="line">       <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">           <span class="comment">//这两句用来获取线程池的状态</span></span><br><span class="line">           <span class="keyword">int</span> c = ctl.get();</span><br><span class="line">           <span class="keyword">int</span> rs = runStateOf(c);</span><br><span class="line"></span><br><span class="line">           <span class="comment">// Check if queue empty only if necessary.</span></span><br><span class="line">           <span class="keyword">if</span> (rs &gt;= SHUTDOWN &amp;&amp;</span><br><span class="line">               ! (rs == SHUTDOWN &amp;&amp;</span><br><span class="line">                  firstTask == <span class="keyword">null</span> &amp;&amp;</span><br><span class="line">                  ! workQueue.isEmpty()))</span><br><span class="line">               <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">           <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">              <span class="comment">//获取线程池中线程的数量</span></span><br><span class="line">               <span class="keyword">int</span> wc = workerCountOf(c);</span><br><span class="line">               <span class="comment">// core参数为true的话表明队列也满了，线程池大小变为 maximumPoolSize </span></span><br><span class="line">               <span class="keyword">if</span> (wc &gt;= CAPACITY ||</span><br><span class="line">                   wc &gt;= (core ? corePoolSize : maximumPoolSize))</span><br><span class="line">                   <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">              <span class="comment">//原子操作将workcount的数量加1</span></span><br><span class="line">               <span class="keyword">if</span> (compareAndIncrementWorkerCount(c))</span><br><span class="line">                   <span class="keyword">break</span> retry;</span><br><span class="line">               <span class="comment">// 如果线程的状态改变了就再次执行上述操作</span></span><br><span class="line">               c = ctl.get();  </span><br><span class="line">               <span class="keyword">if</span> (runStateOf(c) != rs)</span><br><span class="line">                   <span class="keyword">continue</span> retry;</span><br><span class="line">               <span class="comment">// else CAS failed due to workerCount change; retry inner loop</span></span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">// 标记工作线程是否启动成功</span></span><br><span class="line">       <span class="keyword">boolean</span> workerStarted = <span class="keyword">false</span>;</span><br><span class="line">       <span class="comment">// 标记工作线程是否创建成功</span></span><br><span class="line">       <span class="keyword">boolean</span> workerAdded = <span class="keyword">false</span>;</span><br><span class="line">       Worker w = <span class="keyword">null</span>;</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">       </span><br><span class="line">           w = <span class="keyword">new</span> Worker(firstTask);</span><br><span class="line">           <span class="keyword">final</span> Thread t = w.thread;</span><br><span class="line">           <span class="keyword">if</span> (t != <span class="keyword">null</span>) &#123;</span><br><span class="line">             <span class="comment">// 加锁</span></span><br><span class="line">               <span class="keyword">final</span> ReentrantLock mainLock = <span class="keyword">this</span>.mainLock;</span><br><span class="line">               mainLock.lock();</span><br><span class="line">               <span class="keyword">try</span> &#123;</span><br><span class="line">                  <span class="comment">//获取线程池状态</span></span><br><span class="line">                   <span class="keyword">int</span> rs = runStateOf(ctl.get());</span><br><span class="line">                  <span class="comment">//rs &lt; SHUTDOWN 如果线程池状态依然为RUNNING,并且线程的状态是存活的话，就会将工作线程添加到工作线程集合中</span></span><br><span class="line">                 <span class="comment">//(rs=SHUTDOWN &amp;&amp; firstTask == null)如果线程池状态小于STOP，也就是RUNNING或者SHUTDOWN状态下，同时传入的任务实例firstTask为null，则需要添加到工作线程集合和启动新的Worker</span></span><br><span class="line">                  <span class="comment">// firstTask == null证明只新建线程而不执行任务</span></span><br><span class="line">                   <span class="keyword">if</span> (rs &lt; SHUTDOWN ||</span><br><span class="line">                       (rs == SHUTDOWN &amp;&amp; firstTask == <span class="keyword">null</span>)) &#123;</span><br><span class="line">                       <span class="keyword">if</span> (t.isAlive()) <span class="comment">// precheck that t is startable</span></span><br><span class="line">                           <span class="keyword">throw</span> <span class="keyword">new</span> IllegalThreadStateException();</span><br><span class="line">                       workers.add(w);</span><br><span class="line">                      <span class="comment">//更新当前工作线程的最大容量</span></span><br><span class="line">                       <span class="keyword">int</span> s = workers.size();</span><br><span class="line">                       <span class="keyword">if</span> (s &gt; largestPoolSize)</span><br><span class="line">                           largestPoolSize = s;</span><br><span class="line">                     <span class="comment">// 工作线程是否启动成功</span></span><br><span class="line">                       workerAdded = <span class="keyword">true</span>;</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                   <span class="comment">// 释放锁</span></span><br><span class="line">                   mainLock.unlock();</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="comment">//// 如果成功添加工作线程，则调用Worker内部的线程实例t的Thread#start()方法启动真实的线程实例</span></span><br><span class="line">               <span class="keyword">if</span> (workerAdded) &#123;</span><br><span class="line">                   t.start();</span><br><span class="line">                 <span class="comment">/// 标记线程启动成功</span></span><br><span class="line">                   workerStarted = <span class="keyword">true</span>;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">          <span class="comment">// 线程启动失败，需要从工作线程中移除对应的Worker</span></span><br><span class="line">           <span class="keyword">if</span> (! workerStarted)</span><br><span class="line">               addWorkerFailed(w);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> workerStarted;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="12-7几个常见的对比"><a href="#12-7几个常见的对比" class="headerlink" title="12.7几个常见的对比"></a>12.7几个常见的对比</h2><h3 id="12-7-1Runnable-vs-Callable"><a href="#12-7-1Runnable-vs-Callable" class="headerlink" title="12.7.1Runnable vs Callable"></a>12.7.1Runnable vs Callable</h3><p><strong><code>Runnable</code> 接口</strong>不会返回结果或抛出检查异常，但是**<code>Callable</code> 接口<strong>可以。所以，如果任务不需要返回结果或抛出异常推荐使用 **<code>Runnable</code> 接口</strong>，这样代码看起来会更加简洁。</p>
+<p>工具类 <code>Executors</code> 可以实现 <code>Runnable</code> 对象和 <code>Callable</code> 对象之间的相互转换。</p>
+<h3 id="12-7-2-execute-vs-submit"><a href="#12-7-2-execute-vs-submit" class="headerlink" title="12.7.2 execute() vs submit()"></a>12.7.2 execute() vs submit()</h3><ol>
+<li><strong><code>execute()</code>方法用于提交不需要返回值的任务，所以无法判断任务是否被线程池执行成功与否；</strong></li>
+<li><strong><code>submit()</code>方法用于提交需要返回值的任务。线程池会返回一个 <code>Future</code> 类型的对象，通过这个 <code>Future</code> 对象可以判断任务是否执行成功</strong>，并且可以通过 <code>Future</code> 的 <code>get()</code>方法来获取返回值，<code>get()</code>方法会阻塞当前线程直到任务完成，而使用 <code>get（long timeout，TimeUnit unit）</code>方法则会阻塞当前线程一段时间后立即返回，这时候有可能任务没有执行完。</li>
+</ol>
+<p>我们以**<code>AbstractExecutorService</code>**接口中的一个 <code>submit</code> 方法为例子来看看源代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Future&lt;?&gt; submit(Runnable task) &#123;</span><br><span class="line">    <span class="keyword">if</span> (task == <span class="keyword">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">    RunnableFuture&lt;Void&gt; ftask = newTaskFor(task, <span class="keyword">null</span>);</span><br><span class="line">    execute(ftask);</span><br><span class="line">    <span class="keyword">return</span> ftask;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面方法调用的 <code>newTaskFor</code> 方法返回了一个 <code>FutureTask</code> 对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> &lt;T&gt; <span class="function">RunnableFuture&lt;T&gt; <span class="title">newTaskFor</span><span class="params">(Runnable runnable, T value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> FutureTask&lt;T&gt;(runnable, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们再来看看<code>execute()</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable command)</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="12-7-3-shutdown-VS-shutdownNow"><a href="#12-7-3-shutdown-VS-shutdownNow" class="headerlink" title="12.7.3 shutdown() VS shutdownNow()"></a>12.7.3 shutdown() VS shutdownNow()</h3><ul>
+<li><strong><code>shutdown（）</code></strong> :关闭线程池，线程池的状态变为 <code>SHUTDOWN</code>。线程池不再接受新任务了，但是队列里的任务得执行完毕。</li>
+<li><strong><code>shutdownNow（）</code></strong> :关闭线程池，线程的状态变为 <code>STOP</code>。线程池会终止当前正在运行的任务，并停止处理排队的任务并返回正在等待执行的 List。</li>
+</ul>
+<h3 id="12-7-4-isTerminated-VS-isShutdown"><a href="#12-7-4-isTerminated-VS-isShutdown" class="headerlink" title="12.7.4 isTerminated() VS isShutdown()"></a>12.7.4 isTerminated() VS isShutdown()</h3><ul>
+<li><strong><code>isShutDown</code></strong> 当调用 <code>shutdown()</code> 方法后返回为 true。</li>
+<li><strong><code>isTerminated</code></strong> 当调用 <code>shutdown()</code> 方法后，并且所有提交的任务完成后返回为 true</li>
+</ul>
+<h3 id="12-7-5示例代码"><a href="#12-7-5示例代码" class="headerlink" title="12.7.5示例代码"></a>12.7.5示例代码</h3><p><strong>Callable+ThreadPoolExecutor</strong></p>
+<p><strong>首先创建一个 <code>Callable</code> 接口的实现类：</strong><code>MyCallable.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.Callable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyCallable</span> <span class="keyword">implements</span> <span class="title">Callable</span>&lt;<span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        <span class="comment">//返回执行当前 Callable 的线程名字</span></span><br><span class="line">        <span class="keyword">return</span> Thread.currentThread().getName();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>测试代码：</strong><code>CallableDemo.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CallableDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CORE_POOL_SIZE = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_POOL_SIZE = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> QUEUE_CAPACITY = <span class="number">100</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Long KEEP_ALIVE_TIME = <span class="number">1L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//使用阿里巴巴推荐的创建线程池的方式</span></span><br><span class="line">        <span class="comment">//通过ThreadPoolExecutor构造函数自定义参数创建</span></span><br><span class="line">        ThreadPoolExecutor executor = <span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">                CORE_POOL_SIZE,</span><br><span class="line">                MAX_POOL_SIZE,</span><br><span class="line">                KEEP_ALIVE_TIME,</span><br><span class="line">                TimeUnit.SECONDS,</span><br><span class="line">                <span class="keyword">new</span> ArrayBlockingQueue&lt;&gt;(QUEUE_CAPACITY),</span><br><span class="line">                <span class="keyword">new</span> ThreadPoolExecutor.CallerRunsPolicy());</span><br><span class="line"></span><br><span class="line">        List&lt;Future&lt;String&gt;&gt; futureList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        Callable&lt;String&gt; callable = <span class="keyword">new</span> MyCallable();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="comment">//提交任务到线程池</span></span><br><span class="line">            Future&lt;String&gt; future = executor.submit(callable);</span><br><span class="line">            <span class="comment">//将返回值 future 添加到 list，我们可以通过 future 获得 执行 Callable 得到的返回值</span></span><br><span class="line">            futureList.add(future);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Future&lt;String&gt; fut : futureList) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="keyword">new</span> Date() + <span class="string">&quot;::&quot;</span> + fut.get());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException | ExecutionException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//关闭线程池</span></span><br><span class="line">        executor.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Output:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Wed Nov <span class="number">13</span> <span class="number">13</span>:<span class="number">40</span>:<span class="number">41</span> CST <span class="number">2019</span>::pool-<span class="number">1</span>-thread-<span class="number">1</span></span><br><span class="line">Wed Nov <span class="number">13</span> <span class="number">13</span>:<span class="number">40</span>:<span class="number">42</span> CST <span class="number">2019</span>::pool-<span class="number">1</span>-thread-<span class="number">2</span></span><br><span class="line">Wed Nov <span class="number">13</span> <span class="number">13</span>:<span class="number">40</span>:<span class="number">42</span> CST <span class="number">2019</span>::pool-<span class="number">1</span>-thread-<span class="number">3</span></span><br><span class="line">Wed Nov <span class="number">13</span> <span class="number">13</span>:<span class="number">40</span>:<span class="number">42</span> CST <span class="number">2019</span>::pool-<span class="number">1</span>-thread-<span class="number">4</span></span><br><span class="line">Wed Nov <span class="number">13</span> <span class="number">13</span>:<span class="number">40</span>:<span class="number">42</span> CST <span class="number">2019</span>::pool-<span class="number">1</span>-thread-<span class="number">5</span></span><br><span class="line">Wed Nov <span class="number">13</span> <span class="number">13</span>:<span class="number">40</span>:<span class="number">42</span> CST <span class="number">2019</span>::pool-<span class="number">1</span>-thread-<span class="number">3</span></span><br><span class="line">Wed Nov <span class="number">13</span> <span class="number">13</span>:<span class="number">40</span>:<span class="number">43</span> CST <span class="number">2019</span>::pool-<span class="number">1</span>-thread-<span class="number">2</span></span><br><span class="line">Wed Nov <span class="number">13</span> <span class="number">13</span>:<span class="number">40</span>:<span class="number">43</span> CST <span class="number">2019</span>::pool-<span class="number">1</span>-thread-<span class="number">1</span></span><br><span class="line">Wed Nov <span class="number">13</span> <span class="number">13</span>:<span class="number">40</span>:<span class="number">43</span> CST <span class="number">2019</span>::pool-<span class="number">1</span>-thread-<span class="number">4</span></span><br><span class="line">Wed Nov <span class="number">13</span> <span class="number">13</span>:<span class="number">40</span>:<span class="number">43</span> CST <span class="number">2019</span>::pool-<span class="number">1</span>-thread-<span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p>可以得到任务的执行情况，包括是否成功提交，还有任务的返回结果等信息。</p>
+<h1 id="13-生产者消费者模式"><a href="#13-生产者消费者模式" class="headerlink" title="13.生产者消费者模式"></a>13.生产者消费者模式</h1><h2 id="13-1生产者和消费者模式描述"><a href="#13-1生产者和消费者模式描述" class="headerlink" title="13.1生产者和消费者模式描述"></a>13.1生产者和消费者模式描述</h2><p>生产者和消费者问题是线程模型中的经典问题：生产者和消费者在同一时间段内共用同一存储空间，生产者向空间里生产数据，而消费者从空间里取走数据。</p>
+<h2 id="13-2存在的问题——线程安全问题"><a href="#13-2存在的问题——线程安全问题" class="headerlink" title="13.2存在的问题——线程安全问题"></a>13.2存在的问题——线程安全问题</h2><ol>
+<li>当生产者比消费者快时，消费者会漏掉一部分数据；</li>
+<li>当消费者比生产者快时，消费者会取走相同的数据。</li>
+</ol>
+<p><strong>解决方式：</strong>要考虑线程安全的问题，解决此问题有三种方式</p>
+<ol>
+<li>同步代码块 </li>
+<li>同步方法 </li>
+<li>lock锁机制， 通过创建Lock对象，采用lock()加锁，unlock()解锁，来保护指定的代码块</li>
+</ol>
+<h2 id="13-3解决方式"><a href="#13-3解决方式" class="headerlink" title="13.3解决方式"></a>13.3解决方式</h2><h3 id="13-3-1同步方法"><a href="#13-3-1同步方法" class="headerlink" title="13.3.1同步方法"></a>13.3.1同步方法</h3><p><strong>wait()和notify()方法</strong></p>
+<ul>
+<li>wait()：当缓冲区已满/空时，生产者或消费者线程停止自己的执行，释放锁，使自己处于等待状态，让其它线程执行。</li>
+<li>notify()：当生产者或消费者向缓冲区放入或取出一个产品时，向其他等待的线程发出通知，同时释放锁，使自己处于等待状态，让其它线程执行。</li>
+</ul>
+<blockquote>
+<p><code>wait()</code>、<code>nofity()</code>这两个方法必须有锁对象调用，而任意对象都可以作为 synchronized 的同步锁，因此这三个方法只能在Object 类中声明 。</p>
+</blockquote>
+<p><strong>生产者和消费者模式中涉及到的类</strong></p>
+<ul>
+<li>商店类（Shop）:定义一个成员变量，表示第几个面包，提供生产面包和消费面包的操作</li>
+<li>生产者类（Producer）：实现Runnable接口，重写run()方法，调用生产面包的操作</li>
+<li>消费者类（Consumer）：实现Runnable接口，重写run()方法，调用消费面包的操作</li>
+<li>测试类</li>
+</ul>
+<p><strong>代码实现</strong></p>
+
+    </div>
+
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i>  Java多线程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/15/HashMap/" rel="prev" title="HashMap">
+      <i class="fa fa-chevron-left"></i> HashMap
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/16/Java%E9%9B%86%E5%90%88/" rel="next" title="Java集合">
+      Java集合 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E7%BA%BF%E7%A8%8B%E4%B8%8E%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">1.线程与进程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%AE%80%E8%BF%B0%E7%BA%BF%E7%A8%8B%E4%B8%8E%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">2.</span> <span class="nav-text">2.简述线程与进程的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1JVM%E7%9A%84%E8%A7%92%E5%BA%A6%E7%9C%8B%E7%BA%BF%E7%A8%8B%E4%B8%8E%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">2.1JVM的角度看线程与进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8%EF%BC%88%E7%BA%BF%E7%A8%8B%E7%A7%81%E6%9C%89%EF%BC%89"><span class="nav-number">2.1.1.</span> <span class="nav-text">程序计数器（线程私有）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%EF%BC%88%E7%BA%BF%E7%A8%8B%E7%A7%81%E6%9C%89%EF%BC%89"><span class="nav-number">2.1.2.</span> <span class="nav-text">Java 虚拟机栈（线程私有）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88%EF%BC%88%E7%BA%BF%E7%A8%8B%E7%A7%81%E6%9C%89%EF%BC%89"><span class="nav-number">2.1.3.</span> <span class="nav-text">本地方法栈（线程私有）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%EF%BC%88%E7%BA%BF%E7%A8%8B%E5%85%B1%E4%BA%AB%EF%BC%89"><span class="nav-number">2.1.4.</span> <span class="nav-text">堆（线程共享）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA%EF%BC%88%E7%BA%BF%E7%A8%8B%E5%85%B1%E4%BA%AB%EF%BC%89"><span class="nav-number">2.1.5.</span> <span class="nav-text">方法区（线程共享）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%EF%BC%88%E5%B1%9E%E4%BA%8E%E6%96%B9%E6%B3%95%E5%8C%BA%EF%BC%89"><span class="nav-number">2.1.6.</span> <span class="nav-text">运行时常量池（属于方法区）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%B9%B6%E8%A1%8C%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">3.</span> <span class="nav-text">3.并发与并行的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">4.为什么要使用多线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E4%BD%BF%E7%94%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%8F%AF%E8%83%BD%E5%B8%A6%E6%9D%A5%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">5.使用多线程可能带来什么问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%92%8C%E7%8A%B6%E6%80%81"><span class="nav-number">6.</span> <span class="nav-text">6.线程的生命周期和状态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1sleep-%E6%96%B9%E6%B3%95%E5%92%8C-wait-%E6%96%B9%E6%B3%95"><span class="nav-number">6.1.</span> <span class="nav-text">6.1sleep() 方法和 wait() 方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2start-%E6%96%B9%E6%B3%95%E5%92%8Crun-%E6%96%B9%E6%B3%95"><span class="nav-number">6.2.</span> <span class="nav-text">6.2start() 方法和run() 方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="nav-number">7.</span> <span class="nav-text">7.上下文切换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-%E7%BA%BF%E7%A8%8B%E6%AD%BB%E9%94%81"><span class="nav-number">8.</span> <span class="nav-text">8.线程死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-1%E7%BA%BF%E7%A8%8B%E6%AD%BB%E9%94%81%E6%9D%A1%E4%BB%B6"><span class="nav-number">8.1.</span> <span class="nav-text">8.1线程死锁条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E7%BA%BF%E7%A8%8B%E6%AD%BB%E9%94%81"><span class="nav-number">8.2.</span> <span class="nav-text">8.2如何避免线程死锁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-synchronized-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">9.</span> <span class="nav-text">9.synchronized 关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#9-1synchronized-%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="nav-number">9.1.</span> <span class="nav-text">9.1synchronized 关键字的介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-2synchronized%E5%85%B3%E9%94%AE%E5%AD%97%E6%9C%80%E4%B8%BB%E8%A6%81%E7%9A%84%E4%B8%89%E7%A7%8D%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">9.2.</span> <span class="nav-text">9.2synchronized关键字最主要的三种使用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-3synchronized-%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="nav-number">9.3.</span> <span class="nav-text">9.3synchronized 关键字的底层原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-4-JDK1-6-%E4%B9%8B%E5%90%8E%E7%9A%84synchronized-%E5%85%B3%E9%94%AE%E5%AD%97%E5%BA%95%E5%B1%82%E5%81%9A%E4%BA%86%E5%93%AA%E4%BA%9B%E4%BC%98%E5%8C%96"><span class="nav-number">9.4.</span> <span class="nav-text">9.4 JDK1.6 之后的synchronized 关键字底层做了哪些优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-5-synchronized%E5%92%8CReentrantLock-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">9.5.</span> <span class="nav-text">9.5 synchronized和ReentrantLock 的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-volatile%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">10.</span> <span class="nav-text">10.volatile关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#10-1Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="nav-number">10.1.</span> <span class="nav-text">10.1Java内存模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-2%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E4%B8%89%E4%B8%AA%E9%87%8D%E8%A6%81%E7%89%B9%E6%80%A7"><span class="nav-number">10.2.</span> <span class="nav-text">10.2并发编程的三个重要特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-3synchronized-%E5%85%B3%E9%94%AE%E5%AD%97%E5%92%8C-volatile-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">10.3.</span> <span class="nav-text">10.3synchronized 关键字和 volatile 关键字</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-ThreadLocal"><span class="nav-number">11.</span> <span class="nav-text">11.ThreadLocal</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#11-1ThreadLocal%E7%AE%80%E4%BB%8B"><span class="nav-number">11.1.</span> <span class="nav-text">11.1ThreadLocal简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-2ThreadLocal%E5%8E%9F%E7%90%86"><span class="nav-number">11.2.</span> <span class="nav-text">11.2ThreadLocal原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-3ThreadLocal-%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E9%97%AE%E9%A2%98"><span class="nav-number">11.3.</span> <span class="nav-text">11.3ThreadLocal 内存泄露问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="nav-number">12.</span> <span class="nav-text">12.线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#12-1%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="nav-number">12.1.</span> <span class="nav-text">12.1为什么要用线程池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-2%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="nav-number">12.2.</span> <span class="nav-text">12.2线程池设计思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-3Executor-%E6%A1%86%E6%9E%B6"><span class="nav-number">12.3.</span> <span class="nav-text">12.3Executor 框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#12-3-1Executor-%E6%A1%86%E6%9E%B6%E7%AE%80%E4%BB%8B"><span class="nav-number">12.3.1.</span> <span class="nav-text">12.3.1Executor 框架简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-3-2Executor-%E6%A1%86%E6%9E%B6%E7%BB%93%E6%9E%84%EF%BC%88%E4%B8%89%E5%A4%A7%E9%83%A8%E5%88%86%EF%BC%89"><span class="nav-number">12.3.2.</span> <span class="nav-text">12.3.2Executor 框架结构（三大部分）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-3-3-Executor-%E6%A1%86%E6%9E%B6%E7%9A%84%E4%BD%BF%E7%94%A8%E7%A4%BA%E6%84%8F%E5%9B%BE"><span class="nav-number">12.3.3.</span> <span class="nav-text">12.3.3 Executor 框架的使用示意图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-3-4ThreadPoolExecutor-%E7%B1%BB%E4%BB%8B%E7%BB%8D"><span class="nav-number">12.3.4.</span> <span class="nav-text">12.3.4ThreadPoolExecutor 类介绍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-4%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%88%9B%E5%BB%BA%E6%96%B9%E5%BC%8F"><span class="nav-number">12.4.</span> <span class="nav-text">12.4线程池的创建方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-5-Java-%E6%8F%90%E4%BE%9B%E6%8F%90%E4%BE%9B%E7%9A%84%E5%87%A0%E7%A7%8D%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="nav-number">12.5.</span> <span class="nav-text">12.5 Java 提供提供的几种线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%84%E7%A7%8D%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF%E4%BB%8B%E7%BB%8D"><span class="nav-number">12.5.0.1.</span> <span class="nav-text">各种线程池的适用场景介绍</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-6ThreadPoolExecutor-%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">12.6.</span> <span class="nav-text">12.6ThreadPoolExecutor 使用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#12-6-1%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="nav-number">12.6.1.</span> <span class="nav-text">12.6.1示例代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-6-2%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90"><span class="nav-number">12.6.2.</span> <span class="nav-text">12.6.2线程池原理分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-7%E5%87%A0%E4%B8%AA%E5%B8%B8%E8%A7%81%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-number">12.7.</span> <span class="nav-text">12.7几个常见的对比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#12-7-1Runnable-vs-Callable"><span class="nav-number">12.7.1.</span> <span class="nav-text">12.7.1Runnable vs Callable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-7-2-execute-vs-submit"><span class="nav-number">12.7.2.</span> <span class="nav-text">12.7.2 execute() vs submit()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-7-3-shutdown-VS-shutdownNow"><span class="nav-number">12.7.3.</span> <span class="nav-text">12.7.3 shutdown() VS shutdownNow()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-7-4-isTerminated-VS-isShutdown"><span class="nav-number">12.7.4.</span> <span class="nav-text">12.7.4 isTerminated() VS isShutdown()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-7-5%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="nav-number">12.7.5.</span> <span class="nav-text">12.7.5示例代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#13-%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">13.</span> <span class="nav-text">13.生产者消费者模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#13-1%E7%94%9F%E4%BA%A7%E8%80%85%E5%92%8C%E6%B6%88%E8%B4%B9%E8%80%85%E6%A8%A1%E5%BC%8F%E6%8F%8F%E8%BF%B0"><span class="nav-number">13.1.</span> <span class="nav-text">13.1生产者和消费者模式描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-2%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="nav-number">13.2.</span> <span class="nav-text">13.2存在的问题——线程安全问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-3%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F"><span class="nav-number">13.3.</span> <span class="nav-text">13.3解决方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#13-3-1%E5%90%8C%E6%AD%A5%E6%96%B9%E6%B3%95"><span class="nav-number">13.3.1.</span> <span class="nav-text">13.3.1同步方法</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="老王家的小王呀"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">老王家的小王呀</p>
+  <div class="site-description" itemprop="description">及时当勉励，岁月不待人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangjin1996219" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangjin1996219" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:759161269@qq.com" title="E-Mail → mailto:759161269@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=569200212&auto=0&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王进</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">687k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">10:25</span>
+
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+   本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+<span class="post-meta-divider">|</span>
+<i class="fa fa-eye"></i><span id="busuanzi_container_site_pv">
+        本站访问量:<span id="busuanzi_value_site_pv"></span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'pQCeFPCYCP9sz6YcISYlyUqk-gzGzoHsz',
+      appKey     : 'RwrssV7QwO3le9kYtuScKNyD',
+      placeholder: "评论一句，前排打call~",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"symbols_count_time":null,"symbols":true,"time":false,"total_symbols":true,"total_time":false,"log":false});</script></body>
+</html>
+<!-- ҳ������С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
