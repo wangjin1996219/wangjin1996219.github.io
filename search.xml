@@ -396,6 +396,8 @@
     <title>synchronized关键字</title>
     <url>/2021/07/19/synchronized%E5%85%B3%E9%94%AE%E5%AD%97/</url>
     <content><![CDATA[<hr>
+<a id="more"></a>
+
 <h1 id="1-synchronized-介绍"><a href="#1-synchronized-介绍" class="headerlink" title="1. synchronized 介绍"></a>1. synchronized 介绍</h1><p>synchronized 是 Java 中的一个关键字，解决的是多个线程之间访问共享资源的同步性。它可以用在普通方法、静态方法和代码块上，synchronized 关键字可以保证在多线程环境下，同步方法或者同步代码块在同一时刻只允许有一个线程在执行，其余线程都在等待获取锁，也就是实现了整体并发中的局部串行。</p>
 <h1 id="2-synchronized-的三种应用方式"><a href="#2-synchronized-的三种应用方式" class="headerlink" title="2. synchronized 的三种应用方式"></a>2. synchronized 的三种应用方式</h1><h2 id="1-同步代码块"><a href="#1-同步代码块" class="headerlink" title="1.同步代码块"></a>1.同步代码块</h2><p>同步代码块的格式为：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(任意对象)&#123;</span><br><span class="line">    多条语句操作共享数据的代码</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -13540,85 +13542,6 @@
       <tags>
         <tag>Eclipse</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>谷歌浏览器调试快捷键</title>
-    <url>/2021/02/28/%E8%B0%B7%E6%AD%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B0%83%E8%AF%95%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<hr>
-<a id="more"></a>
-
-<h1 id="快捷键大全"><a href="#快捷键大全" class="headerlink" title="快捷键大全"></a>快捷键大全</h1><blockquote>
-<p><strong>转自：<a href="https://www.cnblogs.com/lishanyang/p/7767135.html">https://www.cnblogs.com/lishanyang/p/7767135.html</a></strong></p>
-</blockquote>
-<p>快捷键有这么以下几大类.且看我一一道来<del>~</del>注:All pane是全局快捷键</p>
-<h2 id="Console"><a href="#Console" class="headerlink" title="Console()"></a>Console()</h2><ul>
-<li>Ctrl + L : 清除控制台消息</li>
-<li>Tab : 自动完成通用常缀</li>
-<li>→: 接受建议</li>
-<li>Ctrl +  U: 清除console的提示!!(实操查看源代码!!)</li>
-<li>↓ / ↑ :选中下一行/上一行</li>
-<li>Enter: 执行代码或者命令</li>
-</ul>
-<h2 id="Debugger-调试面板"><a href="#Debugger-调试面板" class="headerlink" title="Debugger(调试面板)"></a>Debugger(调试面板)</h2><ul>
-<li>F8 or Ctrl + : 暂停/继续</li>
-<li>F10 or  Ctrl + ‘: 单步执行</li>
-<li>F11 or Ctrl +;: 单步进入</li>
-<li>Shift + F11 or Ctrl + Shift+;: 单步退出</li>
-<li>Ctrl +./Ctrl+, : 上一帧/下一帧(译为框架怪怪的)</li>
-<li>Ctrl +Shift+E: 被选中代码在控制台中打印出console信息**(非常实用)**</li>
-<li>Ctrl + Shift + A: 添加到debugger的watch里面,可以关注你选中内容的变化</li>
-<li>Ctrl + B: 打断点/取消断点**(很实用)**</li>
-</ul>
-<p>Chrome调试面板上的对应按钮如图所示：</p>
-<img src="/2021/02/28/%E8%B0%B7%E6%AD%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B0%83%E8%AF%95%E5%BF%AB%E6%8D%B7%E9%94%AE/调试面板.png" style="zoom:80%;">
-
-<h2 id="Text-Editor-文本编辑器"><a href="#Text-Editor-文本编辑器" class="headerlink" title="Text Editor(文本编辑器)"></a>Text Editor(文本编辑器)</h2><ul>
-<li>Ctrl + Shift+P : 跳转到某个成员(不知鸟用)</li>
-<li>Ctrl + Space: 自动完成</li>
-<li>Ctrl + G : 跳转到某行</li>
-<li>Ctrl + Shift + E</li>
-<li>Alt + -: 跳转到之前的编辑位置</li>
-<li>Alt + +: 跳转到下一个编辑的位置</li>
-<li>Ctrl + /: 快捷键注释</li>
-<li>Alt + ↑: 调整CSS度量单位,每次<strong>增加</strong>一个单元</li>
-<li>Alt + ↓: 调整CSS度量单位,每次<strong>减少</strong>一个单元</li>
-<li>Alt + PageUp: 调整CSS度量单位,每次<strong>增加</strong>10个单元</li>
-<li>Alt + PageDown: 调整CSS度量单位,每次<strong>减少</strong>10个单元</li>
-<li>Ctrl + D: 选择选中内容的下一个匹配内容</li>
-<li>Ctrl + U: 软撤销</li>
-<li>Ctrl + M: 进入匹配的括号</li>
-<li>Alt + W: 关闭编辑便签</li>
-<li>Alt + O: 切换相同名字的或者不同后缀的文件</li>
-</ul>
-<h2 id="All-Panels-所有面板"><a href="#All-Panels-所有面板" class="headerlink" title="All Panels(所有面板)"></a>All Panels(所有面板)</h2><ul>
-<li>Ctrl + [ / Ctrl + ]:切换面板(向左向右)</li>
-<li>Ctrl + Shift + [ / Ctrl + Shift+] : 返回之前之后的面板状态</li>
-<li>Ctrl + Tilde[~]:显示Console</li>
-<li>Esc: 小菜单弹出隐藏</li>
-<li>Ctrl + Shift + M: 进入仿真设备模式(移动平板屏幕)</li>
-<li>Ctrl + Shift + D: 切换调试面板在底部还是侧边栏展示</li>
-<li>Ctrl + F: 搜索内容</li>
-<li>Ctrl + Shift + F: 在所有代码中搜索(跨域),<strong>很实用</strong></li>
-<li>Ctrl + Shift + C: 选择页面节点并且查看代码,<strong>最常用!!</strong></li>
-<li>Ctrl + P: 快速切换源码文件,<strong>很常用!</strong></li>
-</ul>
-<h2 id="Style-Pane-风格面板"><a href="#Style-Pane-风格面板" class="headerlink" title="Style Pane(风格面板)"></a>Style Pane(风格面板)</h2><ul>
-<li>Tab / Shift + Tab: 下一个/上一个属性</li>
-<li>↑: 增加CSS度量单位-&gt;1单元</li>
-<li>↓:减少CSS度量单位-&gt;1单元</li>
-<li>PageUporShift + ↑:增加CSS度量单位-&gt;10单元</li>
-<li>PageDownorShift + ↓:减少CSS度量单位-&gt;10单元</li>
-<li>Shift + PageUp:增加CSS度量单位-&gt;100单元</li>
-<li>Shift + PageDown:减少CSS度量单位-&gt;100单元</li>
-<li>Alt + ↑:增加CSS度量单位-&gt;0.1单元</li>
-<li>Alt + ↓:减少CSS度量单位-&gt;0.1单元</li>
-</ul>
-<h2 id="Timeline-Panel-时间轴面板"><a href="#Timeline-Panel-时间轴面板" class="headerlink" title="Timeline Panel(时间轴面板)"></a>Timeline Panel(时间轴面板)</h2><ul>
-<li>Ctrl + E:开始</li>
-<li>Ctrl + S:保存时间轴数据</li>
-<li>Ctrl + O:加载时间轴数据</li>
-</ul>
-]]></content>
   </entry>
   <entry>
     <title>Chrome调试快捷键</title>
