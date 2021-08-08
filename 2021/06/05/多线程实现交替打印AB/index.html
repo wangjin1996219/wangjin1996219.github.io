@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wangjin1996219.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="多线程实现交替打印AB">
+<meta property="og:url" content="http://wangjin1996219.github.io/2021/06/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0%E4%BA%A4%E6%9B%BF%E6%89%93%E5%8D%B0AB/index.html">
+<meta property="og:site_name" content="Wj-Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-05T01:11:33.000Z">
+<meta property="article:modified_time" content="2021-08-08T08:36:11.944Z">
+<meta property="article:author" content="老王家的小王呀">
+<meta property="article:tag" content="Java多线程">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://wangjin1996219.github.io/2021/06/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0%E4%BA%A4%E6%9B%BF%E6%89%93%E5%8D%B0AB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>多线程实现交替打印AB | Wj-Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Wj-Blog" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wj-Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">32</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">90</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/06/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0%E4%BA%A4%E6%9B%BF%E6%89%93%E5%8D%B0AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="老王家的小王呀">
+      <meta itemprop="description" content="及时当勉励，岁月不待人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wj-Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          多线程实现交替打印AB
+        </h1>
+
+        <div class="post-meta">
+        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-05 09:11:33" itemprop="dateCreated datePublished" datetime="2021-06-05T09:11:33+08:00">2021-06-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-08-08 16:36:11" itemprop="dateModified" datetime="2021-08-08T16:36:11+08:00">2021-08-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Java基础</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/06/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0%E4%BA%A4%E6%9B%BF%E6%89%93%E5%8D%B0AB/" class="post-meta-item leancloud_visitors" data-flag-title="多线程实现交替打印AB" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/06/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0%E4%BA%A4%E6%9B%BF%E6%89%93%E5%8D%B0AB/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/06/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0%E4%BA%A4%E6%9B%BF%E6%89%93%E5%8D%B0AB/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<a id="more"></a>
+
+<h1 id="1-实现多线程的两种方式"><a href="#1-实现多线程的两种方式" class="headerlink" title="1.实现多线程的两种方式"></a>1.实现多线程的两种方式</h1><p>首先看实现多线程的两种方式：继承 Thread 类和 实现 Runnable 接口</p>
+<h2 id="1-1继承-Thread-类"><a href="#1-1继承-Thread-类" class="headerlink" title="1.1继承 Thread 类"></a>1.1继承 Thread 类</h2><p><strong>实现步骤：</strong></p>
+<ol>
+<li>定义一个 MyThread 类继承 Thread 类，并重写 run 方法</li>
+<li>创建 MyThread 类的对象</li>
+<li>调用 start 方法，启动线程</li>
+</ol>
+<p><strong>代码演示：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">100</span>;i++)&#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName()+<span class="string">&quot;:&quot;</span>+i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThreadDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        MyThread my1=<span class="keyword">new</span> MyThread();</span><br><span class="line">        MyThread my2=<span class="keyword">new</span> MyThread();</span><br><span class="line"></span><br><span class="line">        my1.start();</span><br><span class="line">        my2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>start 方法与 run 方法：</strong></p>
+<ul>
+<li>run 方法：封装了线程实际执行的代码，直接调用时，相当于普通方法的执行</li>
+<li>start 方法：启动线程，线程启动后，由 JVM 调用 run 方法并执行</li>
+</ul>
+<h2 id="1-2实现-Runnable-接口"><a href="#1-2实现-Runnable-接口" class="headerlink" title="1.2实现 Runnable 接口"></a>1.2实现 Runnable 接口</h2><p><strong>实现步骤：</strong></p>
+<ol>
+<li>定义一个类MyRunnable实现Runnable接口，在MyRunnable类中重写run()方法</li>
+<li>创建MyRunnable类的对象 </li>
+<li>创建Thread类的对象</li>
+<li><strong>把MyRunnable对象作为构造方法的参数</strong></li>
+<li>启动线程</li>
+</ol>
+<p><strong>代码演示：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">&quot;:&quot;</span> + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyRunnableDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        MyRunnable my = <span class="keyword">new</span> MyRunnable();</span><br><span class="line"></span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(my);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(my);</span><br><span class="line"></span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>两种方式实现多线程的对比（或者说通过实现 Runnable 接口实现多线程的好处）：</strong></p>
+<ul>
+<li>避免了 Java 单继承的局限性，在实现 Runnable 接口的同时，还可以继承其他的类</li>
+<li>Runnable 接口实现多线程比继承 Thread 类更加能描述数据共享的概念，在这种方式下，可以多个线程共享同一个目标(target)对象，所以非常适合多个相同线程来处理同一份资源的情况。</li>
+</ul>
+<h2 id="1-3实现-Callable-接口"><a href="#1-3实现-Callable-接口" class="headerlink" title="1.3实现 Callable 接口"></a>1.3实现 Callable 接口</h2><p>与 Runnable 相比，Callable 可以有返回值，返回值通过 FutureTask 进行封装。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">myCallable</span> <span class="keyword">implements</span> <span class="title">Callable</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Integer(<span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">myTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException </span>&#123;</span><br><span class="line">        myCallable my=<span class="keyword">new</span> myCallable();</span><br><span class="line">        FutureTask futureTask = <span class="keyword">new</span> FutureTask&lt;&gt;(my);</span><br><span class="line">        Thread t=<span class="keyword">new</span> Thread(futureTask);</span><br><span class="line">        t.start();</span><br><span class="line">        System.out.println(futureTask.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>FutureTask 源码实现了 Runnable 接口，并重写了 run 方法，传入 Callable 对象后，在 run 方法中直接调用 call 方法，并将结果记录，最后可以通过 call 方法来获取返回值。</p>
+<h1 id="2-Synchronized-同步法"><a href="#2-Synchronized-同步法" class="headerlink" title="2. Synchronized 同步法"></a>2. Synchronized 同步法</h1><h2 id="2-1-基本思路"><a href="#2-1-基本思路" class="headerlink" title="2.1 基本思路"></a>2.1 基本思路</h2><p>使用同步块和 wait 、 notify 的方法控制三个线程的执行次序。具体方法如下：</p>
+<ul>
+<li>从大的方向上来讲，该问题为三线程间的同步唤醒操作，主要的目的就是 ThreadA-&gt;ThreadB-&gt;ThreadC-&gt;ThreadA 循环执行三个线程</li>
+<li>为了控制线程执行的顺序，那么就必须要确定唤醒、等待的顺序，所以每一个线程必须同时持有两个对象锁，才能进行打印操作。一个对象锁是 prev：就是前一个线程所对应的对象锁，其主要作用是保证当前线程一定是在前一个线程操作完成后（即前一个线程释放了其对应的对象锁）才开始执行。还有一个锁是 self：就是自身对象锁。</li>
+<li>主要的思想就是，为了控制执行的顺序，必须要先持有 prev 锁（也就前一个线程要释放其自身对象锁），然后当前线程再申请自己对象锁，两者兼备时打印。之后首先调用 self.notifyAll() 唤醒等待获取 self 对象锁的线程（注意 notifyAll() 不会立即释放对象锁，只有等到同步块代码执行完毕后才会释放），再调用 prev.wait() 立即释放 prev 对象锁，当前线程进入休眠，等待其他线程的 notifyAll() 操作再次唤醒。</li>
+</ul>
+<h2 id="2-2-代码及注释"><a href="#2-2-代码及注释" class="headerlink" title="2.2 代码及注释"></a>2.2 代码及注释</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyPrinter</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Object prev;</span><br><span class="line">    <span class="keyword">private</span> Object self;</span><br><span class="line"></span><br><span class="line">    MyPrinter(String name, Object prev, Object self) &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.prev = prev;</span><br><span class="line">        <span class="keyword">this</span>.self = self;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">10</span>;</span><br><span class="line">        <span class="keyword">while</span> (count &gt; <span class="number">0</span>) &#123;<span class="comment">// 多线程并发，不能用if，必须使用whil循环</span></span><br><span class="line">            <span class="keyword">synchronized</span> (prev) &#123; <span class="comment">// 先获取 prev 锁</span></span><br><span class="line">                <span class="keyword">synchronized</span> (self) &#123;<span class="comment">// 再获取 self 锁</span></span><br><span class="line">                    System.out.print(name);<span class="comment">//打印</span></span><br><span class="line">                    count--;</span><br><span class="line"></span><br><span class="line">                    self.notifyAll();<span class="comment">// 唤醒其他线程竞争self锁，注意此时self锁并未立即释放。</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//此时执行完self的同步块，这时self锁才释放。</span></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    prev.wait(); <span class="comment">// 立即释放 prev锁，当前线程休眠，等待唤醒</span></span><br><span class="line">                    <span class="comment">/**</span></span><br><span class="line"><span class="comment">                     * JVM会在wait()对象锁的线程中随机选取一线程，赋予其对象锁，唤醒线程，继续执行。</span></span><br><span class="line"><span class="comment">                     */</span></span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTestDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Object a = <span class="keyword">new</span> Object();</span><br><span class="line">        Object b = <span class="keyword">new</span> Object();</span><br><span class="line">        Object c = <span class="keyword">new</span> Object();</span><br><span class="line">        MyPrinter pa = <span class="keyword">new</span> MyPrinter(<span class="string">&quot;A&quot;</span>, c, a);</span><br><span class="line">        MyPrinter pb = <span class="keyword">new</span> MyPrinter(<span class="string">&quot;B&quot;</span>, a, b);</span><br><span class="line">        MyPrinter pc = <span class="keyword">new</span> MyPrinter(<span class="string">&quot;C&quot;</span>, b, c);</span><br><span class="line"></span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(pa);</span><br><span class="line">        t1.start();</span><br><span class="line">        Thread.sleep(<span class="number">10</span>);<span class="comment">//保证初始ABC的启动顺序</span></span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(pb);</span><br><span class="line">        t2.start();</span><br><span class="line">        Thread.sleep(<span class="number">10</span>);</span><br><span class="line">        Thread t3 = <span class="keyword">new</span> Thread(pc);</span><br><span class="line">        t3.start();</span><br><span class="line">        Thread.sleep(<span class="number">10</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到程序一共定义了 a,b,c 三个对象锁，分别对应 t1、t2、t3 三个线程。t1 线程最先运行，t1 线程按顺序申请 c,a 对象锁，打印操作后按顺序释放 a,c 对象锁，并且通过 notifyAll() 操作唤醒等待获取 a 对象锁的线程 t2。线程 t2 首先等待获取 a 锁，再申请 b 锁，后打印B，再释放 b，a 锁，唤醒 t3。线程 t3 等待 b 锁，再申请 c 锁，后打印C，再释放 c , b 锁，唤醒 t1 。</p>
+<h2 id="2-3存在问题及解决"><a href="#2-3存在问题及解决" class="headerlink" title="2.3存在问题及解决"></a>2.3存在问题及解决</h2><p><strong>原实现存在的问题</strong>：<br>如果把上述代码放到 Idea 上运行，可以发现程序虽然完成了交替打印 ABC 十次的任务，但是打印完毕后无法自动结束线程。这是为什么呢？原因就在于下面这段代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">            prev.wait(); <span class="comment">// 立即释放 prev锁，当前线程休眠，等待唤醒</span></span><br><span class="line">            <span class="comment">/**</span></span><br><span class="line"><span class="comment">            * JVM会在wait()对象锁的线程中随机选取一线程，赋予其对象锁，唤醒线程，继续执行。</span></span><br><span class="line"><span class="comment">            */</span></span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
+
+<p>prev.wait();  是释放 prev 锁并休眠线程，等待唤醒。在最后一次打印完毕后，因为 count 为 0 ，无法进入 while 循环的同步代码块，自然就不会触发 notifyAll 操作。这样一来，执行完打印操作后，线程就一直处于休眠待唤醒状态，导致线程无法正常结束。我们在测试代码中加入以下代码检查线程活性：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;t1线程：&quot;</span>+t1.isAlive());</span><br><span class="line">System.out.println(<span class="string">&quot;t2线程：&quot;</span>+t2.isAlive());</span><br><span class="line">System.out.println(<span class="string">&quot;t3线程：&quot;</span>+t3.isAlive());</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">t1线程：false</span><br><span class="line">t2线程：true</span><br><span class="line">t3线程：true</span><br></pre></td></tr></table></figure>
+
+<p>也就是说除了 t1 线程外，其它两个线程处于等待状态，因为执行打印最后一个 A 操作后，t1 进入等待状态，唤醒线程 t2 ,线程 t2 执行结束唤醒了 t3 线程并释放了 a 对象锁，并进入等待状态，t3 线程执行，唤醒了 t1 线程，t1 线程发现 count == 0，跳出循环并结束。剩下的两个线程仍然处于等待状态。</p>
+<p>所以对代码进行修改如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">while</span> (count &gt; <span class="number">0</span>) &#123;<span class="comment">// 多线程并发，不能用if，必须使用whil循环</span></span><br><span class="line">        <span class="keyword">synchronized</span> (prev) &#123; <span class="comment">// 先获取 prev 锁</span></span><br><span class="line">            <span class="keyword">synchronized</span> (self) &#123;<span class="comment">// 再获取 self 锁</span></span><br><span class="line">                System.out.print(name);<span class="comment">//打印</span></span><br><span class="line">                count--;</span><br><span class="line"></span><br><span class="line">                self.notifyAll();<span class="comment">// 唤醒其他线程竞争self锁，注意此时self锁并未立即释放。</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//此时执行完self的同步块，这时self锁才释放。</span></span><br><span class="line">            <span class="comment">// 此时执行完self的同步块，这时self锁才释放。</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (count == <span class="number">0</span>) &#123;<span class="comment">// 如果count==0,表示这是最后一次打印操作，通过notifyAll操作释放对象锁。</span></span><br><span class="line">                    prev.notifyAll();</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    prev.wait(); <span class="comment">// 立即释放 prev锁，当前线程休眠，等待唤醒</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从这里，我们也可以得出 wait 和 notify 操作的异同：</p>
+<ul>
+<li>wait() 与 notify/notifyAll() 是 Object 类的方法，在执行两个方法时，要先获得锁。</li>
+<li>当线程执行 wait() 时，会把当前的对象锁释放，然后让出 CPU，进入等待状态。</li>
+<li>当执行 notify/notifyAll 方法时，<strong>会唤醒一个处于等待该对象锁的线程</strong>，然后继续往下执行，直到执行完退出对象锁锁住的区域（ synchronized 修饰的代码块）后再释放锁。</li>
+</ul>
+<p>从这里可以看出，notify/notifyAll() 执行后，并不立即释放锁，而是要等到执行完临界区中代码后，再释放。所以在实际编程中，我们应该尽量在线程调用 notify/notifyAll() 后，立即退出临界区。即不要在 notify/notifyAll() 后面再写一些耗时的代码。</p>
+
+    </div>
+
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i>  Java多线程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/01/%E6%89%8B%E5%86%99%E5%AE%9E%E7%8E%B0SpringMVC/" rel="prev" title="手写实现SpringMVC">
+      <i class="fa fa-chevron-left"></i> 手写实现SpringMVC
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/06/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E6%A8%A1%E5%BC%8F/" rel="next" title="多线程实现生产者消费者模式">
+      多线程实现生产者消费者模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">1.实现多线程的两种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1%E7%BB%A7%E6%89%BF-Thread-%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">1.1继承 Thread 类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2%E5%AE%9E%E7%8E%B0-Runnable-%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.2.</span> <span class="nav-text">1.2实现 Runnable 接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3%E5%AE%9E%E7%8E%B0-Callable-%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.3.</span> <span class="nav-text">1.3实现 Callable 接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Synchronized-%E5%90%8C%E6%AD%A5%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">2. Synchronized 同步法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%9F%BA%E6%9C%AC%E6%80%9D%E8%B7%AF"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 基本思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%B3%A8%E9%87%8A"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 代码及注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3"><span class="nav-number">2.3.</span> <span class="nav-text">2.3存在问题及解决</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="老王家的小王呀"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">老王家的小王呀</p>
+  <div class="site-description" itemprop="description">及时当勉励，岁月不待人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangjin1996219" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangjin1996219" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:759161269@qq.com" title="E-Mail → mailto:759161269@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=569200212&auto=0&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王进</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">912k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">13:49</span>
+
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+   本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+<span class="post-meta-divider">|</span>
+<i class="fa fa-eye"></i><span id="busuanzi_container_site_pv">
+        本站访问量:<span id="busuanzi_value_site_pv"></span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'pQCeFPCYCP9sz6YcISYlyUqk-gzGzoHsz',
+      appKey     : 'RwrssV7QwO3le9kYtuScKNyD',
+      placeholder: "评论一句，前排打call~",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"symbols_count_time":null,"symbols":true,"time":false,"total_symbols":true,"total_time":false,"log":false});</script></body>
+</html>
+<!-- ҳ������С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

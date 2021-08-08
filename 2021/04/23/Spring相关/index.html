@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://wangjin1996219.github.io/2021/04/23/Spring%E7%9B%B8%E5%85%B3/GitHub/MyBlogs/source_posts/2021-04-23-Spring相关/有后置处理器.png">
 <meta property="og:image" content="http://wangjin1996219.github.io/2021/04/23/Spring%E7%9B%B8%E5%85%B3/GitHub/MyBlogs/source/_posts/2021-03-08-SpringMVC/SpringMVC执行流程.png">
 <meta property="article:published_time" content="2021-04-23T07:02:28.000Z">
-<meta property="article:modified_time" content="2021-06-01T11:44:11.842Z">
+<meta property="article:modified_time" content="2021-08-08T08:26:28.733Z">
 <meta property="article:author" content="老王家的小王呀">
 <meta property="article:tag" content="Spring相关">
 <meta name="twitter:card" content="summary">
@@ -131,17 +131,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">27</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">32</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">67</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">90</span></a>
 
   </li>
         <li class="menu-item menu-item-commonweal">
@@ -235,7 +235,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-01 19:44:11" itemprop="dateModified" datetime="2021-06-01T19:44:11+08:00">2021-06-01</time>
+                <time title="修改时间：2021-08-08 16:26:28" itemprop="dateModified" datetime="2021-08-08T16:26:28+08:00">2021-08-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -243,7 +243,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a>
+                  <a href="/categories/%E6%A1%86%E6%9E%B6%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">框架相关</span></a>
                 </span>
             </span>
 
@@ -274,14 +274,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>12k</span>
+              <span>24k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>11 分钟</span>
+              <span>22 分钟</span>
             </span>
 
         </div>
@@ -296,19 +296,65 @@
         <hr>
 <a id="more"></a>
 
-<h1 id="Spring-IOC-amp-Spring-AOP"><a href="#Spring-IOC-amp-Spring-AOP" class="headerlink" title="Spring IOC &amp; Spring AOP"></a>Spring IOC &amp; Spring AOP</h1><p>（另一种问法是：<strong>Spring 的两大重要特性！</strong>）</p>
-<h2 id="IOC-控制反转"><a href="#IOC-控制反转" class="headerlink" title="IOC(控制反转)"></a><strong>IOC(控制反转)</strong></h2><p>IoC（Inverse of Control:控制反转）是一种<strong>设计思想</strong>，就是 <strong>将原本在程序中手动创建对象的控制权，交由Spring框架来管理。</strong>  IoC 在其他语言中也有应用，并非 Spring 特有。 <strong>IoC 容器是 Spring 用来实现 IoC 的载体，  IoC 容器实际上就是个Map（key，value）,Map 中存放的是各种对象。</strong></p>
+<h1 id="1-Spring-的简介"><a href="#1-Spring-的简介" class="headerlink" title="1. Spring 的简介"></a>1. Spring 的简介</h1><p>Spring是一个<strong>轻量级的IOC和AOP容器</strong>框架。是为Java应用程序提供基础服务的一套框架，目的是用于简化企业应用程序的开发，它使得开发者只需要关心业务需求。</p>
+<p>Spring的<strong>核心模块</strong>如下所示：</p>
+<ul>
+<li><strong>Spring Core：</strong>是核心类库，提供IOC服务； </li>
+<li><strong>Spring Context：</strong>提供框架式的Bean访问方式，以及企业级功能（JNDI、定时任务等）； </li>
+<li><strong>Spring AOP：</strong>提供AOP服务； </li>
+<li><strong>Spring DAO：</strong>对JDBC进行了抽象，简化了数据访问异常等处理； </li>
+<li><strong>Spring ORM：</strong>对现有的ORM持久层框架进行了支持； </li>
+<li><strong>Spring Web：</strong>提供了基本的面向Web的综合特性； </li>
+<li><strong>Spring MVC：</strong>提供面向Web应用的Model-View-Controller实现。 </li>
+</ul>
+<h1 id="2-Spring-的优点"><a href="#2-Spring-的优点" class="headerlink" title="2. Spring 的优点"></a>2. Spring 的优点</h1><ul>
+<li>Spring 将对象之间的相互依赖关系交给 IoC 容器来管理，并由 IoC 容器完成对象的注入。这样可以很大程度上简化应用的开发，把应用从复杂的依赖关系中解放出来。比如：在实际项目中一个 Service 类可能有几百甚至上千个类作为它的底层，假如我们需要实例化这个 Service，你可能要每次都要搞清这个 Service 所有底层类的构造函数，这可能会把人逼疯。</li>
+<li><strong>AOP面向切面编程</strong>，可以将通用的任务抽取出来，复用性更高； </li>
+<li>Spring对于其余<strong>主流框架都提供了很好的支持</strong>，代码的侵入性很低。 </li>
+</ul>
+<h1 id="3-SpringIOC-控制反转"><a href="#3-SpringIOC-控制反转" class="headerlink" title="3. SpringIOC(控制反转)"></a>3. SpringIOC(控制反转)</h1><p>IoC（Inverse of Control:控制反转）是一种<strong>设计思想</strong>，就是 <strong>将原本在程序中手动创建对象的控制权，交由 Spring 框架来管理。</strong>  IoC 在其他语言中也有应用，并非 Spring 特有。 <strong>IoC 容器是 Spring 用来实现 IoC 的载体，  IoC 容器实际上就是个 Map（key，value）,Map 中存放的是各种对象。</strong></p>
 <p>将对象之间的相互依赖关系交给 IoC 容器来管理，并由 IoC 容器完成对象的注入。这样可以很大程度上简化应用的开发，把应用从复杂的依赖关系中解放出来。  <strong>IoC 容器就像是一个工厂一样，当我们需要创建一个对象的时候，只需要配置好配置文件/注解即可，完全不用考虑对象是如何被创建出来的。</strong> 在实际项目中一个 Service 类可能有几百甚至上千个类作为它的底层，假如我们需要实例化这个 Service，你可能要每次都要搞清这个 Service 所有底层类的构造函数，这可能会把人逼疯。如果利用 IoC 的话，你只需要配置好，然后在需要的地方引用就行了，这大大增加了项目的可维护性且降低了开发难度。</p>
 <p>Spring 时代我们一般通过 XML 文件来配置 Bean，后来开发人员觉得 XML 文件来配置不太好，于是 SpringBoot 注解配置就慢慢开始流行起来。</p>
 <p><strong>Spring IoC的初始化过程：</strong></p>
 <img src="/2021/04/23/Spring%E7%9B%B8%E5%85%B3/GitHub\MyBlogs\source\_posts\2021-04-23-Spring相关\SpringIOC初始化过程.png" alt="Spring IoC的初始化过程" style="zoom:110%;">
 
-<h2 id="AOP-面向切面编程"><a href="#AOP-面向切面编程" class="headerlink" title="AOP(面向切面编程)"></a><strong>AOP(面向切面编程)</strong></h2><p>AOP的核心思想就是：在不改变原来的代码的情况下，实现了对原有功能的增强</p>
+<h1 id="4-SpringAOP-面向切面编程"><a href="#4-SpringAOP-面向切面编程" class="headerlink" title="4. SpringAOP(面向切面编程)"></a>4. SpringAOP(面向切面编程)</h1><p>AOP的核心思想就是：在不改变原来的代码的情况下，实现了对原有功能的增强</p>
 <p><strong>AOP(Aspect-Oriented Programming:面向切面编程)：</strong>能够将那些与业务无关，却为<strong>业务模块所共同调用的逻辑或责任</strong>（例如事务处理、日志管理、权限控制等）封装起来，便于减少系统的重复代码<strong>，</strong>降低模块间的耦合度，并有利于未来的可拓展性和可维护性。</p>
-<h1 id="Spring-Bean"><a href="#Spring-Bean" class="headerlink" title="Spring Bean"></a>Spring Bean</h1><h2 id="Spring-中的-bean-的作用域"><a href="#Spring-中的-bean-的作用域" class="headerlink" title="Spring 中的 bean 的作用域"></a>Spring 中的 bean 的作用域</h2><ul>
+<p><strong>重要概念：</strong></p>
+<p><strong>切入点：</strong>就是在类里边可以有很多方法被增强，比如实际操作中，只是增强了个别方法，则<strong>定义实际被增强的某个方法为切入点</strong></p>
+<p><strong>通知/增强：</strong> 就是指增强的逻辑，<strong>比如扩展日志功能，这个日志功能称为增强</strong></p>
+<p><strong>切面：</strong>就是把增强应用到具体方法上面的过程称为切面。</p>
+<h2 id="4-1-两种实现-SpringAOP-的方式"><a href="#4-1-两种实现-SpringAOP-的方式" class="headerlink" title="4.1 两种实现 SpringAOP 的方式"></a>4.1 两种实现 SpringAOP 的方式</h2><p>JDK 动态代理</p>
+<p>cglib 动态代理</p>
+<p>==另开一篇文章，专门写两种代理方式。==</p>
+<h2 id="4-2-SpringIOC-初始化的过程"><a href="#4-2-SpringIOC-初始化的过程" class="headerlink" title="4.2 SpringIOC 初始化的过程"></a>4.2 SpringIOC 初始化的过程</h2><p><strong>面试官问题：讲一下 IOC 容器的初始化过程吧。</strong></p>
+<p><strong>答：</strong>IOC容器的初始化主要包括 <strong>BeanDefinition 资源定位，BeanDefinition 的载入和 BeanDefinition 的注册：</strong> 三个步骤，接下来我们依次介绍。</p>
+<ol>
+<li><p><strong>Resource资源定位：</strong></p>
+<p>Resouce 定位是指 BeanDefinition 的资源定位，也就是 IOC 容器找数据的过程。Spring 中使用外部资源来描述一个 Bean 对象，IOC 容器第一步就是需要定位 Resource 外部资源。由 ResourceLoader 资源加载器完成资源的定位和读取。</p>
+</li>
+<li><p><strong>BeanDefinition的载入：</strong></p>
+<p>载入过程就是把定义好的Bean表示成IOC容器内部的数据结构，即BeanDefinition。在配置文件中每一个Bean都对应着一个BeanDefinition对象。</p>
+<p>通过BeanDefinitionReader读取，解析Resource定位的资源，将用户定义好的Bean表示成IOC容器的内部数据结构BeanDefinition。</p>
+<p>在IOC容器内部维护着一个BeanDefinitionMap的数据结构，通过BeanDefinitionMap，IOC容器可以对Bean进行更好的管理。</p>
+</li>
+<li><p><strong>BeanDefinition的注册：</strong></p>
+<p>注册就是将前面的BeanDefition保存到Map中的过程，通过 BeanDefinitionRegistry 接口来实现注册。</p>
+</li>
+</ol>
+<p><strong>解析：</strong></p>
+<p><strong>IOC 容器的初始化过程就是对 BeanDefinition 资源的定位、载入和注册</strong>，此时容器对 Bean 的依赖注入并没有发生。接下来，我们看下<strong>依赖注入的发生时刻吧。</strong></p>
+<p>ApplicationContext 默认会在容器启动的时候创建我们配置好的各个 Bean ，我们的 Bean 配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>= <span class="string">&quot;oneBean&quot;</span>  <span class="attr">class</span>= <span class="string">&quot;com.nowcoder.oneBean&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里边的隐藏属性是 lazy-init，即上边的配置和下边的是一样的：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>= <span class="string">&quot;oneBean&quot;</span>  <span class="attr">class</span>= <span class="string">&quot;com.nowcoder.oneBean&quot;</span> <span class="attr">lazy-init</span>=<span class="string">&quot;false&quot;</span>&gt;</span>//开启懒加载</span><br></pre></td></tr></table></figure>
+
+<p><strong>lazy-init=false</strong> 表示不开启延迟加载，在容器启动的时候即创建该 Bean 。对应的，我们还可以配置 lazy-init=true 表示开启延迟加载，那么该 Bean 的创建发生在应用程序<strong>第一次向容器索取 Bean</strong> 时，通过 getBean() 方法的调用完成。</p>
+<h1 id="5-SpringBean"><a href="#5-SpringBean" class="headerlink" title="5. SpringBean"></a>5. SpringBean</h1><h2 id="5-1-Spring-中的-bean-的作用域"><a href="#5-1-Spring-中的-bean-的作用域" class="headerlink" title="5.1 Spring 中的 bean 的作用域"></a>5.1 Spring 中的 bean 的作用域</h2><ul>
 <li>singleton : 在spring IoC容器仅存在一个Bean实例，Bean以单例方式存在，bean作用域范围的默认值。</li>
 <li>prototype : 每次从容器中调用Bean时，都返回一个新的实例，即每次调用getBean()时，相当于执行newXxxBean()。</li>
-<li>request : 每一次HTTP请求都会产生一个新的bean，该bean仅在当前HTTP request内有效。</li>
+<li>request : 每一次HTTP请求都会产生一个新的 bean，该bean仅在当前HTTP request内有效。</li>
 <li>session : 每一次HTTP请求都会产生一个新的 bean，该bean仅在当前 HTTP session 内有效。</li>
 <li>global-session： 全局session作用域，仅仅在基于portlet的web应用中才有意义，Spring5已经没有了。Portlet是能够生成语义代码(例如：HTML)片段的小型Java Web插件。它们基于portlet容器，可以像servlet一样处理HTTP请求。但是，与 servlet 不同，每个 portlet 都有不同的会话</li>
 </ul>
@@ -341,7 +387,7 @@
 <li><p>application作用域仅仅作为ServletContext的属性可见，单例Bean是ApplicationContext可见。</p>
 </li>
 </ol>
-<h2 id="Spring-中的-bean-的生命周期"><a href="#Spring-中的-bean-的生命周期" class="headerlink" title="Spring 中的 bean 的生命周期"></a>Spring 中的 bean 的生命周期</h2><blockquote>
+<h2 id="5-2-Spring-中的-bean-的生命周期"><a href="#5-2-Spring-中的-bean-的生命周期" class="headerlink" title="5.2 Spring 中的 bean 的生命周期"></a>5.2 Spring 中的 bean 的生命周期</h2><blockquote>
 <p>在IoC容器启动之后，并不会马上就实例化相应的bean，此时容器仅仅拥有所有对象的BeanDefinition(BeanDefinition：是容器依赖某些工具加载的XML配置信息进行解析和分析，并将分析后的信息编组为相应的BeanDefinition)。只有当getBean()调用时才是有可能触发Bean实例化阶段的活动</p>
 </blockquote>
 <p><strong>先来看以下的图(Bean的一生)：</strong></p>
@@ -429,18 +475,18 @@
 <p><img src="/2021/04/23/Spring%E7%9B%B8%E5%85%B3/GitHub\MyBlogs\source_posts\2021-04-23-Spring相关\有后置处理器.png"></p>
 <p>可以在applicationContext.xml中看到配置Bean后置处理器，不需要ID，只需要其全类名，因为IoC容器自动识别一个BeanPostProcessor</p>
 <p>在控制台显示结果可以看出,Bean的后置处理器强大之处，可以对Bean实现自己想要做的事情，比如我这里的Demo就是在postProcessAfterInitialization方法中将成员变量name偷偷修改了，最后输出的就是偷偷修改之后的值</p>
-<h2 id="Spring-中的单例-bean-的线程安全问题"><a href="#Spring-中的单例-bean-的线程安全问题" class="headerlink" title="Spring 中的单例 bean 的线程安全问题"></a>Spring 中的单例 bean 的线程安全问题</h2><p>大部分时候我们并没有在系统中使用多线程，所以很少有人会关注这个问题。单例 bean 存在线程问题，主要是因为当多个线程操作同一个对象的时候，对这个对象的非静态成员变量的写操作会存在线程安全问题。</p>
+<h2 id="5-3-Spring-中的单例-bean-的线程安全问题"><a href="#5-3-Spring-中的单例-bean-的线程安全问题" class="headerlink" title="5.3 Spring 中的单例 bean 的线程安全问题"></a>5.3 Spring 中的单例 bean 的线程安全问题</h2><p>大部分时候我们并没有在系统中使用多线程，所以很少有人会关注这个问题。单例 bean 存在线程问题，主要是因为当多个线程操作同一个对象的时候，对这个对象的非静态成员变量的写操作会存在线程安全问题。</p>
 <p>常见的有两种解决办法：</p>
 <ol>
 <li><p>在Bean对象中尽量避免定义可变的成员变量（不太现实）。</p>
 </li>
-<li><p>在类中定义一个ThreadLocal成员变量，将需要的可变成员变量保存在 ThreadLocal 中（推荐的一种方式）。</p>
+<li><p>在类中定义一个 ThreadLocal 成员变量，将需要的可变成员变量保存在 ThreadLocal 中（推荐的一种方式）。</p>
 </li>
 </ol>
-<h1 id="Spring-MVC"><a href="#Spring-MVC" class="headerlink" title="Spring MVC"></a>Spring MVC</h1><h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p>SpringMVC的web框架围绕DispatcherServlet设计，DispatcherServlet的作用是将请求分发到不同的处理器，同其它的框架一样，<strong>SpringMVC以请求为驱动，围绕一个中心Servelet分派请求并提供相应的功能，DispatcherServlet是一个实际的Servelet。</strong></p>
+<h1 id="6-SpringMVC-执行流程"><a href="#6-SpringMVC-执行流程" class="headerlink" title="6. SpringMVC 执行流程"></a>6. SpringMVC 执行流程</h1><h2 id="6-1流程图"><a href="#6-1流程图" class="headerlink" title="6.1流程图"></a>6.1流程图</h2><p>SpringMVC的web框架围绕DispatcherServlet设计，DispatcherServlet的作用是将请求分发到不同的处理器，同其它的框架一样，<strong>SpringMVC以请求为驱动，围绕一个中心Servelet分派请求并提供相应的功能，DispatcherServlet是一个实际的Servelet。</strong></p>
 <img src="/2021/04/23/Spring%E7%9B%B8%E5%85%B3/GitHub\MyBlogs\source\_posts\2021-03-08-SpringMVC\SpringMVC执行流程.png" style="zoom:80%;">
 
-<h2 id="组件作用"><a href="#组件作用" class="headerlink" title="组件作用"></a>组件作用</h2><ul>
+<h2 id="6-2组件作用"><a href="#6-2组件作用" class="headerlink" title="6.2组件作用"></a>6.2组件作用</h2><ul>
 <li><p><strong>DispatcherServlet：</strong>前端控制器。</p>
 <p>它就相当于 mvc 模式中的 c， dispatcherServlet 是整个流程控制的中心，由它调用其它组件处理用户的请求， dispatcherServlet 的存在降低了组件之间的耦合性。</p>
 <p><strong>作用：</strong>DispatcherServlet负责拦截处理用户发起的请求。</p>
@@ -466,7 +512,7 @@
 <p><strong>作用：</strong>向用户展示结果</p>
 </li>
 </ul>
-<h2 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h2><ol>
+<h2 id="6-3执行流程"><a href="#6-3执行流程" class="headerlink" title="6.3执行流程"></a>6.3执行流程</h2><ol>
 <li>用户在浏览器中输入url，被dispatcherServlet 拦截；</li>
 <li>dispatcherServlet 调用HandlerMapping找到相应的Handler；</li>
 <li>HandlerExecution就是具体的Controller；</li>
@@ -479,6 +525,139 @@
 <li>View Resolver解析得到相应的页面地址，回传给dispatcherServlet；</li>
 <li>dispatcherServlet根据View Resolver的结果调用相应的视图。</li>
 </ol>
+<h1 id="7-BeanFactory-和-FactoryBean-的区别"><a href="#7-BeanFactory-和-FactoryBean-的区别" class="headerlink" title="7. BeanFactory 和 FactoryBean 的区别"></a>7. BeanFactory 和 FactoryBean 的区别</h1><p><strong>面试官问题：讲一下 BeanFactory 和 FactoryBean 的区别？</strong></p>
+<p><strong>答：</strong>两者的区别简单总结如下。</p>
+<p>BeanFactory 是个 bean 工厂，是一个工厂类（接口）， 它负责生产和管理 bean 的一个工厂是 ioc 容器最底层的接口，是个 ioc 容器，是 spring 用来管理和装配普通 bean 的 ioc 容器（这些 bean 成为普通 bean ）。</p>
+<p>FactoryBean 是一个接口，当在 IOC 容器中的 Bean 实现了 FactoryBean 后，通过 getBean(String BeanName) 获取到的 Bean 对象并不是 FactoryBean 的实现类对象，而是这个实现类中的 getObject() 方法返回的对象。要想获取 FactoryBean 的实现类，就要 getBean(&amp;BeanName)，在BeanName 之前加上&amp;。</p>
+<p><strong>解析：</strong></p>
+<p><strong>FactoryBean 源码：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.springframework.beans.factory;  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">FactoryBean</span>&lt;<span class="title">T</span>&gt; </span>&#123;  </span><br><span class="line">    <span class="function">T <span class="title">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>;  </span><br><span class="line">    Class&lt;?&gt; getObjectType();  </span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isSingleton</span><span class="params">()</span></span>;  </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p><strong>下面是一个应用 FactoryBean 的例子，配置文件如下：</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;student&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.spring.bean.Student&quot;</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;zhangsan&quot;</span> /&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span>  </span><br><span class="line"> </span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;school&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.spring.bean.School&quot;</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span> </span><br><span class="line"> </span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;factoryBeanPojo&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.spring.bean.FactoryBeanPojo&quot;</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;type&quot;</span> <span class="attr">value</span>=<span class="string">&quot;student&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>FactoryBean 的实现类：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.FactoryBean;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FactoryBeanPojo</span> <span class="keyword">implements</span> <span class="title">FactoryBean</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String type;</span><br><span class="line"> </span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(<span class="string">&quot;student&quot;</span>.equals(type))&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> Student();			</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> School();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Class <span class="title">getObjectType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> School.class;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSingleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> type;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setType</span><span class="params">(String type)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.type = type;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>普通的 Bean：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">School</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String schoolName;</span><br><span class="line">	<span class="keyword">private</span> String address;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> studentNumber;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getSchoolName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> schoolName;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSchoolName</span><span class="params">(String schoolName)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.schoolName = schoolName;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getAddress</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> address;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAddress</span><span class="params">(String address)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.address = address;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getStudentNumber</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> studentNumber;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStudentNumber</span><span class="params">(<span class="keyword">int</span> studentNumber)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.studentNumber = studentNumber;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;School [schoolName=&quot;</span> + schoolName + <span class="string">&quot;, address=&quot;</span> + address</span><br><span class="line">				+ <span class="string">&quot;, studentNumber=&quot;</span> + studentNumber + <span class="string">&quot;]&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>测试类：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FactoryBeanTest</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		String url = <span class="string">&quot;com/spring/config/BeanConfig.xml&quot;</span>;</span><br><span class="line">		ClassPathXmlApplicationContext cpxa = <span class="keyword">new</span> ClassPathXmlApplicationContext(url);</span><br><span class="line">		Object school=  cpxa.getBean(<span class="string">&quot;factoryBeanPojo&quot;</span>);</span><br><span class="line">		FactoryBeanPojo factoryBeanPojo= (FactoryBeanPojo) cpxa.getBean(<span class="string">&quot;&amp;factoryBeanPojo&quot;</span>);</span><br><span class="line">		System.out.println(school.getClass().getName());</span><br><span class="line">		System.out.println(factoryBeanPojo.getClass().getName());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>输出结果：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">十一月 16, 2016 10:28:24 上午 org.springframework.context.support.AbstractApplicationContext prepareRefresh</span><br><span class="line">INFO: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@1e8ee5c0: startup date [Wed Nov 16 10:28:24 CST 2016]; root of context hierarchy</span><br><span class="line">十一月 16, 2016 10:28:24 上午 org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions</span><br><span class="line">INFO: Loading XML bean definitions from class path resource [com&#x2F;spring&#x2F;config&#x2F;BeanConfig.xml]</span><br><span class="line">十一月 16, 2016 10:28:24 上午 org.springframework.beans.factory.support.DefaultListableBeanFactory preInstantiateSingletons</span><br><span class="line">INFO: Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@35b793ee: defining beans [student,school,factoryBeanPojo]; root of factory hierarchy</span><br><span class="line">com.spring.bean.Student</span><br><span class="line">com.spring.bean.FactoryBeanPojo</span><br></pre></td></tr></table></figure>
+
+<p>从结果上可以看到当从 IOC 容器中获取 FactoryBeanPojo 对象的时候，用 getBean(String BeanName) 获取的确是 Student 对象，可以看到在 FactoryBeanPojo 中的 type 属性设置为 student 的时候，会在 getObject() 方法中返回 Student 对象。所以说从 IOC 容器获取实现了 FactoryBean 的实现类时，返回的却是实现类中的 getObject 方法返回的对象，要想获取 FactoryBean 的实现类，得在 getBean(String BeanName) 中的 BeanName 之前加上 &amp; ,写成 getBean(String &amp;BeanName) 。</p>
+<p><strong>面试官追问：使用 FactoryBean 的优势讲一下?</strong></p>
+<p><strong>答：</strong>一般情况下，Spring通过反射机制利用<bean>的class属性指定实现类实例化Bean，在某些情况下，实例化Bean过程比较复杂，如果按照传统的方式，则需要在<bean>中提供大量的配置信息。<strong>FactoryBean 接口让程序员可以通过实现该接口定制实例化 Bean 的逻辑（比如直接 new 一个）。这样就大大简化了 Bean 的配置过程。</strong></bean></bean></p>
+<h1 id="8-BeanFactory-和-ApplicationContext-的区别"><a href="#8-BeanFactory-和-ApplicationContext-的区别" class="headerlink" title="8. BeanFactory 和 ApplicationContext 的区别"></a>8. BeanFactory 和 ApplicationContext 的区别</h1><p><strong>面试官问题：讲一下 BeanFactory 和 ApplicationContext 的区别吧。</strong></p>
+<p><strong>答：</strong></p>
+<p><strong>BeanFactory 接口：</strong> 是 Spring 里面最顶层的接口，包含了各种 Bean 的定义，读取 Bean 配置文档，管理 Bean 的加载、实例化，控制 Bean 的生命周期，维护 Bean 之间的依赖关系。</p>
+<p><strong>ApplicationContext 接口：</strong>是BeanFactory的衍生，除了提供 BeanFactory 所具有的功能外，还进行更多的扩展。</p>
+<ul>
+<li>继承了MessageSource，支持国际化。 </li>
+<li>提供了统一的资源文件访问方式。 </li>
+<li>提供在Listener中注册Bean的事件。 </li>
+<li>提供同时加载多个配置文件的功能。 </li>
+<li>载入多个（有继承关系）上下文 ，使得每一个上下文都专注于一个特定的层次，比如应用的web层。 </li>
+</ul>
+<p><strong>在创建 Bean 和内存占用方面的区别：</strong></p>
+<ul>
+<li><strong>BeanFactory 采用的是延迟加载形式来注入 Bean 的</strong>，即只有在使用到某个 Bean 时(调用getBean())，才对该 Bean 进行加载实例化。这样，就不能发现一些存在于 <strong>Spring配置</strong> 中的问题。如果 Bean 的某一个属性没有注入，BeanFactory 加载后，直至第一次使用调用 getBean 方法才会抛出异常。 </li>
+<li><strong>ApplicationContext，它是在容器启动时，一次性创建了所有的 Bean</strong>。这样，在容器启动时，我们就可以发现 Spring 中存在的配置错误，这样有利于检查所依赖属性是否注入。 ApplicationContext 启动后预载入所有的单实例 Bean，通过预载入单实例 Bean ,确保当需要的时候，可以直接获取。 </li>
+</ul>
+<p><strong>面试官追问：说一下 BeanFactory 和 ApplicationContext 的优缺点吧。</strong></p>
+<p><strong>答：</strong></p>
+<p><strong>BeanFactory的优缺点：</strong></p>
+<p><strong>优点</strong>：应用启动的时候占用资源很少，对资源要求较高的应用，比较有优势（只是加载用到的Bean）；</p>
+<p><strong>缺点</strong>：运行速度会相对来说慢一些。而且有可能会出现空指针异常的错误，而且通过Bean工厂创建的Bean生命周期会简单一些。</p>
+<p><strong>ApplicationContext的优缺点：</strong> </p>
+<p><strong>优点</strong>：所有的Bean在启动的时候都进行了加载，系统运行的速度快；在系统启动的时候，可以发现系统中的配置问题。</p>
+<p><strong>缺点</strong>：把费时的操作放到系统启动中完成，所有的对象都可以预加载，缺点就是内存占用较大。</p>
+<h1 id="9-循环依赖"><a href="#9-循环依赖" class="headerlink" title="9.循环依赖"></a>9.循环依赖</h1><h2 id="9-1构造器的循环依赖"><a href="#9-1构造器的循环依赖" class="headerlink" title="9.1构造器的循环依赖"></a>9.1构造器的循环依赖</h2><p><strong>面试官问题：</strong>如果A对象创建的过程需要使用到B对象，但是B对象创建的时候也需要A对象，也就是构成了循环依赖的现象，那么Spring会如何解决？</p>
+<p><strong>答：</strong>这是一种<strong>构造器循环依赖，通过构造器注入构成的循环依赖，此依赖是无法解决的，只能抛出 BeanCurrentlyInCreationException 异常表示循环依赖。</strong></p>
+<h2 id="9-2属性的循环依赖"><a href="#9-2属性的循环依赖" class="headerlink" title="9.2属性的循环依赖"></a>9.2属性的循环依赖</h2><p><strong>面试官问题：属性循环依赖了解吗，怎么解决？</strong></p>
+<p><strong>答：</strong>如果对象A中有个属性是对象B，而且对象B中有个属性是对象A，那么对象A和对象B就算是循环依赖</p>
+<p><strong>解决思路：</strong></p>
+<p>要初始化一个 Bean，必须要注入 Bean 里的依赖，才算初始化成功，但并不要求此时依赖的依赖也都注入成功，只要依赖对象的构造方法执行完了，这个依赖对象就算存在了，注入就算成功了，至于依赖的依赖，以后再初始化也来得及。</p>
+<p>因此，我们初始化一个 Bean 时，先调用 Bean 的构造方法，这个对象就在内存中存在了（对象里面的依赖还没有被注入），然后把这个对象保存下来，当循环依赖产生时，直接拿到之前保存的对象，于是循环依赖就被终止了，依赖注入也就顺利完成了。</p>
+<p>举个例子：</p>
+<p>假设对象 A 中有属性是对象 B ，对象 B 中也有属性是对象 A ，即 A 和 B 循环依赖。</p>
+<ol>
+<li>创建对象 A，调用 A 的构造，并把 A 保存下来</li>
+<li>然后准备注入对象 A 中的依赖，发现对象 A 依赖对象 B ，那么开始创建对象 B</li>
+<li>调用 B 的构造，并把 B 保存下来</li>
+<li>然后准备注入 B 的构造，发现 B 依赖对象 A ，对象 A 之前已经创建了，直接获取 A 并把 A 注入 B（注意此时的对象 A 还没有完全注入成功，对象 A 中的对象 B 还没有注入），于是 B 创建成功</li>
+<li>把创建成功的 B 注入 A ，于是 A 也创建成功了</li>
+</ol>
+<h1 id="10-Spring-事务"><a href="#10-Spring-事务" class="headerlink" title="10. Spring 事务"></a>10. Spring 事务</h1><h2 id="10-1-事务管理方式"><a href="#10-1-事务管理方式" class="headerlink" title="10.1 事务管理方式"></a>10.1 事务管理方式</h2><p><strong>面试官问题：Spring的事务有了解吗？</strong></p>
+<p><strong>答：</strong>Spring 支持编程式事务管理和声明式事务管理两种方式。</p>
+<p><strong>编程式事务管理：</strong>Spring 实现编程式事务依赖 TransactionTemplate 类，将事务管理的代码嵌入到业务方法中来控制事务的提交和回滚。</p>
+<p>缺点：必须在每个事务操作业务逻辑中包含额外的事务管理代码</p>
+<p><strong>声明式事务管理</strong>：建立在AOP之上的。其本质是通过AOP功能，对方法前后进行拦截，将事务处理的功能编织到拦截的方法中，也就是在目标方法开始之前加入一个事务，在执行完目标方法之后根据执行情况提交或者回滚事务。 </p>
+<p>优点：就是不需要在业务逻辑代码中掺杂事务管理的代码，只需在配置文件中做相关的事务规则声明（设定事务的隔离级别、传播方式等）或通过@Transactional注解的方式（在注解中设定事务的隔离级别、传播方式等），便可以将事务规则应用到业务逻辑中。</p>
+<p>缺点：声明式事务的最细粒度只能作用到方法级别，无法做到像编程式事务那样可以作用到代码块级别，但是也有解决的方式，就是将代码块分离出来，改写成方法即可。</p>
+<p><strong>面试官追问：应该怎么选择事务管理方式呢？</strong></p>
+<p><strong>答：</strong>声明式事务管理要优于编程式事务管理，这正是Spring倡导的<strong>非侵入式的开发</strong>方式，使业务代码不受污染，只要<strong>加上注解</strong>就可以获得完全的事务支持。唯一不足之处是声明式事务的最细粒度只能作用到方法级别，无法做到像编程式事务那样可以作用到代码块级别，但是也有解决的方式，就是将代码块分离出来，改写成方法即可。</p>
+<h2 id="10-2-事务的传播行为"><a href="#10-2-事务的传播行为" class="headerlink" title="10.2 事务的传播行为"></a>10.2 事务的传播行为</h2><p><strong>面试官问题：了解 Spring 的事务传播吗？讲一下吧。</strong></p>
+<p><strong>答：</strong></p>
+<p><strong>事务传播行为（propagation behavior）：</strong>指的就是当一个事务方法被另一个事务方法调用时，这个事务方法应该如何进行。 </p>
+<p><strong>例如：</strong>methodA 事务方法调用 methodB 事务方法时，methodB 是继续在调用者 methodA 的事务中运行呢，还是为自己开启一个新事务运行，这就是由 methodB 的事务传播行为决定的。</p>
+<p><strong>Spring 定义了下边的 7 个传播行为来处理这些事务行为：</strong></p>
+<p><strong>1.PROPAGATION_REQUIRED（最常用的设置）</strong></p>
+<p><strong>有两个方法 Demo：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(propagation = Propagation.REQUIRED)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> methodB();</span><br><span class="line"><span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Transactional(propagation = Propagation.REQUIRED)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>单独调用 methodB 方法时，因为当前上下文不存在事务，所以会开启一个新的事务。<br>调用 methodA 方法时，因为当前上下文不存在事务，所以会开启一个新的事务。当执行到调用 methodB 时，methodB 发现当前上下文有事务，因此就加入到当前事务中来。</p>
+<p><strong>回滚方式：</strong>在 methodA 或者在 methodB 内的任何地方出现异常，事务都会被回滚。即使 methodB 的事务已经被提交，但是 methodA 在接下来要回滚，methodB 也要回滚</p>
+<p><strong>2.PROPAGATION_SUPPORTS</strong></p>
+<p>支持当前事务，如果当前存在事务，就加入该事务，如果当前不存在事务，就以非事务执行。 </p>
+<p><strong>有两个方法 Demo：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(propagation = Propagation.REQUIRED)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> methodB();</span><br><span class="line"><span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 事务属性为SUPPORTS</span></span><br><span class="line"><span class="meta">@Transactional(propagation = Propagation.SUPPORTS)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>单纯的调用 methodB 时，methodB 方法是非事务的执行的。</p>
+<p>当调用 methdA 时，methodB 则加入了 methodA 的事务中,事务地执行。</p>
+<p><strong>3.PROPAGATION_MANDATORY</strong></p>
+<p>如果已经存在一个事务，支持当前事务。如果没有一个活动的事务，则抛出异常。</p>
+<p><strong>有两个方法 Demo：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(propagation = Propagation.REQUIRED)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> methodB();</span><br><span class="line"><span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 事务属性为MANDATORY</span></span><br><span class="line"><span class="meta">@Transactional(propagation = Propagation.MANDATORY)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当单独调用methodB时，因为当前没有一个活动的事务，则会抛出异常throw new  IllegalTransactionStateException(“Transaction propagation ‘mandatory’  but no existing transaction  found”)</p>
+<p>当调用methodA时，methodB则加入到methodA的事务中，事务地执行。</p>
+<p><strong>4.PROPAGATION_REQUIRES_NEW</strong></p>
+<p>创建新事务，无论当前存不存在事务，都创建新事务。 </p>
+<p><strong>有两个方法 Demo：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(propagation = Propagation.REQUIRED)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     methodB();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment">// 事务属性为REQUIRES_NEW</span></span><br><span class="line"><span class="meta">@Transactional(propagation = Propagation.REQUIRES_NEW)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当执行到 methodB 的时候， methodA 所在的事务就会挂起， methodB 会起一个新的事务，等待 methodB 的事务完成以后，他才继续执行。</p>
+<p><strong>回滚方式：</strong>他与 PROPAGATION_REQUIRED 的事务区别在于事务的回滚程度了。因为ServiceB.methodB是新起一个事务，那么就是存在两个不同的事务。如果 methodB 已经提交，那么 methodA 失败回滚， methodB 是不会回滚的。如果 methodB 失败回滚，如果他抛出的异常被 methodA 捕获， methodA 事务仍然可能提交。</p>
+<p><strong>5.PROPAGATION_NOT_SUPPORTED</strong></p>
+<p>当前不支持事务。总是以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。 </p>
+<p><strong>有两个方法 Demo：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(propagation = Propagation.REQUIRED)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     methodB();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment">// 事务属性为REQUIRES_NEW</span></span><br><span class="line"><span class="meta">@Transactional(propagation = Propagation.NOT_SUPPORTED)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当执行到 methodB 时， methodA 的事务挂起，而他以非事务的状态运行完，再继续 methodA 的事务。</p>
+<p><strong>6.PROPAGATION_NEVER</strong></p>
+<p>以非事务方式执行，如果当前存在事务，则抛出异常。 </p>
+<p><strong>有两个方法 Demo：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(propagation = Propagation.REQUIRED)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     methodB();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment">// 事务属性为REQUIRES_NEW</span></span><br><span class="line"><span class="meta">@Transactional(propagation = Propagation.NEVER)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用 methodB 方法时，就要抛出异常。</p>
+<p><strong>7.PROPAGATION_NESTED</strong></p>
+<p>如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则按 REQUIRED 属性执行。 </p>
+<p><strong>有两个方法 Demo：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(propagation = Propagation.REQUIRED)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     methodB();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Transactional(propagation = Propagation.NEWSTED)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果单独调用methodB方法，此时没有活动事务，就会新开一个事务 B。</p>
+<p>如果调用 methodA 时，当 methodB 方法调用之前，调用 setSavepoint 方法，保存当前的状态到 <strong>savepoint</strong> 。如果 methodB 方法调用失败，则恢复到之前保存的状态不会造成父事务的回滚。但是需要注意的是，这时的事务并没有进行提交，如果后续的代码调用失败，则回滚包括 methodB 方法的所有操作。嵌套事务一个非常重要的概念就是内层事务依赖于外层事务。外层事务失败时，会回滚内层事务所做的动作。而内层事务操作失败并不会引起外层事务的回滚。</p>
+<blockquote>
+<p>PROPAGATION_NESTED 与 PROPAGATION_REQUIRES_NEW 的区别是，PROPAGATION_REQUIRES_NEW 另起一个事务，将会与他的父事务相互独立，而 Nested 的事务和他的父事务是相依的，他的提交是要等和他的父事务一块提交的。也就是说，如果父事务最后回滚，他也要回滚的。</p>
+</blockquote>
+<h1 id="11-SpringBoot"><a href="#11-SpringBoot" class="headerlink" title="11. SpringBoot"></a>11. SpringBoot</h1><h1 id="12-面试问题"><a href="#12-面试问题" class="headerlink" title="12.面试问题"></a>12.面试问题</h1><p><strong>1.知道 componentScan 注解吗，讲一下这个注解的作用</strong></p>
+<p>与 ComponentScan 注解相对应的 XML 配置就是&lt; context:component-scan/ &gt;， 根据指定的配置自动扫描 package ，将符合条件的组件加入到 IOC 容器中，项目中没有用到这个注解，而是直接在 XML 文件中配置了这个字段，字段值就是扫描包的位置。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;context:component-scan</span><br><span class="line">	base-<span class="keyword">package</span>=<span class="string">&quot;com.yibai.spring.annotation&quot;</span> use-<span class="keyword">default</span>-filters=<span class="string">&quot;false&quot;</span>&gt;</span><br><span class="line">	&lt;context:include-filter type=<span class="string">&quot;custom&quot;</span></span><br><span class="line">		expression=<span class="string">&quot;com.yibai.spring.annotation.filter.ColorBeanLoadFilter&quot;</span> /&gt;</span><br><span class="line">	&lt;context:exclude-filter type=<span class="string">&quot;annotation&quot;</span></span><br><span class="line">		expression=<span class="string">&quot;org.springframework.stereotype.Component&quot;</span> /&gt;</span><br><span class="line">&lt;/context:component-scan&gt;</span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -575,7 +754,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-IOC-amp-Spring-AOP"><span class="nav-number">1.</span> <span class="nav-text">Spring IOC &amp; Spring AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IOC-%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC"><span class="nav-number">1.1.</span> <span class="nav-text">IOC(控制反转)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOP-%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">AOP(面向切面编程)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Bean"><span class="nav-number">2.</span> <span class="nav-text">Spring Bean</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-%E4%B8%AD%E7%9A%84-bean-%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">2.1.</span> <span class="nav-text">Spring 中的 bean 的作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-%E4%B8%AD%E7%9A%84-bean-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">2.2.</span> <span class="nav-text">Spring 中的 bean 的生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-%E4%B8%AD%E7%9A%84%E5%8D%95%E4%BE%8B-bean-%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="nav-number">2.3.</span> <span class="nav-text">Spring 中的单例 bean 的线程安全问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-MVC"><span class="nav-number">3.</span> <span class="nav-text">Spring MVC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="nav-number">3.1.</span> <span class="nav-text">流程图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E4%BD%9C%E7%94%A8"><span class="nav-number">3.2.</span> <span class="nav-text">组件作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">3.3.</span> <span class="nav-text">执行流程</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Spring-%E7%9A%84%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">1. Spring 的简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Spring-%E7%9A%84%E4%BC%98%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">2. Spring 的优点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-SpringIOC-%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC"><span class="nav-number">3.</span> <span class="nav-text">3. SpringIOC(控制反转)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-SpringAOP-%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">4. SpringAOP(面向切面编程)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E4%B8%A4%E7%A7%8D%E5%AE%9E%E7%8E%B0-SpringAOP-%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 两种实现 SpringAOP 的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-SpringIOC-%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 SpringIOC 初始化的过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-SpringBean"><span class="nav-number">5.</span> <span class="nav-text">5. SpringBean</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-Spring-%E4%B8%AD%E7%9A%84-bean-%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 Spring 中的 bean 的作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-Spring-%E4%B8%AD%E7%9A%84-bean-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 Spring 中的 bean 的生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-Spring-%E4%B8%AD%E7%9A%84%E5%8D%95%E4%BE%8B-bean-%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="nav-number">5.3.</span> <span class="nav-text">5.3 Spring 中的单例 bean 的线程安全问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-SpringMVC-%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">6.</span> <span class="nav-text">6. SpringMVC 执行流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="nav-number">6.1.</span> <span class="nav-text">6.1流程图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2%E7%BB%84%E4%BB%B6%E4%BD%9C%E7%94%A8"><span class="nav-number">6.2.</span> <span class="nav-text">6.2组件作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">6.3.</span> <span class="nav-text">6.3执行流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-BeanFactory-%E5%92%8C-FactoryBean-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">7.</span> <span class="nav-text">7. BeanFactory 和 FactoryBean 的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-BeanFactory-%E5%92%8C-ApplicationContext-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">8.</span> <span class="nav-text">8. BeanFactory 和 ApplicationContext 的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96"><span class="nav-number">9.</span> <span class="nav-text">9.循环依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#9-1%E6%9E%84%E9%80%A0%E5%99%A8%E7%9A%84%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96"><span class="nav-number">9.1.</span> <span class="nav-text">9.1构造器的循环依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-2%E5%B1%9E%E6%80%A7%E7%9A%84%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96"><span class="nav-number">9.2.</span> <span class="nav-text">9.2属性的循环依赖</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-Spring-%E4%BA%8B%E5%8A%A1"><span class="nav-number">10.</span> <span class="nav-text">10. Spring 事务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#10-1-%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8F"><span class="nav-number">10.1.</span> <span class="nav-text">10.1 事务管理方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-2-%E4%BA%8B%E5%8A%A1%E7%9A%84%E4%BC%A0%E6%92%AD%E8%A1%8C%E4%B8%BA"><span class="nav-number">10.2.</span> <span class="nav-text">10.2 事务的传播行为</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-SpringBoot"><span class="nav-number">11.</span> <span class="nav-text">11. SpringBoot</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98"><span class="nav-number">12.</span> <span class="nav-text">12.面试问题</span></a></li></ol></div>
       </div>
       <!--/noindex-->
       <div class="site-overview-wrap sidebar-panel">
@@ -590,20 +769,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-count">90</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -649,13 +828,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">687k</span>
+    <span title="站点总字数">912k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">10:25</span>
+    <span title="站点阅读时长">13:49</span>
 
 </div>
 <div class="powered-by">

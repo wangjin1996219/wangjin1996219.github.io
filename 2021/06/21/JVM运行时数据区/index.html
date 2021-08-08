@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wangjin1996219.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="JVM运行时数据区">
+<meta property="og:url" content="http://wangjin1996219.github.io/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/index.html">
+<meta property="og:site_name" content="Wj-Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/GitHub/MyBlogs/source/_posts/2021-06-21-JVM运行时数据区/图片01.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/GitHub/MyBlogs/source/_posts/2021-06-21-JVM运行时数据区/图片02.png">
+<meta property="og:image" content="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-3堆结构.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/GitHub/MyBlogs/source/_posts/2021-06-21-JVM运行时数据区/图片03.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/GitHub/MyBlogs/source/_posts/2021-06-21-JVM运行时数据区/图片04.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/GitHub/MyBlogs/source/_posts/2021-06-21-JVM运行时数据区/图片05.png">
+<meta property="article:published_time" content="2021-06-21T08:37:42.000Z">
+<meta property="article:modified_time" content="2021-08-08T08:36:42.694Z">
+<meta property="article:author" content="老王家的小王呀">
+<meta property="article:tag" content="Java虚拟机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://wangjin1996219.github.io/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/GitHub/MyBlogs/source/_posts/2021-06-21-JVM运行时数据区/图片01.png">
+
+<link rel="canonical" href="http://wangjin1996219.github.io/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JVM运行时数据区 | Wj-Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Wj-Blog" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wj-Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">32</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">90</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="老王家的小王呀">
+      <meta itemprop="description" content="及时当勉励，岁月不待人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wj-Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JVM运行时数据区
+        </h1>
+
+        <div class="post-meta">
+        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-21 16:37:42" itemprop="dateCreated datePublished" datetime="2021-06-21T16:37:42+08:00">2021-06-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-08-08 16:36:42" itemprop="dateModified" datetime="2021-08-08T16:36:42+08:00">2021-08-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Java基础</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/" class="post-meta-item leancloud_visitors" data-flag-title="JVM运行时数据区" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<a id="more"></a>
+
+<h1 id="1-JVM-运行时数据区"><a href="#1-JVM-运行时数据区" class="headerlink" title="1. JVM 运行时数据区"></a>1. JVM 运行时数据区</h1><p>Java 虚拟机在执行 Java 程序的过程中会把它所管理的内存区域划分为若干个不同的数据区域（五个）,如图所示：</p>
+<img src="/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/GitHub\MyBlogs\source\_posts\2021-06-21-JVM运行时数据区\图片01.png" alt="img" style="zoom: 50%;">
+
+<h1 id="2-程序计数器"><a href="#2-程序计数器" class="headerlink" title="2.程序计数器"></a>2.程序计数器</h1><p>记录正在执行的虚拟机字节码指令的地址（如果正在执行的是本地方法则为空）；另外，为了线程切换后能恢复到正确的执行位置，每条线程都需要有一个独立的程序计数器，各线程之间计数器互不影响，独立存储。<strong>（线程私有、生命周期同线程生命周期）</strong></p>
+<h1 id="3-Java-虚拟机栈"><a href="#3-Java-虚拟机栈" class="headerlink" title="3. Java 虚拟机栈"></a>3. Java 虚拟机栈</h1><p>每个 Java 方法在执行的同时会创建一个栈帧用于存储局部变量表、操作数栈（被指令操作的数据）、常量池引用等信息。从方法调用直至执行完成的过程，对应着一个栈帧在 Java 虚拟机栈中入栈和出栈的过程。<strong>（线程私有、生命周期同线程生命周期）</strong></p>
+<img src="/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/GitHub\MyBlogs\source\_posts\2021-06-21-JVM运行时数据区\图片02.png" alt="img" style="zoom:80%;">
+
+<p>该区域可能抛出以下异常：</p>
+<ul>
+<li>当线程请求的栈深度超过最大值，会抛出 StackOverflowError 异常；</li>
+<li>栈进行动态扩展时如果无法申请到足够内存，会抛出 OutOfMemoryError（OOM） 异常。</li>
+</ul>
+<h1 id="4-本地方法栈"><a href="#4-本地方法栈" class="headerlink" title="4.本地方法栈"></a>4.本地方法栈</h1><p>与虚拟机栈的作用是一样的，只不过虚拟机栈是服务 Java 方法的，而本地方法栈是为虚拟机调用 Native 方法服务的；<strong>（线程私有、生命周期同线程生命周期）</strong></p>
+<h1 id="5-Java-堆"><a href="#5-Java-堆" class="headerlink" title="5. Java 堆"></a>5. Java 堆</h1><p>Java 虚拟机中内存最大的一块，是被所有线程共享的，几乎所有的对象实例和数组都在这里分配内存；<strong>（线程共享）</strong></p>
+<p>现代的垃圾收集器基本都是采用分代收集算法，其主要的思想是针对不同类型的对象采取不同的垃圾回收算法。可以将堆分成两块：新生代（Young Generation）、老年代（Old Generation）。在细致一点的有Eden空间、From Survivor 空间、To Survior 空间等。</p>
+<p>堆不需要连续内存，并且可以动态增加其内存，增加失败会抛出 OutOfMemoryError 异常。</p>
+<div align="center">  
+<img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-3堆结构.png" width="400px">
+</div>
+
+<p>​       上图所示的 eden区、s0区、s1区都属于新生代，tentired 区属于老年代。大部分情况，对象都会首先在 Eden 区域分配，在一次新生代垃圾回收后，如果对象还存活，则会进入 s0 或者 s1，并且对象的年龄还会加 1(Eden区-&gt;Survivor 区后对象的初始年龄变为1)，当它的年龄增加到一定程度（默认为15岁），就会被晋升到老年代中。（年轻代：老年代=8:1）</p>
+<h1 id="6-方法区"><a href="#6-方法区" class="headerlink" title="6.方法区"></a>6.方法区</h1><p>用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译（ JIT 编译）后的代码等数据。<strong>（线程共享）</strong></p>
+<p>方法区可以看成是一块独立于 Java 堆的内存空间。但是与 Java 堆一样都是线程共享的内存区域。</p>
+<p>方法区在 JVM 启动的时候创建，它的内存分配与 Java 堆一样，可以是不连续的。</p>
+<p>方法区的大小跟堆内存一样，可以选择固定或者是可扩展的。方法区的大小决定了可以保存多少个类，如果定义了太多的类，导致方法区溢出，虚拟机会抛出内存溢出错误：java.lang.OutOfMemoryError : PermGen（永久代实现） 或者 java.lang.OutOfMemoryError : Metaspace（元空间实现）。比如：加载大量的第三方 jar 包、Tomcat 部署的工程过多、动态生成大量的反射类就会出现 OOM。</p>
+<p>关闭 JVM 就会释放这个区域的内存。</p>
+<h2 id="6-1-Hotspot-虚拟机中方法区的演进过程"><a href="#6-1-Hotspot-虚拟机中方法区的演进过程" class="headerlink" title="6.1 Hotspot 虚拟机中方法区的演进过程"></a>6.1 Hotspot 虚拟机中方法区的演进过程</h2><p>要注意，只有在 Hotspot 虚拟机中才有永久代的概念，方法区是 Java 虚拟机的一种规范，并不要求每个实现版本的统一。</p>
+<p><strong>Hotspot 中方法区的变化：</strong></p>
+<ul>
+<li><strong>jdk1.6 之前：</strong>有永久代，静态变量存放在永久代上，之所以落地在永久代，是因为存活时间比较长，不用频繁 GC。</li>
+<li><strong>jdk1.7：</strong>有永久代，但是逐渐“去永久代”，字符串常量池、静态变量移除，保存在堆中（拿走了一部分内容）</li>
+<li><strong>jdk1.8 及之后：</strong>无永久代的概念了，通过元空间来存放类型信息、字段、方法、运行时常量池，注意这时的元空间是使用的本地内存，也就是 JVM 之外的内存。但是字符串常量池、静态变量仍在堆中。</li>
+</ul>
+<p>演变过程示意图：</p>
+<p><strong>jdk1.6:</strong></p>
+<img src="/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/GitHub\MyBlogs\source\_posts\2021-06-21-JVM运行时数据区\图片03.png" alt="image-20210621172036767" style="zoom:60%;">
+
+<p><strong>jdk1.7:</strong></p>
+<img src="/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/GitHub\MyBlogs\source\_posts\2021-06-21-JVM运行时数据区\图片04.png" alt="image-20210621172445798" style="zoom:60%;">
+
+<p><strong>jdk1.8:</strong></p>
+<img src="/2021/06/21/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/GitHub\MyBlogs\source\_posts\2021-06-21-JVM运行时数据区\图片05.png" alt="image-20210621172649516" style="zoom:60%;">
+
+<h2 id="6-2-永久代为什么要被元空间替换"><a href="#6-2-永久代为什么要被元空间替换" class="headerlink" title="6.2 永久代为什么要被元空间替换"></a>6.2 永久代为什么要被元空间替换</h2><p>从 jdk1.8 之后，永久代就消失了，取而代之的是用元空间来存储类的元信息，元空间是落地在本地内存中的，因此元空间的最大可用内存就是系统的可用内存空间。</p>
+<p>这项改动的原因主要是因为以下两个方面：</p>
+<ol>
+<li><p>为永久代设置空间大小是很难确定的</p>
+<p>在某些场景下，如果分配的内存空间较小，容易造成 FullGC 的次数变多，导致 Stop World 的次数多，系统运行停顿时间变长，另一方面是动态加载的类过多，容易产生永久代的 OOM。比如某个实际 Web 工程中，因为功能点比较多，在运行过程中需要动态加载很多类，容易发生 OOM 错误。</p>
+<p>如果盲目分配很大的内存空间，就会造成资源浪费。</p>
+<p>而元空间和永久代的最大区别就是：元空间不在虚拟机中，而是使用本地内存，因此，默认情况下，元空间的大小仅受本地内存限制。</p>
+</li>
+<li><p>对永久代的调优比较困难</p>
+<p>虽然永久代的 FullGC 的机会比较少，但是也会出现。</p>
+<p>方法区的垃圾回收内容：常量池中废弃的常量和不再使用的类。对于废弃常量的回收比较简单，但是判断是否需要回收一个类需要特别复杂的机制，是一个比较耗时的过程。</p>
+<p>所以使用元空间可以尽可能地少出现 FullGC ，对于 JVM 是一个很好的优化。</p>
+</li>
+</ol>
+<h2 id="6-3字符串常量池"><a href="#6-3字符串常量池" class="headerlink" title="6.3字符串常量池"></a>6.3字符串常量池</h2><p>全局字符串池里的内容是在类加载完成，经过验证，准备阶段之后在堆中生成字符串对象实例，然后将该字符串对象实例的引用值存到 string pool 中（记住： string pool 中存的是引用值而不是具体的实例对象，具体的实例对象是在堆中开辟的一块空间存放的。）。 在 HotSpot VM 里实现的 string  pool 功能的是一个 StringTable 类，它是一个哈希表，里面存的是驻留字符串(也就是我们常说的用双引号括起来的)的引用（而不是驻留字符串实例本身），也就是说在堆中的某些字符串实例被这个 StringTable 引用之后就等同被赋予了”驻留字符串”的身份。这个 StringTable 在每个 HotSpot VM 的实例只有一份，被所有的类共享。</p>
+<h2 id="6-4-Class-文件常量池"><a href="#6-4-Class-文件常量池" class="headerlink" title="6.4 Class 文件常量池"></a>6.4 Class 文件常量池</h2><p>class文件中除了包含类的版本、字段、方法、接口等描述信息外，还有一项信息就是常量池表(constant pool table)，用于存放编译器生成的各种字面量(Literal)和符号引用(Symbolic References)。  字面量就是我们所说的常量概念，如文本字符串、被声明为final的常量值（int count = 20 中的 20 ）等。  符号引用是一组符号来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能无歧义地定位到目标即可（它与直接引用区分一下，直接引用一般是指向方法区的本地指针，相对偏移量或是一个能间接定位到目标的句柄）。一般包括下面三类常量：</p>
+<ul>
+<li>类和接口的全限定名</li>
+<li>字段的名称和描述符</li>
+<li>方法的名称和描述符</li>
+</ul>
+<p><strong>作用：</strong>一个 Java 源文件经过编译后会产生一个字节码文件。而这一个程序的执行需要很多的数据支持，像各种类型的类等，如果我们都将这些数据放到字节码文件中，这个文件会非常大，即便是一个很简单的程序。换另一种方式，可以将需要的类型用一个符号代替，将这些符号放到常量池中，就会大大减小编程后的字节码文件大小。</p>
+<h2 id="6-5运行时常量池"><a href="#6-5运行时常量池" class="headerlink" title="6.5运行时常量池"></a>6.5运行时常量池</h2><p>当java文件被编译成class文件之后，也就是会生成我上面所说的class常量池，那么运行时常量池又是什么时候产生的呢？</p>
+<p>jvm 在执行某个类的时候，必须经过加载、连接、初始化，而连接又包括验证、准备、解析三个阶段。而<strong>当类或者接口文件加载到虚拟机内存中后，jvm就会将class常量池中的内容存放到运行时常量池中</strong>，由此可知，<strong>运行时常量池也是每个类都有一个</strong>。在上面我也说了，class常量池中存的是字面量和符号引用，也就是说他们存的并不是对象的实例，而是对象的符号引用值。而经过解析（resolve）之后，也就是<strong>把符号引用替换为直接引用</strong>，解析的过程会去查询全局字符串池，也就是我们上面所说的StringTable，以保证运行时常量池所引用的字符串与全局字符串池中所引用的是一致的。</p>
+<h2 id="6-6实例说明"><a href="#6-6实例说明" class="headerlink" title="6.6实例说明"></a>6.6实例说明</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="keyword">new</span> String（<span class="string">&quot;abc&quot;</span>）；<span class="comment">//创建了几个对象？</span></span><br></pre></td></tr></table></figure>
+
+<p>这行代码形式上很简单，其实很复杂。有一个常见的 Java 笔试题就是问上面这行代码创建了几个 String 对象。</p>
+<p>你可能认为它创建了一个对象，其实它是创建了两个 String 对象。</p>
+<p>JVM为了提高性能，将一下两种形式的字符串放在一个称之为字符串驻留池的内存块中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">形式一：String str = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line"></span><br><span class="line">形式二：<span class="string">&quot;abc&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>其实，形式一和形式二都是字符串的字面常量。所以，可以这样理解，即把字符串的字面常量都放在了字符串驻留池中。对形式一来说， str 其实就是引用的字符串驻留池中 “abc” 这个 String 对象。</p>
+<p>如果有如下的两行代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String str1 = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line"></span><br><span class="line">String str2 = <span class="string">&quot;abc&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>那么，上面的两行代码创建了几个 String 对象？答案是一个。根据我们刚才所述，那么第一行语句将在池中创建一个 String 对象，第二行会先在池中寻找是否有值与 “abc” 相同的 String 对象，如果有，就直接引用，没有这在池中新建 String 对象。这下，就明白了为什么上面的两行语句仅仅创建了一个 String 对象。</p>
+<p>然后，让我们来看一看：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="keyword">new</span> String(<span class="string">&quot;abc&quot;</span>)；</span><br></pre></td></tr></table></figure>
+
+<p>先不讨论到底创建了几个 String 对象。我们在这里，比较一下这种 new 的方式和上面的直接赋值方式两种创建 String 对象的不同，直接赋值的方式是在字符串驻留池中创建对象，但 new 这种方式是在堆中创建对象。即 new 创建的 String 对象是不会放入字符串驻留池中的。如果一定要把某个通过 new 创建的字符串对象放入驻留池，可以使用 intern() 方法。如 String strt =  str.intern()，将把 str 的值放在驻留池中（当然，是在驻留池原来没有这个值对应的 String 对象的情况下），并返回驻留池中 String 对象的引用。</p>
+<p>现在，可以分析 String str = new String(“abc”); 创建了几个 String 对象了。很明显，传入的 “abc” 字符串字面常量在驻留池中创建了一个对象，new 操作符在堆中创建了一个对象，所以，一共创建了两个 String 对象。</p>
+<p><strong>Demo</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String []args)</span> </span>&#123;</span><br><span class="line">		String str1 = <span class="string">&quot;abc&quot;</span>; </span><br><span class="line">		String str2 = <span class="keyword">new</span> String(<span class="string">&quot;def&quot;</span>); </span><br><span class="line">		String str3 = <span class="string">&quot;abc&quot;</span>; </span><br><span class="line">		String str4 = str2.intern(); </span><br><span class="line">		String str5 = <span class="string">&quot;def&quot;</span>; </span><br><span class="line">		System.out.println(str1 == str3);<span class="comment">//true </span></span><br><span class="line">		System.out.println(str2 == str4);<span class="comment">//false </span></span><br><span class="line">		System.out.println(str4 == str5);<span class="comment">//true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>程序的内存分配过程：</p>
+<p>首先，在堆中会有一个 ”abc” 实例，全局 StringTable 中存放着 ”abc” 的一个引用值</p>
+<p>然后，在运行第二句的时候会生成<strong>两个实例：</strong>一个是<strong>字符串常量池</strong>中的 ”def” 实例对象，并且 StringTable 中存储一个 ”def” 的引用值，还有一个是<strong>堆内存</strong>中 new 出来的一个 ”def” 的实例对象，与上面那个是不同的实例</p>
+<p>当在解析 str3 的时候查找 StringTable，里面有 ”abc” 的全局驻留字符串引用，所以 str3 的引用地址与之前的那个已存在的相同</p>
+<p>str4 是在运行的时候调用 intern() 函数，返回 StringTable 中 ”def” 的引用值，如果没有就将 str2 的引用值添加进去，在这里，StringTable 中已经有了 ”def” 的引用值了，所以返回上面在 new str2 的时候添加到 StringTable 中的  “def” 引用值，最后 str5 在解析的时候就也是指向存在于 StringTable 中的 ”def” 的引用值</p>
+<p>上面程序的首先经过编译之后，在该类的 class 常量池中存放一些符号引用，然后类加载之后，将 class 常量池中存放的符号引用转存到运行时常量池中，然后经过验证，准备阶段之后，在堆中生成驻留字符串的实例对象（也就是上例中 str1 所指向的 ”abc” 实例对象），然后将这个对象的引用存到全局 String Pool 中，也就是 StringTable 中，最后在解析阶段，要把运行时常量池中的符号引用替换成直接引用，那么就直接查询 StringTable，保证 StringTable 里的引用值与运行时常量池中的引用值一致，大概整个过程就是这样了。</p>
+<h2 id="6-7补充说明"><a href="#6-7补充说明" class="headerlink" title="6.7补充说明"></a>6.7补充说明</h2><h3 id="1-符号引用与直接引用"><a href="#1-符号引用与直接引用" class="headerlink" title="1.符号引用与直接引用"></a>1.符号引用与直接引用</h3><p><strong>在JVM中类加载过程中，在解析阶段，Java虚拟机会把类的二级制数据中的符号引用替换为直接引用。</strong></p>
+<ol>
+<li><p>符号引用</p>
+<p>符号引用以一组符号来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能够无歧义的定位到目标即可。例如，在 Class 文件中它以 CONSTANT_Class_info、CONSTANT_Fieldref_info、CONSTANT_Methodref_info 等类型的常量出现。符号引用与虚拟机的内存布局无关，引用的目标并不一定加载到内存中。在 Java 中，一个 java 类将会编译成一个 class 文件。<strong>在编译时， java 类并不知道所引用的类的实际地址，因此只能使用符号引用来代替。</strong>比如 org.simple.People 类引用了 org.simple.Language 类，在编译时 People 类并不知道 Language 类的实际内存地址，因此只能使用符号 org.simple.Language（假设是这个，当然实际中是由类似于 CONSTANT_Class_info 的常量来表示的）来表示 Language 类的地址。各种虚拟机实现的内存布局可能有所不同，但是它们能接受的符号引用都是一致的，因为符号引用的字面量形式明确定义在 Java 虚拟机规范的 Class 文件格式中。</p>
+</li>
+<li><p>直接引用</p>
+<p>直接引用可以是</p>
+<p>（1）直接指向目标的指针（比如，指向“类型”【Class对象】、类变量、类方法的直接引用可能是指向方法区的指针）</p>
+<p>（2）相对偏移量（比如，指向实例变量、实例方法的直接引用都是偏移量）</p>
+<p>（3）一个能间接定位到目标的句柄</p>
+<p>直接引用是和虚拟机的布局相关的，同一个符号引用在不同的虚拟机实例上翻译出来的直接引用一般不会相同。如果有了直接引用，那引用的目标必定已经被加载入内存中了。</p>
+</li>
+</ol>
+
+    </div>
+
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag"><i class="fa fa-tag"></i>  Java虚拟机</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/21/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%E5%8E%9F%E7%90%86/" rel="prev" title="布隆过滤器原理">
+      <i class="fa fa-chevron-left"></i> 布隆过滤器原理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/06/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/" rel="next" title="数据库系统原理">
+      数据库系统原理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-JVM-%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA"><span class="nav-number">1.</span> <span class="nav-text">1. JVM 运行时数据区</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">2.程序计数器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Java-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88"><span class="nav-number">3.</span> <span class="nav-text">3. Java 虚拟机栈</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="nav-number">4.</span> <span class="nav-text">4.本地方法栈</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-Java-%E5%A0%86"><span class="nav-number">5.</span> <span class="nav-text">5. Java 堆</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E6%96%B9%E6%B3%95%E5%8C%BA"><span class="nav-number">6.</span> <span class="nav-text">6.方法区</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-Hotspot-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%96%B9%E6%B3%95%E5%8C%BA%E7%9A%84%E6%BC%94%E8%BF%9B%E8%BF%87%E7%A8%8B"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 Hotspot 虚拟机中方法区的演进过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-%E6%B0%B8%E4%B9%85%E4%BB%A3%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%A2%AB%E5%85%83%E7%A9%BA%E9%97%B4%E6%9B%BF%E6%8D%A2"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 永久代为什么要被元空间替换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="nav-number">6.3.</span> <span class="nav-text">6.3字符串常量池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-Class-%E6%96%87%E4%BB%B6%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="nav-number">6.4.</span> <span class="nav-text">6.4 Class 文件常量池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-5%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="nav-number">6.5.</span> <span class="nav-text">6.5运行时常量池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-6%E5%AE%9E%E4%BE%8B%E8%AF%B4%E6%98%8E"><span class="nav-number">6.6.</span> <span class="nav-text">6.6实例说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-7%E8%A1%A5%E5%85%85%E8%AF%B4%E6%98%8E"><span class="nav-number">6.7.</span> <span class="nav-text">6.7补充说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E4%B8%8E%E7%9B%B4%E6%8E%A5%E5%BC%95%E7%94%A8"><span class="nav-number">6.7.1.</span> <span class="nav-text">1.符号引用与直接引用</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="老王家的小王呀"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">老王家的小王呀</p>
+  <div class="site-description" itemprop="description">及时当勉励，岁月不待人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangjin1996219" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangjin1996219" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:759161269@qq.com" title="E-Mail → mailto:759161269@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=569200212&auto=0&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王进</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">912k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">13:49</span>
+
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+   本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+<span class="post-meta-divider">|</span>
+<i class="fa fa-eye"></i><span id="busuanzi_container_site_pv">
+        本站访问量:<span id="busuanzi_value_site_pv"></span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'pQCeFPCYCP9sz6YcISYlyUqk-gzGzoHsz',
+      appKey     : 'RwrssV7QwO3le9kYtuScKNyD',
+      placeholder: "评论一句，前排打call~",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"symbols_count_time":null,"symbols":true,"time":false,"total_symbols":true,"total_time":false,"log":false});</script></body>
+</html>
+<!-- ҳ������С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

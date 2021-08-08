@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wangjin1996219.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="（二）优惠券系统-准备工作">
+<meta property="og:url" content="http://wangjin1996219.github.io/2021/07/06/%EF%BC%88%E4%BA%8C%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/index.html">
+<meta property="og:site_name" content="Wj-Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/06/%EF%BC%88%E4%BA%8C%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/GitHub/MyBlogs/source_posts/2021-07-06-（二）优惠券系统-准备工作/图片01.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/06/%EF%BC%88%E4%BA%8C%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/GitHub/MyBlogs/source/_posts/2021-07-06-（二）优惠券系统-准备工作/图片02.png">
+<meta property="article:published_time" content="2021-07-06T13:33:57.000Z">
+<meta property="article:modified_time" content="2021-07-08T03:33:26.038Z">
+<meta property="article:author" content="老王家的小王呀">
+<meta property="article:tag" content="优惠券系统项目">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://wangjin1996219.github.io/2021/07/06/%EF%BC%88%E4%BA%8C%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/GitHub/MyBlogs/source_posts/2021-07-06-（二）优惠券系统-准备工作/图片01.png">
+
+<link rel="canonical" href="http://wangjin1996219.github.io/2021/07/06/%EF%BC%88%E4%BA%8C%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>（二）优惠券系统-准备工作 | Wj-Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Wj-Blog" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wj-Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">32</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">90</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/07/06/%EF%BC%88%E4%BA%8C%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="老王家的小王呀">
+      <meta itemprop="description" content="及时当勉励，岁月不待人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wj-Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          （二）优惠券系统-准备工作
+        </h1>
+
+        <div class="post-meta">
+        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-06 21:33:57" itemprop="dateCreated datePublished" datetime="2021-07-06T21:33:57+08:00">2021-07-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-08 11:33:26" itemprop="dateModified" datetime="2021-07-08T11:33:26+08:00">2021-07-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">开源项目</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/07/06/%EF%BC%88%E4%BA%8C%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/" class="post-meta-item leancloud_visitors" data-flag-title="（二）优惠券系统-准备工作" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/07/06/%EF%BC%88%E4%BA%8C%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/07/06/%EF%BC%88%E4%BA%8C%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<a id="more"></a>
+
+<h1 id="1-Maven"><a href="#1-Maven" class="headerlink" title="1. Maven"></a>1. Maven</h1><h2 id="1-1-pom-xml"><a href="#1-1-pom-xml" class="headerlink" title="1.1 pom.xml"></a>1.1 pom.xml</h2><h2 id="1-2坐标组成"><a href="#1-2坐标组成" class="headerlink" title="1.2坐标组成"></a>1.2坐标组成</h2><ul>
+<li><p>groupid：这是工程组的标识。它在一个组织或者项目中通常是唯一的。例如，优 groupld 蕉等项目com.imooc.coupon 拥有所有的和优惠券相关的项目。</p>
+</li>
+<li><p>artifactd：这是工程的标识。它通常是工程的名称。例如，优惠券结算系统。</p>
+<p>groupld 和 artifactId 一起定义了 artifact 在仓库中的位置。</p>
+</li>
+<li><p>versionid ：这是工程的版本号。在 artifact 的仓库中，它用来区分不同的版本。例如：com.imooc.coupon.setlement1.0。</p>
+</li>
+</ul>
+<h2 id="1-3-maven-常用命令"><a href="#1-3-maven-常用命令" class="headerlink" title="1.3 maven 常用命令"></a>1.3 maven 常用命令</h2><p>常用命令含义/功能：</p>
+<ul>
+<li>mvn -v ：查看 Maven 的版本，也用来检查 Maven 是否安装成功</li>
+<li>mvn compile：编译，将 Java 源文件编译成 class 文件</li>
+<li>mvn test：执行 test 目录下的测试用例</li>
+<li>mvn package：打包，将 Java 工程打成 jar 包</li>
+<li>mvn clean：清理环境，清除 target 文件夹</li>
+<li>mvn install ：安装，将当前项目安装到 Maven 的本地仓库中</li>
+</ul>
+<h2 id="1-4-idea-运行-maven-命令"><a href="#1-4-idea-运行-maven-命令" class="headerlink" title="1.4 idea 运行 maven 命令"></a>1.4 idea 运行 maven 命令</h2><p>terminal 命令窗口，可以执行 maven 命令</p>
+<h1 id="2-Maven-相关特性"><a href="#2-Maven-相关特性" class="headerlink" title="2. Maven 相关特性"></a>2. Maven 相关特性</h1><h1 id="3-Maven-多模块项目"><a href="#3-Maven-多模块项目" class="headerlink" title="3. Maven 多模块项目"></a>3. Maven 多模块项目</h1><h1 id="4-Redis支持的数据类型"><a href="#4-Redis支持的数据类型" class="headerlink" title="4. Redis支持的数据类型"></a>4. Redis支持的数据类型</h1><h1 id="5-Redis-特性以及问题规避"><a href="#5-Redis-特性以及问题规避" class="headerlink" title="5. Redis 特性以及问题规避"></a>5. Redis 特性以及问题规避</h1><h1 id="6-Redis-的-I-O-模型"><a href="#6-Redis-的-I-O-模型" class="headerlink" title="6. Redis 的 I/O 模型"></a>6. Redis 的 I/O 模型</h1><h1 id="7-MySql-版本与配置"><a href="#7-MySql-版本与配置" class="headerlink" title="7. MySql 版本与配置"></a>7. MySql 版本与配置</h1><h1 id="8-Mysql-索引"><a href="#8-Mysql-索引" class="headerlink" title="8. Mysql 索引"></a>8. Mysql 索引</h1><h1 id="9-Spring-Data-JPA"><a href="#9-Spring-Data-JPA" class="headerlink" title="9. Spring Data JPA"></a>9. Spring Data JPA</h1><h2 id="9-1-ORM"><a href="#9-1-ORM" class="headerlink" title="9.1 ORM"></a>9.1 ORM</h2><p><strong>1.什么是 ORM</strong></p>
+<p>ORM，即 Object-Relational Mapping（对象关系映射），它的作用是在关系型数据库和业务实体对象之间作一个映射，这样，我们在具体的操作业务对象的时候，就不需要再去和复杂的 SQL 语句打交道，只需简单的操作对象的属性和方法。</p>
+<p><strong>2.为什么会出现ORM思想</strong></p>
+<p>先从项目中数据流存储形式这个角度说起，简单拿MVC这种分层模式来说：Model 作为数据承载实体，在用户界面层和业务逻辑层之间数据实现面向对象OO形式传递.，当我们需要通过 Control 层分发请求把数据持久化时我们会发现. ，内存中的面向对象的OO如何持久化成关系型数据中存储一条实际数据记录呢？</p>
+<p>面向对象是从软件工程基本原则（如耦合、聚合、封装）的基础上发展起来的，而关系数据库则是从数学理论发展而来的，两者之间是不匹配的，而 ORM 作为项目中间件形式实现数据在不同场景下数据关系映射，对象关系映射（Object Relational Mapping，简称ORM）是一种<strong>为了解决面向对象与关系数据库存在的互不匹配的现象的技术</strong>，ORM 就是这样而来的。</p>
+<p><img src="/2021/07/06/%EF%BC%88%E4%BA%8C%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/GitHub\MyBlogs\source_posts\2021-07-06-（二）优惠券系统-准备工作\图片01.png" alt="img"></p>
+<p><strong>3.常用的 ORM 框架</strong></p>
+<ol>
+<li>Hibernate 全自动需要些 hql 语句</li>
+<li>iBATIS 半自动自己写 sql 语句,可操作性强,小巧</li>
+<li>EclipseLink 一个可扩展的支持 JPA 的 ORM 框架，供强大的缓存功能，缓存支持集群。</li>
+<li>Apache OJB 等等</li>
+</ol>
+<h2 id="9-2-Spring-Data-JPA"><a href="#9-2-Spring-Data-JPA" class="headerlink" title="9.2 Spring Data JPA"></a>9.2 Spring Data JPA</h2><p><strong>1.SpringData jpa</strong></p>
+<p>JPA(Java Persistence API) 是当年的 Sun 官方提出的 <strong>Java 持久化规范</strong>。<br>Spring Data JPA 是 Spring 基于 ORM 框架、JPA 规范的基础上封装的一套 JPA 应用框架，<strong>可使开发者用极简的代码即可实现对数据的访问和操作</strong>。</p>
+<p><strong>2. JPA 包含的技术</strong>  </p>
+<ul>
+<li><p>ORM 映射元数据：支持 <strong>xml</strong> 和<strong>注解</strong>来标识源数据的形式，对象的增删改查映射到表  </p>
+</li>
+<li><p>查询语言（JPQL）：面向对象查询数据</p>
+</li>
+</ul>
+<p><strong>3.什么是 SpringData JPA</strong></p>
+<p>即 Java PersistenceAPI，用于对象持久化的 <strong>API</strong>，它是 <strong>ORM 规范</strong>，使得应用程序以统一的方式访问持久层。</p>
+<p><strong>4. JPA 和 Hibernate 的关系</strong></p>
+<ul>
+<li><p>JPA 是 Hibernate 的一个抽象</p>
+</li>
+<li><p>JPA 是 ORM 规范，不是 ORM 框架</p>
+</li>
+<li><p>Hibernate 是 JPA 的一种实现</p>
+</li>
+<li><p>JPA 是 Hibernate 的一个功能子集</p>
+</li>
+</ul>
+<img src="/2021/07/06/%EF%BC%88%E4%BA%8C%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/GitHub\MyBlogs\source\_posts\2021-07-06-（二）优惠券系统-准备工作\图片02.png" style="zoom:150%;">
+
+
+
+<p><strong>4. JPA 优点</strong></p>
+<ul>
+<li><p>标准化：相同 api，代码层面修改较少便能在不同框架下使用</p>
+</li>
+<li><p>简单易用：创建实体，只需要 @entity 注解即可</p>
+</li>
+<li><p>面向对象：定义了 jpql (类似于 sql)，支持批量修改更新 join,group by,having 等，支持类之间的继承，多态等</p>
+</li>
+</ul>
+<p><strong>5. JPA 包含的技术</strong></p>
+<ul>
+<li><p>ORM 映射元数据：支持 <strong>xml</strong> 和<strong>注解</strong>来标识源数据的形式，对象的增删改查映射到表</p>
+</li>
+<li><p>查询语言（JPQL）：面向对象查询数据</p>
+</li>
+<li><p>提供了查询 API</p>
+</li>
+</ul>
+<p><strong>6. Spring Data 项目</strong></p>
+<ul>
+<li><p>Spring Data 是 Spring 的一个子项目，用于简化数据库访问</p>
+</li>
+<li><p>Spring Data JPA 是 Spring Data 的一个子项目</p>
+</li>
+<li><p>Spring Data JPA 致力于减少数据访问层（DAO）的开发量</p>
+</li>
+</ul>
+<h1 id="10-数据库连接池"><a href="#10-数据库连接池" class="headerlink" title="10.数据库连接池"></a>10.数据库连接池</h1><h2 id="10-4-SpringBoot2-HikariCP-的配置"><a href="#10-4-SpringBoot2-HikariCP-的配置" class="headerlink" title="10.4 SpringBoot2 HikariCP 的配置"></a>10.4 SpringBoot2 HikariCP 的配置</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spring.datasource.hikari.connection-timeout 客户端等待连接池连接的最大毫秒数</span><br><span class="line">spring.datasource.hikari.minimum-idle连接池中维护的最小空闲连接数</span><br><span class="line">spring.datasource.hikari.maximum-pool-size 最大池大小</span><br><span class="line">spring.datasource.hikari.idle-timeout 允许连接在连接池中空闲的最长时间（毫秒）</span><br><span class="line">spring.datasource.hikari.max-lifetime 池中连接关闭后的最长生命周期（毫秒）</span><br><span class="line">spring.datasource.hikari.auto-commit从池返回的连接的默认自动提交行为（默认为true）</span><br></pre></td></tr></table></figure>
+
+<h2 id="10-1数据库连接池的功能"><a href="#10-1数据库连接池的功能" class="headerlink" title="10.1数据库连接池的功能　"></a>10.1数据库连接池的功能　</h2><p><strong>连接复用：</strong>通过建立一个数据库连接池以及一套连接使用管理策略，<strong>使得一个数据库连接可以得到高效、安全的复用，避免了数据库连接频繁建立、关闭的开销</strong>。较为频繁的使用数据库时，数据库连接的使用成为系统的瓶颈，所以需要数据库连接池</p>
+<h2 id="10-2数据库连接池的基本原理"><a href="#10-2数据库连接池的基本原理" class="headerlink" title="10.2数据库连接池的基本原理"></a>10.2数据库连接池的基本原理</h2><p>数据库连接池的基本原理是在内部对象池中维护一定数量的数据库连接，并对外暴露数据库连接获取和返回方法。  </p>
+<ul>
+<li>getConnection ：得到数据库连接</li>
+<li>releaseConnection：释放数据库链接，并不关闭，管理回收下次使用（无框架的时候进行这 getConnection 和 releaseConnection）</li>
+</ul>
+<h2 id="10-3数据库连接池的优势"><a href="#10-3数据库连接池的优势" class="headerlink" title="10.3数据库连接池的优势"></a>10.3数据库连接池的优势</h2><ul>
+<li>资源重用，连接池中的数据库连接可以复用</li>
+<li>更快的系统响应，维护一些可用的连接，避免了数据库连接创建销毁的开销，提升了系统效应速度</li>
+<li>优化资源分配</li>
+<li>统一的连接管理 ，避免数据库泄露，占用超时设定，强制回收被占用的连接</li>
+</ul>
+<h2 id="10-4-SpringBoot2-HikariCP-的配置-1"><a href="#10-4-SpringBoot2-HikariCP-的配置-1" class="headerlink" title="10.4 SpringBoot2 HikariCP 的配置"></a>10.4 SpringBoot2 HikariCP 的配置</h2><p>SpringBoot1 的默认连接池是 Tomcat 数据库连接池，HikariCP 是 SpringBoot2 中的默认连接池，配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spring.datasource.hikari.connection-timeout 客户端等待连接池连接的最大毫秒数</span><br><span class="line">spring.datasource.hikari.minimum-idle连接池中维护的最小空闲连接数</span><br><span class="line">spring.datasource.hikari.maximum-pool-size 最大池大小</span><br><span class="line">spring.datasource.hikari.idle-timeout 允许连接在连接池中空闲的最长时间（毫秒）</span><br><span class="line">spring.datasource.hikari.max-lifetime 池中连接关闭后的最长生命周期（毫秒）</span><br><span class="line">spring.datasource.hikari.auto-commit从池返回的连接的默认自动提交行为（默认为true）</span><br></pre></td></tr></table></figure>
+
+<p><strong>SpringBoot2 如何选择连接池？</strong></p>
+<p>优先选择 hikaricp, 不存在依赖的话，选择 tomcat 连接池，如果 tomcat 连接池也不存在，会继续选择优先级更低的 commons,db2 等连接池。</p>
+<h1 id="11-Kafka-相关"><a href="#11-Kafka-相关" class="headerlink" title="11. Kafka 相关"></a>11. Kafka 相关</h1><h1 id="12-Kafka-的安装与使用"><a href="#12-Kafka-的安装与使用" class="headerlink" title="12. Kafka 的安装与使用"></a>12. Kafka 的安装与使用</h1>
+    </div>
+
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F%E9%A1%B9%E7%9B%AE/" rel="tag"><i class="fa fa-tag"></i>  优惠券系统项目</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/30/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" rel="prev" title="Redis分布式锁">
+      <i class="fa fa-chevron-left"></i> Redis分布式锁
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/06/%EF%BC%88%E4%B8%80%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" rel="next" title="（一）优惠券系统-项目介绍">
+      （一）优惠券系统-项目介绍 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Maven"><span class="nav-number">1.</span> <span class="nav-text">1. Maven</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-pom-xml"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 pom.xml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2%E5%9D%90%E6%A0%87%E7%BB%84%E6%88%90"><span class="nav-number">1.2.</span> <span class="nav-text">1.2坐标组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-maven-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 maven 常用命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-idea-%E8%BF%90%E8%A1%8C-maven-%E5%91%BD%E4%BB%A4"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 idea 运行 maven 命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Maven-%E7%9B%B8%E5%85%B3%E7%89%B9%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">2. Maven 相关特性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Maven-%E5%A4%9A%E6%A8%A1%E5%9D%97%E9%A1%B9%E7%9B%AE"><span class="nav-number">3.</span> <span class="nav-text">3. Maven 多模块项目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Redis%E6%94%AF%E6%8C%81%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">4. Redis支持的数据类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-Redis-%E7%89%B9%E6%80%A7%E4%BB%A5%E5%8F%8A%E9%97%AE%E9%A2%98%E8%A7%84%E9%81%BF"><span class="nav-number">5.</span> <span class="nav-text">5. Redis 特性以及问题规避</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-Redis-%E7%9A%84-I-O-%E6%A8%A1%E5%9E%8B"><span class="nav-number">6.</span> <span class="nav-text">6. Redis 的 I&#x2F;O 模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-MySql-%E7%89%88%E6%9C%AC%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="nav-number">7.</span> <span class="nav-text">7. MySql 版本与配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-Mysql-%E7%B4%A2%E5%BC%95"><span class="nav-number">8.</span> <span class="nav-text">8. Mysql 索引</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-Spring-Data-JPA"><span class="nav-number">9.</span> <span class="nav-text">9. Spring Data JPA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#9-1-ORM"><span class="nav-number">9.1.</span> <span class="nav-text">9.1 ORM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-2-Spring-Data-JPA"><span class="nav-number">9.2.</span> <span class="nav-text">9.2 Spring Data JPA</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0"><span class="nav-number">10.</span> <span class="nav-text">10.数据库连接池</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#10-4-SpringBoot2-HikariCP-%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">10.1.</span> <span class="nav-text">10.4 SpringBoot2 HikariCP 的配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-1%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="nav-number">10.2.</span> <span class="nav-text">10.1数据库连接池的功能　</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-2%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">10.3.</span> <span class="nav-text">10.2数据库连接池的基本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-3%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="nav-number">10.4.</span> <span class="nav-text">10.3数据库连接池的优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-4-SpringBoot2-HikariCP-%E7%9A%84%E9%85%8D%E7%BD%AE-1"><span class="nav-number">10.5.</span> <span class="nav-text">10.4 SpringBoot2 HikariCP 的配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-Kafka-%E7%9B%B8%E5%85%B3"><span class="nav-number">11.</span> <span class="nav-text">11. Kafka 相关</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-Kafka-%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8"><span class="nav-number">12.</span> <span class="nav-text">12. Kafka 的安装与使用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="老王家的小王呀"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">老王家的小王呀</p>
+  <div class="site-description" itemprop="description">及时当勉励，岁月不待人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangjin1996219" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangjin1996219" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:759161269@qq.com" title="E-Mail → mailto:759161269@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=569200212&auto=0&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王进</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">912k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">13:49</span>
+
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+   本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+<span class="post-meta-divider">|</span>
+<i class="fa fa-eye"></i><span id="busuanzi_container_site_pv">
+        本站访问量:<span id="busuanzi_value_site_pv"></span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'pQCeFPCYCP9sz6YcISYlyUqk-gzGzoHsz',
+      appKey     : 'RwrssV7QwO3le9kYtuScKNyD',
+      placeholder: "评论一句，前排打call~",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"symbols_count_time":null,"symbols":true,"time":false,"total_symbols":true,"total_time":false,"log":false});</script></body>
+</html>
+<!-- ҳ������С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

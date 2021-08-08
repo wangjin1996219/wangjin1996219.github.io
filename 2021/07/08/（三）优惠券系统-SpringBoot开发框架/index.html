@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wangjin1996219.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="（三）优惠券系统-SpringBoot开发框架">
+<meta property="og:url" content="http://wangjin1996219.github.io/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:site_name" content="Wj-Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/GitHub/MyBlogs/source/_posts/2021-07-08-（三）优惠券系统-SpringBoot开发框架/图片01.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/GitHub/MyBlogs/source_posts/2021-07-08-（三）优惠券系统-SpringBoot开发框架/图片02.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/GitHub/MyBlogs/source_posts/2021-07-08-（三）优惠券系统-SpringBoot开发框架/图片03.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/GitHub/MyBlogs/source_posts/2021-07-08-（三）优惠券系统-SpringBoot开发框架/图片04.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/GitHub/MyBlogs/source_posts/2021-07-08-（三）优惠券系统-SpringBoot开发框架/图片04.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/GitHub/MyBlogs/source_posts/2021-07-08-（三）优惠券系统-SpringBoot开发框架/图片06.png">
+<meta property="article:published_time" content="2021-07-08T03:49:54.000Z">
+<meta property="article:modified_time" content="2021-07-13T13:41:19.346Z">
+<meta property="article:author" content="老王家的小王呀">
+<meta property="article:tag" content="优惠券系统项目">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://wangjin1996219.github.io/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/GitHub/MyBlogs/source/_posts/2021-07-08-（三）优惠券系统-SpringBoot开发框架/图片01.png">
+
+<link rel="canonical" href="http://wangjin1996219.github.io/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>（三）优惠券系统-SpringBoot开发框架 | Wj-Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Wj-Blog" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wj-Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">32</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">90</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="老王家的小王呀">
+      <meta itemprop="description" content="及时当勉励，岁月不待人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wj-Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          （三）优惠券系统-SpringBoot开发框架
+        </h1>
+
+        <div class="post-meta">
+        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-08 11:49:54" itemprop="dateCreated datePublished" datetime="2021-07-08T11:49:54+08:00">2021-07-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-13 21:41:19" itemprop="dateModified" datetime="2021-07-13T21:41:19+08:00">2021-07-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">开源项目</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" class="post-meta-item leancloud_visitors" data-flag-title="（三）优惠券系统-SpringBoot开发框架" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>24k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>22 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<a id="more"></a>
+
+<h1 id="1-SpringBoot-特性"><a href="#1-SpringBoot-特性" class="headerlink" title="1. SpringBoot 特性"></a>1. SpringBoot 特性</h1><p>项目主体业务使用 SpringCloud 框架开发实现，但是 SpringCloud 基于 SpringBoot 实现。为便于更顺畅学习，本章中会对 SpringBoot 开发框架进行介绍，下面先看 SpringBoot 的常见特性，如图所示：</p>
+<img src="/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/GitHub\MyBlogs\source\_posts\2021-07-08-（三）优惠券系统-SpringBoot开发框架\图片01.png" style="zoom:50%;">
+
+<h1 id="2-编写-SpringBoot-应用"><a href="#2-编写-SpringBoot-应用" class="headerlink" title="2.编写 SpringBoot 应用"></a>2.编写 SpringBoot 应用</h1><p><strong>1.创建 Maven 工程</strong></p>
+<p>定义坐标和工程的位置</p>
+<p><img src="/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/GitHub\MyBlogs\source_posts\2021-07-08-（三）优惠券系统-SpringBoot开发框架\图片02.png"></p>
+<p><strong>2. pom.xml 文件的基本结构</strong></p>
+<ol>
+<li><p>parent 标签加入 springboot，标识 springboot 项目（引入 springboot 依赖）</p>
+</li>
+<li><p>添加 maven 坐标，标识 maven 项目</p>
+</li>
+<li><p>dependency 标签引入其它依赖</p>
+</li>
+<li><p>build 引入其他插件</p>
+</li>
+</ol>
+<p><strong>3.修改 pom.xml 文件</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 1  引入springboot --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.4.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">relativePath</span>/&gt;</span> <span class="comment">&lt;!-- lookup parent from repository --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 2  maven 坐标信息--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.imooc.springboot.study<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>imooc_springboot_study<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--  项目名字介绍--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>springboot-study<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>Study project for Spring Boot<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 3  引入相关依赖--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.31<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 专门用于数据绑定的依赖 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-configuration-processor<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 4  引入相关插件--&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">finalName</span>&gt;</span>imooc-springboot-study<span class="tag">&lt;/<span class="name">finalName</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>4.编写启动类</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.springboot.application;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * SpringBootApplication</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangjin</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringBootStudyApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span>&#123;</span><br><span class="line">        SpringApplication.run(SpringBootStudyApplication.class,args);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>启动 main 方法：</strong>这样就成功启动了 SpringBoot 工程</p>
+<p><img src="/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/GitHub\MyBlogs\source_posts\2021-07-08-（三）优惠券系统-SpringBoot开发框架\图片03.png" alt="image-20210708160931954"></p>
+<h1 id="3-SpringBoot-应用启动入口"><a href="#3-SpringBoot-应用启动入口" class="headerlink" title="3. SpringBoot 应用启动入口"></a>3. SpringBoot 应用启动入口</h1><p><strong>SpringBoot 主要包括以下三种启动方式：</strong></p>
+<ol>
+<li>SpringApplication 静态方法 run</li>
+<li>通过 API 调整应用行为</li>
+<li>SpringApplicationBuilder 的 Fluent API ，实现链式调用</li>
+</ol>
+<p><strong>代码实现：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.springboot.application;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.Banner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.WebApplicationType;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.builder.SpringApplicationBuilder;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * SpringBootApplication</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangjin</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringBootStudyApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span>&#123;</span><br><span class="line">        <span class="comment">//第一种方式启动，通过静态run方法</span></span><br><span class="line">        SpringApplication.run(SpringBootStudyApplication.class,args);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//第二种方式启动，通过 API 调整应用行为</span></span><br><span class="line">      <span class="comment">/*  </span></span><br><span class="line"><span class="comment">      SpringApplication springApplication = new SpringApplication(SpringBootStudyApplication.class);</span></span><br><span class="line"><span class="comment">        //关掉打印logo相关日志</span></span><br><span class="line"><span class="comment">        springApplication.setBannerMode(Banner.Mode.OFF);</span></span><br><span class="line"><span class="comment">        //非web启动，控制台启动后会关闭，不会一直保持开启状态</span></span><br><span class="line"><span class="comment">        springApplication.setWebApplicationType(WebApplicationType.NONE);</span></span><br><span class="line"><span class="comment">        springApplication.run(args);</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        //第三种方式启动 链式调用</span></span><br><span class="line"><span class="comment">        new SpringApplicationBuilder(SpringBootStudyApplication.class)</span></span><br><span class="line"><span class="comment">                .bannerMode(Banner.Mode.OFF)</span></span><br><span class="line"><span class="comment">                .web(WebApplicationType.NONE)</span></span><br><span class="line"><span class="comment">                .run(args);</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面已经演示了通过静态的 run 方法启动。下面来看剩下的两种：</p>
+<p><strong>2.第二种方式启动，通过 API 调整应用行为</strong></p>
+<p>启动后，控制台输出如下：</p>
+<p><img src="/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/GitHub\MyBlogs\source_posts\2021-07-08-（三）优惠券系统-SpringBoot开发框架\图片04.png" alt="image-20210708200147745"></p>
+<p>这里我们通过 API 设置了项目是非 web 应用，所以也没有默认开放的端口号，而且进程自动就结束了。</p>
+<p><strong>3.第三种方式启动，SpringApplicationBuilder 的 Fluent API ，实现链式调用</strong></p>
+<p>链式调用就是每次方法的调用返回一个 this 指针，然后通过这个指针调用方法来实现的。</p>
+<p>启动后，控制台输出如下：</p>
+<p><img src="/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/GitHub\MyBlogs\source_posts\2021-07-08-（三）优惠券系统-SpringBoot开发框架\图片04.png" alt="image-20210708200147745"></p>
+<h1 id="4-SpringBoot-自动配置原理"><a href="#4-SpringBoot-自动配置原理" class="headerlink" title="4. SpringBoot 自动配置原理"></a>4. SpringBoot 自动配置原理</h1><p>已经整理</p>
+<h1 id="5-SpringBoot-配置文件"><a href="#5-SpringBoot-配置文件" class="headerlink" title="5. SpringBoot 配置文件"></a>5. SpringBoot 配置文件</h1><h2 id="5-1-application-和-bootstrap"><a href="#5-1-application-和-bootstrap" class="headerlink" title="5.1 application 和 bootstrap"></a>5.1 application 和 bootstrap</h2><ul>
+<li>  同一目录下的 bootstrap 优先级高于 application，优先被加载</li>
+<li>  bootstrap 用于应用程序上下文的引导阶段，由父 ApplicationContext 加载 bootstrap 是系统级别的配置（不变的参数），</li>
+<li>  application 是应用级别的配置</li>
+</ul>
+<p><strong>Demo：</strong></p>
+<p>在 resources 文件下，创建 application.yml 配置文件：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">imooc_springboot_study</span></span><br><span class="line"></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">servlet:</span></span><br><span class="line">    <span class="attr">context-path:</span> <span class="string">/imooc</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8000</span></span><br></pre></td></tr></table></figure>
+
+<p>通过启动器启动项目：</p>
+<p><img src="/2021/07/08/%EF%BC%88%E4%B8%89%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-SpringBoot%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/GitHub\MyBlogs\source_posts\2021-07-08-（三）优惠券系统-SpringBoot开发框架\图片06.png" alt="image-20210710155222311"></p>
+<p>可以看到 Tomcat 在 8000 端口启动，上下文路径是 /imooc</p>
+<p>有一种场景，就是我们在线上或者测试环境中需要不同的配置，那么就需要创建不同的配置文件进行选择：</p>
+<p>创建 application-prod.yml：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">servlet:</span></span><br><span class="line">    <span class="attr">context-path:</span> <span class="string">/imooc-prod</span></span><br></pre></td></tr></table></figure>
+
+<p>创建 application-dev.yml：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">servlet:</span></span><br><span class="line">    <span class="attr">context-path:</span> <span class="string">/imooc-dev</span></span><br></pre></td></tr></table></figure>
+
+<p>修改 application.yml：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">profiles:</span></span><br><span class="line">    <span class="attr">active:</span> <span class="string">prod</span> <span class="comment">#修改这里，就可以实现对不同配置文件的选择</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">imooc_springboot_study</span></span><br><span class="line"></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="comment">#  这里没有用了，因为不同的配置文件会有自己的上下文路径</span></span><br><span class="line"><span class="comment">#  servlet:</span></span><br><span class="line"><span class="comment">#    context-path: /imooc</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8000</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-2不同目录配置文件加载顺序"><a href="#5-2不同目录配置文件加载顺序" class="headerlink" title="5.2不同目录配置文件加载顺序"></a>5.2不同目录配置文件加载顺序</h2><ul>
+<li>  sfile:/config/- 优先级最高（项目根路径下的 config）</li>
+<li>  file:./- 优先级第二（项目根路径下）</li>
+<li>  classpath:/config/- 优先级第三（项目 resources/config 下）</li>
+<li>  classpath/- 优先级第四（项目 resources 目录下）</li>
+</ul>
+<blockquote>
+<p><strong>Note：</strong></p>
+<p>高优先级覆盖低优先级相同配置</p>
+<p>多个配置文件互补</p>
+</blockquote>
+<p><strong>Demo：</strong></p>
+<p>刚才我们是在 resources 目录下创建的配置文件，也就是优先级最低，现在我们在项目根路径下创建 config 文件夹，然后创建 application.yml 配置文件：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="comment"># 端口号</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8085</span></span><br><span class="line"> <span class="attr">servlet:</span></span><br><span class="line">   <span class="attr">context-path:</span> <span class="string">/imooc</span></span><br></pre></td></tr></table></figure>
+
+<p>常规 resource 路径下的 application.xml：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"> <span class="attr">profiles:</span></span><br><span class="line">  <span class="attr">active:</span> <span class="string">prod</span></span><br><span class="line"> <span class="comment"># 注意：这里不能有profiles active: dev，否则 按application-dev配置文件的端口号</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">imooc_springboot_study</span></span><br><span class="line"></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="string">端口号</span></span><br><span class="line"><span class="attr">port:</span> <span class="number">8081</span></span><br><span class="line"> <span class="attr">servlet:</span></span><br><span class="line">   <span class="attr">context-path:</span> <span class="string">/imooc</span></span><br></pre></td></tr></table></figure>
+
+<p>通过启动类启动后，就会是按照优先级更高的配置文件 8085 端口启动，然后选择线上环境的配置文件</p>
+<h1 id="6-SpringBoot-配置注入的方式"><a href="#6-SpringBoot-配置注入的方式" class="headerlink" title="6. SpringBoot 配置注入的方式"></a>6. SpringBoot 配置注入的方式</h1><h2 id="6-1-Value-注入方式"><a href="#6-1-Value-注入方式" class="headerlink" title="6.1 @Value 注入方式"></a>6.1 @Value 注入方式</h2><p>application.yml 配置文件：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">imooc_springboot_study</span></span><br><span class="line"></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">servlet:</span></span><br><span class="line">    <span class="attr">context-path:</span> <span class="string">/imooc</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8000</span></span><br><span class="line"></span><br><span class="line"><span class="attr">imooc:</span></span><br><span class="line">  <span class="attr">springboot:</span></span><br><span class="line">    <span class="attr">version:</span> <span class="number">2.1</span><span class="string">,2.1.4</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">study</span></span><br></pre></td></tr></table></figure>
+
+<p>要通过 @Value 注解将配置文件中的内容注入到 application 应用中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 测试 Controller</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangjin</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/springboot&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;imooc.springboot.version&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String version;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;imooc.springboot.name&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    第一种方式的配置注入</span></span><br><span class="line"><span class="comment">    127.0.0.1：8000/imooc/springboot/conf_inject_1</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/conf_inject_1&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">firstConfigInject</span><span class="params">()</span></span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;first conf inject: &#123;&#125;, &#123;&#125;&quot;</span>, version, name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-2-ConfigurationProperties-配置注入"><a href="#6-2-ConfigurationProperties-配置注入" class="headerlink" title="6.2 @ConfigurationProperties 配置注入"></a>6.2 @ConfigurationProperties 配置注入</h2><p>配置文件不变，我们创建一个配置类 SpringBootConfig：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;imooc.springboot&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringBootConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String version;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将其注入到测试类中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 测试 Controller</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangjin</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/springboot&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> SpringBootConfig springBootConfig;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;imooc.springboot.version&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String version;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;imooc.springboot.name&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Controller</span><span class="params">(SpringBootConfig springBootConfig)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.springBootConfig = springBootConfig;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    第一种方式的配置注入</span></span><br><span class="line"><span class="comment">    127.0.0.1：8000/imooc/springboot/conf_inject_1</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/conf_inject_1&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">firstConfigInject</span><span class="params">()</span></span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;first conf inject: &#123;&#125;, &#123;&#125;&quot;</span>, version, name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    第二种方式的配置注入</span></span><br><span class="line"><span class="comment">    127.0.0.1：8000/imooc/springboot/conf_inject_2</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/conf_inject_2&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sencondConfigInject</span><span class="params">()</span></span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;second conf inject: &#123;&#125;, &#123;&#125;&quot;</span>, springBootConfig.getVersion(), springBootConfig.getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="7-SpringBoot-定时任务"><a href="#7-SpringBoot-定时任务" class="headerlink" title="7. SpringBoot 定时任务"></a>7. SpringBoot 定时任务</h1><p><strong>定时任务需要配置：</strong></p>
+<p>启动器开启定时任务注解 @EnableScheduling</p>
+<p><code>启动类：</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableScheduling</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringBootStudyApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span>&#123;</span><br><span class="line">        <span class="comment">//第一种方式启动</span></span><br><span class="line">        <span class="comment">//SpringApplication.run(SpringBootStudyApplication.class,args);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//第二种方式启动</span></span><br><span class="line">        <span class="comment">/*SpringApplication springApplication = new SpringApplication(SpringBootStudyApplication.class);</span></span><br><span class="line"><span class="comment">        //关掉打印logo相关日志</span></span><br><span class="line"><span class="comment">        springApplication.setBannerMode(Banner.Mode.OFF);</span></span><br><span class="line"><span class="comment">        //非wub启动，控制台启动后会关闭，不会一直保持开启状态</span></span><br><span class="line"><span class="comment">        springApplication.setWebApplicationType(WebApplicationType.NONE);</span></span><br><span class="line"><span class="comment">        springApplication.run(args);*/</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//第三种方式启动 链式调用</span></span><br><span class="line">       <span class="keyword">new</span> SpringApplicationBuilder(SpringBootStudyApplication.class)</span><br><span class="line">                <span class="comment">//.bannerMode(Banner.Mode.OFF)</span></span><br><span class="line">               <span class="comment">// .web(WebApplicationType.NONE)</span></span><br><span class="line">               .run(args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>定时任务类：</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * &lt;h1&gt;SpringBoot 定时任务&lt;/h1&gt;</span></span><br><span class="line"><span class="comment"> * Created by wangjin</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BootSchedule</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> DateTimeFormatter fmt = DateTimeFormatter.ofPattern(</span><br><span class="line">            <span class="string">&quot;HH:mm:ss&quot;</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * &lt;h2&gt;上一次开始执行时间点之后3000毫秒再执行&lt;/h2&gt;</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="meta">@Scheduled(fixedRate = 3000)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule01</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;schedule01 -&gt; &#123;&#125;&quot;</span>, LocalDateTime.now().format(fmt));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * &lt;h2&gt;上一次执行完毕时间点之后3s再执行&lt;/h2&gt;</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="meta">@Scheduled(fixedDelay = 3000)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule02</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;schedule02 -&gt; &#123;&#125;&quot;</span>, LocalDateTime.now().format(fmt));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * &lt;h2&gt;第一次延迟2s之后执行, 之后按照每3s执行一次&lt;/h2&gt;</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="meta">@Scheduled(initialDelay = 2000, fixedRate = 3000)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule03</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;schedule03 -&gt; &#123;&#125;&quot;</span>, LocalDateTime.now().format(fmt));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * &lt;h2&gt;每3s执行一次&lt;/h2&gt;</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="meta">@Scheduled(cron = &quot;*/3 * * * * ?&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule04</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;schedule04 -&gt; &#123;&#125;&quot;</span>, LocalDateTime.now().format(fmt));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>定时任务不同使用方式（四种）：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Scheduled(fixedRate &#x3D; 3000)　　上一次开始执行时间点之后3000毫秒再执行</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Scheduled(fixedDelay &#x3D; 3000)　　上一次执行完毕时间点之后3s再执行</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Scheduled(initialDelay &#x3D; 2000, fixedRate &#x3D; 3000)　　第一次延迟2s之后执行, 之后按照每3s执行一次</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Scheduled(cron &#x3D; &quot;*&#x2F;3 * * * * ?&quot;)　　每3s执行一次</span><br></pre></td></tr></table></figure>
+
+<h1 id="8-SpringBoot-异步任务"><a href="#8-SpringBoot-异步任务" class="headerlink" title="8. SpringBoot 异步任务"></a>8. SpringBoot 异步任务</h1><p><strong>1.启动类</strong></p>
+<p>加入 @EnableAsync 注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableScheduling</span> </span><br><span class="line"><span class="meta">@EnableAsync</span>  <span class="comment">//允许异步任务</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringBootStudyApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span>&#123;</span><br><span class="line">        <span class="comment">//第一种方式启动</span></span><br><span class="line">        <span class="comment">//SpringApplication.run(SpringBootStudyApplication.class,args);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//第二种方式启动</span></span><br><span class="line">        <span class="comment">/*SpringApplication springApplication = new SpringApplication(SpringBootStudyApplication.class);</span></span><br><span class="line"><span class="comment">        //关掉打印logo相关日志</span></span><br><span class="line"><span class="comment">        springApplication.setBannerMode(Banner.Mode.OFF);</span></span><br><span class="line"><span class="comment">        //非wub启动，控制台启动后会关闭，不会一直保持开启状态</span></span><br><span class="line"><span class="comment">        springApplication.setWebApplicationType(WebApplicationType.NONE);</span></span><br><span class="line"><span class="comment">        springApplication.run(args);*/</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//第三种方式启动 链式调用</span></span><br><span class="line">       <span class="keyword">new</span> SpringApplicationBuilder(SpringBootStudyApplication.class)</span><br><span class="line">                <span class="comment">//.bannerMode(Banner.Mode.OFF)</span></span><br><span class="line">               <span class="comment">// .web(WebApplicationType.NONE)</span></span><br><span class="line">               .run(args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.创建异步任务</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.scheduling.annotation.Async;</span><br><span class="line"><span class="keyword">import</span> org.springframework.scheduling.annotation.AsyncResult;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Future;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncService2</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 没有返回的异步任务</span></span><br><span class="line"><span class="comment">     */</span> <span class="meta">@Async(&quot;getAsyncExecutor&quot;)</span> <span class="comment">//注解表明是异步任务，并且声明使用的线程池配置</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">asyncNotReturn</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        <span class="comment">//记一下sleep</span></span><br><span class="line">        log.info(<span class="string">&quot;无返回自定义线程名字为&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;=&quot;</span>+Thread.currentThread().getName());</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 没有返回的异步任务</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span> <span class="meta">@Async(&quot;getAsyncExecutor&quot;)</span> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Future&lt;Integer&gt; <span class="title">asyncHasReturn</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;有返回自定义线程名字为&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;=&quot;</span>+Thread.currentThread().getName());</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">6</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//记一下</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> AsyncResult&lt;&gt;(<span class="number">100</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.创建线程池配置类</strong></p>
+<p>因为 SpringBoot 不可能通过主线程去执行异步任务，因为会阻塞，所以肯定是新开线程，但是新开的线程使用默认的线程池（比较简单）无法重复利用，所以要定义线程池的配置类，来使用自定义的线程池配置。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSON;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.scheduling.annotation.AsyncConfigurer;</span><br><span class="line"><span class="keyword">import</span> org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executor;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="comment">//记一下实现的接口(实现异步任务配置类)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncThreadPoolConfig</span> <span class="keyword">implements</span> <span class="title">AsyncConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span><span class="comment">//将线程池初始化到springioc容器中</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Executor <span class="title">getAsyncExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//1.线程池设置参数</span></span><br><span class="line">        ThreadPoolTaskExecutor threadPoolTaskExecutor = <span class="keyword">new</span> ThreadPoolTaskExecutor();</span><br><span class="line">        threadPoolTaskExecutor.setCorePoolSize(<span class="number">20</span>);<span class="comment">//核心线程20个，能同时处理20个客户端请求</span></span><br><span class="line">        threadPoolTaskExecutor.setQueueCapacity(<span class="number">10</span>);<span class="comment">//缓冲队列允许10个线程等待</span></span><br><span class="line">        threadPoolTaskExecutor.setMaxPoolSize(<span class="number">30</span>);<span class="comment">//超出缓冲队列最多允许30个线程处理</span></span><br><span class="line">        threadPoolTaskExecutor.setKeepAliveSeconds(<span class="number">60</span>);<span class="comment">//线程存活时间60秒</span></span><br><span class="line">        threadPoolTaskExecutor.setThreadNamePrefix(<span class="string">&quot;hcx_&quot;</span>);<span class="comment">//线程名称前缀</span></span><br><span class="line"></span><br><span class="line">        threadPoolTaskExecutor.setWaitForTasksToCompleteOnShutdown(<span class="keyword">true</span>);</span><br><span class="line">        threadPoolTaskExecutor.setAwaitTerminationSeconds(<span class="number">60</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//2.拒绝策略</span></span><br><span class="line">        threadPoolTaskExecutor.setRejectedExecutionHandler(<span class="keyword">new</span> ThreadPoolExecutor.CallerRunsPolicy());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//3.线程池初始化</span></span><br><span class="line">        threadPoolTaskExecutor.initialize();</span><br><span class="line">        <span class="keyword">return</span> threadPoolTaskExecutor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该方法仅能处理无返回值异步任务的异常，有返回值的异步任务异常客户端处理</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> AsyncUncaughtExceptionHandler <span class="title">getAsyncUncaughtExceptionHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> AsyncExceptionHandler();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//自定义异常处理类</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">AsyncExceptionHandler</span> <span class="keyword">implements</span> <span class="title">AsyncUncaughtExceptionHandler</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleUncaughtException</span><span class="params">(Throwable throwable, Method method, Object... objects)</span> </span>&#123;</span><br><span class="line">            <span class="comment">//1     打印日志</span></span><br><span class="line">            log.info(<span class="string">&quot;wdd异常打印&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&quot;</span>+throwable.getMessage(),method.getName(),JSON.toJSONString(objects));</span><br><span class="line"></span><br><span class="line">            <span class="comment">//2     正常跑出异常</span></span><br><span class="line">            throwable.printStackTrace();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//3     发短信或者邮件通知运维人员</span></span><br><span class="line">            <span class="comment">//todo</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="9-SpringBoot-单元测试"><a href="#9-SpringBoot-单元测试" class="headerlink" title="9. SpringBoot 单元测试"></a>9. SpringBoot 单元测试</h1><p><strong>创建测试用例</strong></p>
+<p>加入两个注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.test.context.SpringBootTest;</span><br><span class="line"><span class="keyword">import</span> org.springframework.test.context.junit4.SpringRunner;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@SpringBootTest</span><span class="comment">//带有SpringBoot支持的引导程序，提供了可指定外部环境的参数</span></span><br><span class="line"><span class="meta">@RunWith(SpringRunner.class)</span><span class="comment">//junit引用spring的支持</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringBootStudyTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="comment">//至少有一个测试用例，否则报 java.lang.Exception: No runnable methods 异常</span></span><br><span class="line">    <span class="comment">//这个空方法主要是用于测试外部环境是否好用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">blankFunction</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="10-开机启动"><a href="#10-开机启动" class="headerlink" title="10.开机启动"></a>10.开机启动</h1><p>开机启动，也就是程序启动时，要自动完成什么功能。</p>
+<p>两种开机启动方式：</p>
+<p><strong>1.实现 BootApplicationRunner 接口</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.springboot.application.study;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.ApplicationArguments;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.ApplicationRunner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BootApplicationRunner</span> <span class="keyword">implements</span> <span class="title">ApplicationRunner</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(ApplicationArguments args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">      log.info(<span class="string">&quot;BootApplicationRunner&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;=启动&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>2.实现 BootCommandRunner 接口</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.springboot.application.study;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.CommandLineRunner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BootCommandRunner</span> <span class="keyword">implements</span> <span class="title">CommandLineRunner</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(String... args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;BootCommandRunner&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>两种方式明显的不同就是，传递参数的方式不同。</p>
+<p><strong>3.通过 @Order 调整先后顺序</strong></p>
+<p><code>BootApplicationRunner 方式：</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.springboot.application.study;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.ApplicationArguments;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.ApplicationRunner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Order(2)</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BootApplicationRunner</span> <span class="keyword">implements</span> <span class="title">ApplicationRunner</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(ApplicationArguments args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">      log.info(<span class="string">&quot;BootApplicationRunner&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;=启动&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>BootCommandRunner 方式：</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.springboot.application.study;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.CommandLineRunner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Order(1)</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BootCommandRunner</span> <span class="keyword">implements</span> <span class="title">CommandLineRunner</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(String... args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;BootCommandRunner&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="11-SpringBoot-Jackson-的使用技巧"><a href="#11-SpringBoot-Jackson-的使用技巧" class="headerlink" title="11. SpringBoot Jackson 的使用技巧"></a>11. SpringBoot Jackson 的使用技巧</h1><p><strong>1.创建 POJO：</strong></p>
+<p>注意看 Jackson 相关的注解作用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.springboot.application.vo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.annotation.JsonFormat;</span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.annotation.JsonIgnore;</span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.annotation.JsonIgnoreProperties;</span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.annotation.JsonProperty;</span><br><span class="line"><span class="keyword">import</span> lombok.AllArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.Builder;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> lombok.NoArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.logging.SimpleFormatter;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span><span class="comment">//getset和toString方法</span></span><br><span class="line"><span class="meta">@Builder</span><span class="comment">//buil方法，参见Controller层的调用</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span><span class="comment">//无参构造方法</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span><span class="comment">//全参构造器</span></span><br><span class="line"><span class="meta">@JsonIgnoreProperties(&#123;&quot;address&quot;&#125;)</span><span class="comment">//忽略一组属性</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IMoocer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@JsonProperty(&quot;name&quot;)</span></span><br><span class="line">    <span class="comment">//别名，传值后key值变为name </span></span><br><span class="line">    <span class="keyword">private</span> String userName;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> String age;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//@JsonIgnore指示忽略掉该属性</span></span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//指定日期属性的格式</span></span><br><span class="line">    <span class="meta">@JsonFormat(pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Date registerTime;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>2.创建配置类：</strong></p>
+<p>用于指定一些通用属性的格式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.springboot.application.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.annotation.JsonInclude;</span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.ObjectMapper;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.text.SimpleDateFormat;</span><br><span class="line"> </span><br><span class="line"> <span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JacksonConfig</span> </span>&#123;</span><br><span class="line"><span class="meta">@Bean</span> </span><br><span class="line"><span class="function"><span class="keyword">public</span> ObjectMapper <span class="title">buildJackson</span><span class="params">()</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">        ObjectMapper objectMapper = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line">    </span><br><span class="line">        <span class="comment">//初始化objectMapper,公共配置类，初始化日期的格式（JacksonConfig 是作用于全局的）。</span></span><br><span class="line">        objectMapper.setDateFormat(<span class="keyword">new</span> SimpleDateFormat(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>)); </span><br><span class="line">    </span><br><span class="line">        <span class="comment">//属性为null,不参与序列化</span></span><br><span class="line">        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); </span><br><span class="line">        <span class="keyword">return</span> objectMapper;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>3.修改 Controller，进行测试：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.springboot.application.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.core.JsonProcessingException;</span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.ObjectMapper;</span><br><span class="line"><span class="keyword">import</span> com.imooc.springboot.application.config.SpringBootConfig;</span><br><span class="line"><span class="keyword">import</span> com.imooc.springboot.application.vo.IMoocer;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/userController&quot;)</span>  </span><br><span class="line"><span class="comment">//注解可以将HTTP请求映射给controller来处理，包括返回视图页面的controller和Rest服务的controller。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@ResponseBody</span>   </span><br><span class="line"><span class="comment">//@responseBody注解的作用是将controller的方法返回的对象通过适当的转换器转换为指定的格式之后，写入到response对象的body区，通常用来返回JSON数据或者是XML数据。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="comment">//@Controller标识的类，该类代表控制器类(控制层/表现层)。这里控制层里面的每个方法，都可以去调用@Service标识的类（业务逻辑层），@Service标识的类中的方法可以继续调用@Resposity标识的接口实现类（Dao层/持久层）。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;com.imooc.userid&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String userid;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;com.imooc.username&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span><span class="comment">//自动注入objectMapper对象</span></span><br><span class="line">    <span class="keyword">private</span> ObjectMapper objectMapper; </span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span><span class="comment">//自动注入Compenent组件</span></span><br><span class="line">    <span class="keyword">private</span> SpringBootConfig springBootConfig;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用构造方法</span></span><br><span class="line"><span class="comment">     *  访问地址：127.0.0.1:8081/imooc/userController/testInjectOne</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/testInjectOne&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testConfigInjectOne</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="comment">/*      System.out.println(&quot;userid=&quot;+this.userid);</span></span><br><span class="line"><span class="comment">        System.out.println(&quot;username=&quot;+this.username);*/</span></span><br><span class="line">        log.info(<span class="string">&quot;userid=&quot;</span>+<span class="keyword">this</span>.userid);</span><br><span class="line">        log.info(<span class="string">&quot;username=&quot;</span>+<span class="keyword">this</span>.username);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  访问地址：127.0.0.1:8081/imooc/userController/testInjectTwo</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/testInjectTwo&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testConfigInjectTwo</span><span class="params">()</span></span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;userid=&quot;</span>+springBootConfig.getUserid());</span><br><span class="line">        log.info(<span class="string">&quot;username=&quot;</span>+springBootConfig.getUsername());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  访问地址：127.0.0.1:8081/imooc/userController/testJackson</span></span><br><span class="line"><span class="comment">     *  测试jackson序列化和反序列化</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/testJackson&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IMoocer <span class="title">testJackson</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">//builder方法</span></span><br><span class="line">        IMoocer iMoocer = IMoocer.builder() .userName(<span class="string">&quot;小魏&quot;</span>) .age(<span class="string">&quot;18&quot;</span>) .address(<span class="string">&quot;北京&quot;</span>) .birthday(<span class="keyword">new</span> Date()) .build(); </span><br><span class="line">        <span class="comment">//序列化方式</span></span><br><span class="line">        String sJsonString = objectMapper.writeValueAsString(iMoocer);</span><br><span class="line">        log.info(<span class="string">&quot;序列化方法：&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&lt;mark&gt;&lt;/mark&gt;&quot;</span>+sJsonString);</span><br><span class="line">        <span class="comment">//反序列化方式</span></span><br><span class="line">        IMoocer iMoocer1 = objectMapper.readValue(sJsonString,IMoocer.class); <span class="keyword">return</span> iMoocer1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="12-SpringBoot-Actuator-监控-1"><a href="#12-SpringBoot-Actuator-监控-1" class="headerlink" title="12. SpringBoot Actuator 监控(1)"></a>12. SpringBoot Actuator 监控(1)</h1><p><strong>1.开启 Actuator 监控</strong></p>
+<p>a.引入相关依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>b. application.yml 配置文件开启监控功能：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"> <span class="attr">profiles:</span></span><br><span class="line">  <span class="attr">active:</span> <span class="string">prod</span></span><br><span class="line">  	<span class="attr">application:</span></span><br><span class="line">    	<span class="attr">name:</span> <span class="string">imooc_springboot_study</span></span><br><span class="line"></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8000</span></span><br><span class="line">  <span class="attr">servlet:</span></span><br><span class="line">    <span class="attr">context-path:</span> <span class="string">/imooc</span></span><br><span class="line"></span><br><span class="line"><span class="attr">management:</span></span><br><span class="line">  <span class="attr">endpoint:</span></span><br><span class="line">    <span class="attr">shutdown:</span></span><br><span class="line">      <span class="attr">enabled:</span> <span class="literal">true</span>  <span class="comment">#最特殊的监控端点，开通后可以通过shutdown url对程序进行关闭动作。一般不会开启</span></span><br><span class="line">  <span class="attr">endpoints:</span> </span><br><span class="line">  	<span class="attr">web:</span> </span><br><span class="line">  		<span class="attr">exposure:</span> </span><br><span class="line">  			<span class="attr">include:</span> <span class="string">&quot;*&quot;</span> <span class="comment">#打开所有的监控点</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 127.0.0.1:8081/imooc/actuator/</span></span><br><span class="line"></span><br><span class="line"><span class="attr">info:</span> <span class="comment">#自定义的应用程序配置信息</span></span><br><span class="line">	<span class="attr">app:</span> </span><br><span class="line">		<span class="attr">name:</span> <span class="string">imooc_springboot_study</span> </span><br><span class="line">			<span class="attr">groupid:</span> <span class="string">org.springframework.boot</span> </span><br><span class="line">				<span class="attr">version:</span> <span class="number">2.1</span><span class="number">.4</span><span class="string">.RELEASE</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>2.原生端点三类监控</strong></p>
+<ol>
+<li><p><strong>应用配置类常用监控</strong>  </p>
+<p>自己配置的应用程序 info 信息：/actuator/info  </p>
+<p>应用中 bean 的信息：/actuator/beans  </p>
+<p>应用中 URI 路径信息：/actuator/mappings</p>
+</li>
+<li><p><strong>度量指标类常用监控</strong>  </p>
+<p>检查应用的运行状态：/actuator/health  </p>
+<p>当前线程活动快照：/actuator/threaddump</p>
+</li>
+<li><p><strong>操作控制类常用监控</strong>  </p>
+<p>关闭应用（POST）：/actuator/shutdown  </p>
+<p>​        curl -X POST “<a href="http://localhost：8080/actuator/shutdown（POST请求）">http://localhost：8080/actuator/shutdown（POST请求）</a></p>
+</li>
+</ol>
+<h1 id="13-SpringBoot-Actuator-监控-2"><a href="#13-SpringBoot-Actuator-监控-2" class="headerlink" title="13. SpringBoot Actuator 监控(2)"></a>13. SpringBoot Actuator 监控(2)</h1><p><strong>1.自定义端点类</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.springboot.application.endpoint;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.actuate.endpoint.annotation.Endpoint;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.actuate.endpoint.annotation.ReadOperation;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.actuate.endpoint.annotation.WriteOperation;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.text.SimpleDateFormat;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Endpoint(id=&quot;datetime&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DateTimeEndPoint</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String forMat = <span class="string">&quot;yyyy-MM-dd&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 读取端点注解</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ReadOperation</span><span class="comment">//显示监控指标</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String,Object&gt; <span class="title">readPoint</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap();</span><br><span class="line">        map.put(<span class="string">&quot;name&quot;</span>,<span class="string">&quot;小魏&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&quot;age&quot;</span>,<span class="string">&quot;18&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&quot;birthday&quot;</span>,<span class="keyword">new</span> SimpleDateFormat(forMat).format(<span class="keyword">new</span> Date()));</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//动态更改监控指标</span></span><br><span class="line">    <span class="meta">@WriteOperation</span> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writePoint</span><span class="params">(String forMat)</span></span>&#123; <span class="keyword">this</span>.forMat = forMat; &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.自定义端点配置类</strong></p>
+<p>告诉 SpringBoot ，DateTimeEndPoint 是我们自定义的端点</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.springboot.application.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.imooc.springboot.application.endpoint.DateTimeEndPoint;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnEnabledEndpoint;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Configuration</span> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EndPointConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span> </span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean</span><span class="comment">//当该bean缺少的时候注入bean</span></span><br><span class="line">    <span class="meta">@ConditionalOnEnabledEndpoint</span><span class="comment">//当监控端点开启的时候（application.yml打开监控端点）才会注入应用程序</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DateTimeEndPoint <span class="title">dateTimeEndPoint</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> DateTimeEndPoint();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="14-SpringBoot-自定义-Starter"><a href="#14-SpringBoot-自定义-Starter" class="headerlink" title="14. SpringBoot 自定义 Starter"></a>14. SpringBoot 自定义 Starter</h1>
+    </div>
+
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F%E9%A1%B9%E7%9B%AE/" rel="tag"><i class="fa fa-tag"></i>  优惠券系统项目</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/07/MessageQueue%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="prev" title="MessageQueue基础知识">
+      <i class="fa fa-chevron-left"></i> MessageQueue基础知识
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/10/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%8E%9F%E7%90%86/" rel="next" title="SpringBoot自动装配原理">
+      SpringBoot自动装配原理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-SpringBoot-%E7%89%B9%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">1. SpringBoot 特性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%BC%96%E5%86%99-SpringBoot-%E5%BA%94%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">2.编写 SpringBoot 应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-SpringBoot-%E5%BA%94%E7%94%A8%E5%90%AF%E5%8A%A8%E5%85%A5%E5%8F%A3"><span class="nav-number">3.</span> <span class="nav-text">3. SpringBoot 应用启动入口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-SpringBoot-%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">4. SpringBoot 自动配置原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-SpringBoot-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">5.</span> <span class="nav-text">5. SpringBoot 配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-application-%E5%92%8C-bootstrap"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 application 和 bootstrap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2%E4%B8%8D%E5%90%8C%E7%9B%AE%E5%BD%95%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F"><span class="nav-number">5.2.</span> <span class="nav-text">5.2不同目录配置文件加载顺序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-SpringBoot-%E9%85%8D%E7%BD%AE%E6%B3%A8%E5%85%A5%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">6.</span> <span class="nav-text">6. SpringBoot 配置注入的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-Value-%E6%B3%A8%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 @Value 注入方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-ConfigurationProperties-%E9%85%8D%E7%BD%AE%E6%B3%A8%E5%85%A5"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 @ConfigurationProperties 配置注入</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-SpringBoot-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="nav-number">7.</span> <span class="nav-text">7. SpringBoot 定时任务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-SpringBoot-%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1"><span class="nav-number">8.</span> <span class="nav-text">8. SpringBoot 异步任务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-SpringBoot-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="nav-number">9.</span> <span class="nav-text">9. SpringBoot 单元测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8"><span class="nav-number">10.</span> <span class="nav-text">10.开机启动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-SpringBoot-Jackson-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="nav-number">11.</span> <span class="nav-text">11. SpringBoot Jackson 的使用技巧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-SpringBoot-Actuator-%E7%9B%91%E6%8E%A7-1"><span class="nav-number">12.</span> <span class="nav-text">12. SpringBoot Actuator 监控(1)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#13-SpringBoot-Actuator-%E7%9B%91%E6%8E%A7-2"><span class="nav-number">13.</span> <span class="nav-text">13. SpringBoot Actuator 监控(2)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-SpringBoot-%E8%87%AA%E5%AE%9A%E4%B9%89-Starter"><span class="nav-number">14.</span> <span class="nav-text">14. SpringBoot 自定义 Starter</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="老王家的小王呀"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">老王家的小王呀</p>
+  <div class="site-description" itemprop="description">及时当勉励，岁月不待人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangjin1996219" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangjin1996219" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:759161269@qq.com" title="E-Mail → mailto:759161269@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=569200212&auto=0&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王进</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">912k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">13:49</span>
+
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+   本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+<span class="post-meta-divider">|</span>
+<i class="fa fa-eye"></i><span id="busuanzi_container_site_pv">
+        本站访问量:<span id="busuanzi_value_site_pv"></span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'pQCeFPCYCP9sz6YcISYlyUqk-gzGzoHsz',
+      appKey     : 'RwrssV7QwO3le9kYtuScKNyD',
+      placeholder: "评论一句，前排打call~",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"symbols_count_time":null,"symbols":true,"time":false,"total_symbols":true,"total_time":false,"log":false});</script></body>
+</html>
+<!-- ҳ������С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

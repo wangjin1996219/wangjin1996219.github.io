@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wangjin1996219.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="（四）优惠券系统-系统通用组件搭建">
+<meta property="og:url" content="http://wangjin1996219.github.io/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="Wj-Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub/MyBlogs/source/_posts/2021-07-13-（四）优惠券系统-系统通用组件搭建/图片01.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub/MyBlogs/source/_posts/2021-07-13-（四）优惠券系统-系统通用组件搭建/图片02.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub/MyBlogs/source_posts/2021-07-13-（四）优惠券系统-系统通用组件搭建/图片03.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub/MyBlogs/source_posts/2021-07-13-（四）优惠券系统-系统通用组件搭建/图片04.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub/MyBlogs/source_posts/2021-07-13-（四）优惠券系统-系统通用组件搭建/图片05.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub/MyBlogs/source/_posts/2021-07-13-（四）优惠券系统-系统通用组件搭建/图片06.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub/MyBlogs/source_posts/2021-07-13-（四）优惠券系统-系统通用组件搭建/图片07.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub/MyBlogs/source/_posts/2021-07-13-（四）优惠券系统-系统通用组件搭建/图片08.png">
+<meta property="og:image" content="http://wangjin1996219.github.io/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub/MyBlogs/source_posts/2021-07-13-（四）优惠券系统-系统通用组件搭建/图片09.png">
+<meta property="article:published_time" content="2021-07-13T13:41:06.000Z">
+<meta property="article:modified_time" content="2021-08-08T03:43:03.887Z">
+<meta property="article:author" content="老王家的小王呀">
+<meta property="article:tag" content="优惠券系统项目">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://wangjin1996219.github.io/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub/MyBlogs/source/_posts/2021-07-13-（四）优惠券系统-系统通用组件搭建/图片01.png">
+
+<link rel="canonical" href="http://wangjin1996219.github.io/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>（四）优惠券系统-系统通用组件搭建 | Wj-Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Wj-Blog" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wj-Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">32</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">90</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://wangjin1996219.github.io/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="老王家的小王呀">
+      <meta itemprop="description" content="及时当勉励，岁月不待人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wj-Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          （四）优惠券系统-系统通用组件搭建
+        </h1>
+
+        <div class="post-meta">
+        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-13 21:41:06" itemprop="dateCreated datePublished" datetime="2021-07-13T21:41:06+08:00">2021-07-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-08-08 11:43:03" itemprop="dateModified" datetime="2021-08-08T11:43:03+08:00">2021-08-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">开源项目</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/" class="post-meta-item leancloud_visitors" data-flag-title="（四）优惠券系统-系统通用组件搭建" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>12k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<a id="more"></a>
+
+<h1 id="1-SpringCloud-四大组件"><a href="#1-SpringCloud-四大组件" class="headerlink" title="1. SpringCloud 四大组件"></a>1. SpringCloud 四大组件</h1><h2 id="1-1-Eureka"><a href="#1-1-Eureka" class="headerlink" title="1.1 Eureka"></a>1.1 Eureka</h2><h3 id="Eureka-的组成"><a href="#Eureka-的组成" class="headerlink" title="Eureka 的组成"></a>Eureka 的组成</h3><img src="/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub\MyBlogs\source\_posts\2021-07-13-（四）优惠券系统-系统通用组件搭建\图片01.png" style="zoom: 50%;">
+
+<p>Eureka 可以分成两大部分：Server 与 Client。</p>
+<p>Client 的四个基本功能有：</p>
+<ol>
+<li><p>服务注册：客户端Client 在启动后，向配置的 服务端Server 发起注册，把自身信息提供给 Server。</p>
+</li>
+<li><p>心跳续约：Client 和 Server 之间维护的一个定时心跳（Eureka 发起的主动操作 （Client ping Server）），表示还在存活着。</p>
+</li>
+<li><p>下线：EurekaClient 关闭后，向 Server 发起通知，Server 把信息清理掉。</p>
+</li>
+<li><p>获取服务注册信息：Eureka Client 之间相互调用，需要知道不同的 Eureka 之间的源信息。从 Eureka Server 中获取。</p>
+</li>
+</ol>
+<h3 id="Eureka-的工作原理"><a href="#Eureka-的工作原理" class="headerlink" title="Eureka 的工作原理"></a>Eureka 的工作原理</h3><img src="/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub\MyBlogs\source\_posts\2021-07-13-（四）优惠券系统-系统通用组件搭建\图片02.png" style="zoom:67%;">
+
+<p>上图中我们首先会启动一个或多个 Eureka server，这些 eureka server 同步保留着所有的服务信息。然后我们启动不同的 eureka client，向服务端发起服务注册和服务查询。<strong>不论我们是向那个 eureka server 进行的注册，最终都会同步给所有配置好的 eureka server。我们获取的服务信息，也同样都是一致的。</strong></p>
+<p>要知道 Eureka 与 Zookeeper 的对比，参考《SpringCloud相关》</p>
+<p><strong>Eureka Server 是怎么存储服务元信息的：</strong></p>
+<p>通过一个两层的 HashMap 来存储</p>
+<ul>
+<li>第一层的 HashMap：Key 存放的是<strong>应用的名称</strong>，每个微服务都是一个应用，一个应用中可以包含多个实例</li>
+<li>第二层的 HashMap：Key 存放的是<strong>实例的名称</strong>，Value 存放实例的地址，比如实例的 IP、端口号、状态信息等</li>
+</ul>
+<h3 id="Eureka-模块搭建"><a href="#Eureka-模块搭建" class="headerlink" title="Eureka 模块搭建"></a>Eureka 模块搭建</h3><p><strong>1.搭建父模块</strong></p>
+<p>修改 pom.xml 文件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.imooc.coupon<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>imooc-coupon<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 子模块，新建model后会自动生成 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modules</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">module</span>&gt;</span>coupon-eureka<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">modules</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 项目的打包类型, 即项目的发布形式, 默认为 jar. 对于聚合项目的父模块来说, 必须指定为 pom --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- springCloud 也是基于Springboot开发，引入springboot 依赖 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.4.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- SpringCloud版本 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">spring-cloud.version</span>&gt;</span>Greenwich.RELEASE<span class="tag">&lt;/<span class="name">spring-cloud.version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- lombok 工具通过在代码编译时期动态的将注解替换为具体的代码,</span></span><br><span class="line"><span class="comment">       IDEA 需要添加 lombok 插件 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.16.18<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 测试用例依赖 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 标识springcloud版本 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring-cloud.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置远程仓库 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>spring-milestones<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">name</span>&gt;</span>Spring Milestones<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">url</span>&gt;</span>https://repo.spring.io/milestone<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>false<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>2.搭建 coupon-eureka 模块</strong></p>
+<p>修改 pom.xml 文件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>imooc-coupon<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.imooc.coupon<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>coupon-eureka<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 模块名及描述信息 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>coupon-eureka<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>Spring Cloud Eureka For Coupon<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- eureka server: 提供服务发现与服务注册 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-eureka-server<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">        SpringBoot的Maven插件, 能够以Maven的方式为应用提供SpringBoot的支持，可以将</span></span><br><span class="line"><span class="comment">        SpringBoot应用打包为可执行的jar或war文件, 然后以通常的方式运行SpringBoot应用</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>3.编写一个应用启动类：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableEurekaServer</span> <span class="comment">//标识为一个EurekaServer</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span> <span class="comment">//标识是一个SpringBoot应用</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EurekaApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(EurekaApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>4.配置 EurekaServer：</strong></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">application</span>:<span class="string"></span></span><br><span class="line">    <span class="attr">name</span>: <span class="string">coupon-eureka</span></span><br><span class="line"></span><br><span class="line"><span class="attr">server</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">port</span>: <span class="string">8000</span></span><br><span class="line"></span><br><span class="line"><span class="attr">eureka</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">instance</span>:<span class="string"></span></span><br><span class="line">    <span class="attr">hostname</span>: <span class="string">localhost</span></span><br><span class="line">  <span class="attr">client</span>:<span class="string"></span></span><br><span class="line"><span class="comment">    # 标识是否从 Eureka Server 获取注册信息, 默认是 true. 如果这是一个单节点的 Eureka Server</span></span><br><span class="line"><span class="comment">    # 不需要同步其他节点的数据, 设置为 false</span></span><br><span class="line">    <span class="meta">fetch-registry</span>: <span class="string">false</span></span><br><span class="line"><span class="comment">    # 是否将自己注册到 Eureka Server, 默认是 true. 由于当前应用是单节点的 Eureka Server</span></span><br><span class="line"><span class="comment">    # 需要设置为 false</span></span><br><span class="line">    <span class="meta">register-with-eureka</span>: <span class="string">false</span></span><br><span class="line"><span class="comment">    # 设置 Eureka Server 所在的地址, 查询服务和注册服务都需要依赖这个地址</span></span><br><span class="line">    <span class="meta">service-url</span>:<span class="string"></span></span><br><span class="line">      <span class="attr">defaultZone</span>: <span class="string">http://$&#123;eureka.instance.hostname&#125;:$&#123;server.port&#125;/eureka/</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>5.启动 springboot 程序，测试 Eureka Server：</strong></p>
+<p><img src="/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub\MyBlogs\source_posts\2021-07-13-（四）优惠券系统-系统通用组件搭建\图片03.png"></p>
+<h3 id="集群-Eureka-Server-模块搭建"><a href="#集群-Eureka-Server-模块搭建" class="headerlink" title="集群 Eureka Server 模块搭建"></a>集群 Eureka Server 模块搭建</h3><p>除了新建一个与上面相同的 Eureka Server 应用之外，最主要的区别就是修改配置文件：</p>
+<p><strong>1.修改配置文件</strong></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#节点1</span></span><br><span class="line"><span class="attr">spring</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">application</span>:<span class="string"></span></span><br><span class="line">    <span class="attr">name</span>: <span class="string">coupon-eureka</span></span><br><span class="line">  <span class="attr">profiles</span>: <span class="string">server1</span></span><br><span class="line"><span class="attr">server</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">port</span>: <span class="string">8000</span></span><br><span class="line"><span class="attr">eureka</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">instance</span>:<span class="string"></span></span><br><span class="line">    <span class="attr">hostname</span>: <span class="string">server1</span></span><br><span class="line"><span class="comment">    #是否允许一台机器部署多个实例</span></span><br><span class="line">    <span class="meta">prefer-ip-address</span>: <span class="string">false</span></span><br><span class="line">  <span class="attr">client</span>:<span class="string"></span></span><br><span class="line">    <span class="meta">service-url</span>:<span class="string"></span></span><br><span class="line"><span class="comment">      #实现相互注册，配置集群其它节点的地址</span></span><br><span class="line">      <span class="attr">defaultZone</span>: <span class="string">http://server2:8001/eureka/,http://server3:8002/eureka/</span></span><br><span class="line"></span><br><span class="line"><span class="attr">---</span></span><br><span class="line"><span class="comment">#节点2</span></span><br><span class="line"><span class="attr">spring</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">application</span>:<span class="string"></span></span><br><span class="line">    <span class="attr">name</span>: <span class="string">coupon-eureka</span></span><br><span class="line">  <span class="attr">profiles</span>: <span class="string">server2</span></span><br><span class="line"><span class="attr">server</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">port</span>: <span class="string">8001</span></span><br><span class="line"><span class="attr">eureka</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">instance</span>:<span class="string"></span></span><br><span class="line">    <span class="attr">hostname</span>: <span class="string">server2</span></span><br><span class="line">    <span class="meta">prefer-ip-address</span>: <span class="string">false</span></span><br><span class="line">  <span class="attr">client</span>:<span class="string"></span></span><br><span class="line">    <span class="meta">service-url</span>:<span class="string"></span></span><br><span class="line">      <span class="attr">defaultZone</span>: <span class="string">http://server1:8000/eureka/,http://server3:8002/eureka/</span></span><br><span class="line"></span><br><span class="line"><span class="attr">---</span></span><br><span class="line"><span class="comment">#节点3</span></span><br><span class="line"><span class="attr">spring</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">application</span>:<span class="string"></span></span><br><span class="line">    <span class="attr">name</span>: <span class="string">coupon-eureka</span></span><br><span class="line">  <span class="attr">profiles</span>: <span class="string">server3</span></span><br><span class="line"><span class="attr">server</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">port</span>: <span class="string">8002</span></span><br><span class="line"><span class="attr">eureka</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">instance</span>:<span class="string"></span></span><br><span class="line">    <span class="attr">hostname</span>: <span class="string">server3</span></span><br><span class="line">    <span class="meta">prefer-ip-address</span>: <span class="string">false</span></span><br><span class="line">  <span class="attr">client</span>:<span class="string"></span></span><br><span class="line">    <span class="meta">service-url</span>:<span class="string"></span></span><br><span class="line">      <span class="attr">defaultZone</span>: <span class="string">http://server1:8000/eureka/,http://server2:8001/eureka/</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：bootstrap.yml 比 application.yml 优先级要高，也就是优先根据这个配置来</p>
+<p><strong>2.配置 hosts 文件</strong></p>
+<p>windows 系统，打开路径 <strong>C:\Windows\System32\drivers\etc，</strong>修改配置文件添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1  server1</span><br><span class="line">127.0.0.1  server2</span><br><span class="line">127.0.0.1  server3</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.执行 maven 命令打包</strong></p>
+<p>a.打开 idea 终端页面：</p>
+<ul>
+<li><p>方法一：在IDEA中点击view→tool window→Terminal即可开启</p>
+</li>
+<li><p>方法二：按住ALT+F12(如果是笔记本按不出来的话再加个Fn键)</p>
+</li>
+</ul>
+<p>打开 idea terminal 窗口，切换到<code>根路径</code>：F:\2021JOB\0-javaguide面经v4\JavaGuide\7 Spring Cloud微服务实战 打造企业级优惠券系统 \imooc-coupon&gt;（就是项目的根目录）</p>
+<p>执行指令将 Eureka Server 服务进行打包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package -Dmaven.test.skip&#x3D;true -U</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<p><img src="/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub\MyBlogs\source_posts\2021-07-13-（四）优惠券系统-系统通用组件搭建\图片04.png"></p>
+<p>打包后在 coupon-eureka 模块下能看到相关 jar 包</p>
+<p><img src="/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub\MyBlogs\source_posts\2021-07-13-（四）优惠券系统-系统通用组件搭建\图片05.png"></p>
+<p>b.选择性的使用配置文件 bootstrap.yml 部分属性运行 jar 包：</p>
+<p>前两个窗口报错正常（因为还没启动第二、三个 server），第三个 server 不应该报错。</p>
+<p>e.1 第一个 ideaterminal 窗口，切到 coupon-eureka 的 target 路径下（jar 包路径）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">打包：mvn clean package -Dmaven.test.skip&#x3D;true -U</span><br><span class="line"></span><br><span class="line">切换目录：</span><br><span class="line">cd coupon-eureka\target</span><br><span class="line"></span><br><span class="line">启动服务：</span><br><span class="line">java -jar coupon-eureka-1.0-SNAPSHOT.jar --spring.profiles.active&#x3D;server1</span><br></pre></td></tr></table></figure>
+
+<p>e.2 打开第二个 ideaterminal 窗口，切到 coupon-eureka 的 target 路径下（jar 包路径）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd coupon-eureka\target</span><br><span class="line">java -jar coupon-eureka-1.0-SNAPSHOT.jar --spring.profiles.active&#x3D;server2</span><br></pre></td></tr></table></figure>
+
+<p>e.3 打开第三个 ideaterminal 窗口，切到 coupon-eureka 的 target 路径下（jar 包路径）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd coupon-eureka\target</span><br><span class="line">java -jar coupon-eureka-1.0-SNAPSHOT.jar --spring.profiles.active&#x3D;server3</span><br></pre></td></tr></table></figure>
+
+<p>上边步骤完成后，eureka 集群已经起来了，浏览器分别输入：<a href="http://server1:8001，http://server2:8002，http://server3:8003">http://server1:8001，http://server2:8002，http://server3:8003</a> 访问即可</p>
+<p>以下是访问 <a target="_blank" rel="noopener" href="http://localhost:8001/">http://localhost:8001/</a> 端口的 Eureka 界面，也就是集群中 Server2 的注册中心界面：</p>
+<img src="/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub\MyBlogs\source\_posts\2021-07-13-（四）优惠券系统-系统通用组件搭建\图片06.png" alt="img" style="zoom: 67%;">
+
+<p><img src="/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub\MyBlogs\source_posts\2021-07-13-（四）优惠券系统-系统通用组件搭建\图片07.png" alt="img"></p>
+<p>界面内容的解释：</p>
+<ul>
+<li><strong>System Status</strong>：系统状态信息，包含启动时间，当前时间，数据中心，环境</li>
+<li><strong>Ds Replicas：</strong>父本，说明该服务器从哪里同步数据，如上图，从 server2 和 server3 同步数据</li>
+<li><strong>Instances currently registered with Eureka：</strong>当前实例注册到 eureka 的信息（如上图，有三个 server）</li>
+<li><strong>General Info：</strong>通用信息，关于 eureka 的一些信息采集信息</li>
+<li><strong>instance info：</strong> 当前实例信息</li>
+</ul>
+<h2 id="1-2-Zuul"><a href="#1-2-Zuul" class="headerlink" title="1.2 Zuul"></a>1.2 Zuul</h2><h3 id="Zuul-的过滤器"><a href="#Zuul-的过滤器" class="headerlink" title="Zuul 的过滤器"></a>Zuul 的过滤器</h3><img src="/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub\MyBlogs\source\_posts\2021-07-13-（四）优惠券系统-系统通用组件搭建\图片08.png" alt="img" style="zoom: 80%;">
+
+<p>过滤器类型：<code>Pre</code>、<code>Routing</code>、<code>Post</code></p>
+<ol>
+<li>pre filters 前置过滤器：在请求到达路由之前调用，进行身份验证，在集群中选择微服务，记录调试信息等。</li>
+<li>routing filters 路由过滤器：将请求路由到微服务，用于构建发送给微服务请求。</li>
+<li>post filters 后置过滤器：在请求路由到微服务以后执行，可以为响应添加标准的 HTTP header, 收集统一信息和指标，将响应从微服务发送给客户端。</li>
+<li>error fiilters 异常处理过滤器：任何阶段执行发生了错误，都会调用。</li>
+<li>custom filters 自定义过滤器：我们为了满足一些特定的需求，而自己定义的过滤器。例如 TokenFilter、RateLimiterFilter 等。</li>
+</ol>
+<p><strong>自定义过滤器实现的四个方法。四个抽象方法：</strong></p>
+<ul>
+<li><p>filterType：对应 Zuul 生命周期的四个阶段：pre、post、route 和 error </p>
+</li>
+<li><p>filterOrder：过滤器的优先级，数字越小，优先级越高</p>
+</li>
+<li><p>shouldFilter：方法返回 boolean 类型，true 时表示是否执行该过滤器的 run 方法，false 则表示不执行</p>
+</li>
+<li><p>run：过滤器的过滤逻辑</p>
+</li>
+</ul>
+<h3 id="Zuul-模块搭建"><a href="#Zuul-模块搭建" class="headerlink" title="Zuul 模块搭建"></a>Zuul 模块搭建</h3><p><strong>1.修改 pom.xml 文件</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>imooc-coupon<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.imooc.coupon<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>coupon-gateway<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 模块名及描述信息 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>coupon-gateway<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>Spring Cloud Gateway For Coupon<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">            Eureka 客户端, 客户端向 Eureka Server 注册的时候会提供一系列的元数据信息, 例如: 主机, 端口, 健康检查url等</span></span><br><span class="line"><span class="comment">            Eureka Server 接受每个客户端发送的心跳信息, 如果在某个配置的超时时间内未接收到心跳信息, 实例会被从注册列表中移除</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-eureka-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 服务网关 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-zuul<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- apache 工具类 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-io<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-io<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.google.guava<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>guava<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>16.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">        SpringBoot的Maven插件, 能够以Maven的方式为应用提供SpringBoot的支持，可以将</span></span><br><span class="line"><span class="comment">        SpringBoot应用打包为可执行的jar或war文件, 然后以通常的方式运行SpringBoot应用</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>2.编写网关的启动类</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * &lt;h1&gt;网关应用启动入口&lt;/h1&gt;</span></span><br><span class="line"><span class="comment"> * 1. <span class="doctag">@EnableZuulProxy</span> 标识当前的应用是 Zuul Server</span></span><br><span class="line"><span class="comment"> * 2. <span class="doctag">@SpringCloudApplication</span> 组合了 SpringBoot 应用 + 服务发现 + 熔断</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@EnableZuulProxy</span></span><br><span class="line"><span class="meta">@SpringCloudApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ZuulGatewayApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        SpringApplication.run(ZuulGatewayApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.配置网关应用</strong></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">port</span>: <span class="string">9000</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">application</span>:<span class="string"></span></span><br><span class="line">    <span class="attr">name</span>: <span class="string">coupon-gateway</span></span><br><span class="line"></span><br><span class="line"><span class="attr">eureka</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">client</span>:<span class="string"></span></span><br><span class="line">    <span class="meta">service-url</span>:<span class="string"></span></span><br><span class="line">      <span class="attr">defaultZone</span>: <span class="string">http://server1:8000/eureka/</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>4.启动网关应用，注册到 Eureka Server（单体）</strong></p>
+<p>先启动 Eureka Server 应用，再启动 gatway 应用，打开Eureka Server 应用所在的 8000 端口我们在 Eureka Server 的界面就可以看到 gatway 应用成功注册到注册中心：</p>
+<p><img src="/2021/07/13/%EF%BC%88%E5%9B%9B%EF%BC%89%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6%E6%90%AD%E5%BB%BA/GitHub\MyBlogs\source_posts\2021-07-13-（四）优惠券系统-系统通用组件搭建\图片09.png"></p>
+<h3 id="自定义过滤器类"><a href="#自定义过滤器类" class="headerlink" title="自定义过滤器类"></a>自定义过滤器类</h3><p><strong>1.定义通用的抽象过滤器类：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * &lt;h1&gt;通用的抽象过滤器类&lt;/h1&gt;</span></span><br><span class="line"><span class="comment"> * Created by Qinyi.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractZuulFilter</span> <span class="keyword">extends</span> <span class="title">ZuulFilter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用于在过滤器之间传递消息, 数据保存在每个请求的 ThreadLocal 中</span></span><br><span class="line">    <span class="comment">// 扩展了 Map,任何类型的数据都能存到 RequestContext 中</span></span><br><span class="line">    RequestContext context;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 标识请求是否继续执行</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> String NEXT = <span class="string">&quot;next&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 过滤器是否执行</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">shouldFilter</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        RequestContext ctx = RequestContext.getCurrentContext();</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">boolean</span>) ctx.getOrDefault(NEXT, <span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 过滤器的执行逻辑</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> Some arbitrary artifact may be returned. Current implementation ignores it.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> ZuulException if an error occurs during execution.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">run</span><span class="params">()</span> <span class="keyword">throws</span> ZuulException </span>&#123;</span><br><span class="line"></span><br><span class="line">        context = RequestContext.getCurrentContext();</span><br><span class="line">        <span class="keyword">return</span> cRun();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> Object <span class="title">cRun</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">Object <span class="title">fail</span><span class="params">(<span class="keyword">int</span> code, String msg)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        context.set(NEXT, <span class="keyword">false</span>);</span><br><span class="line">        context.setSendZuulResponse(<span class="keyword">false</span>);</span><br><span class="line">        context.getResponse().setContentType(<span class="string">&quot;text/html;charset=UTF-8&quot;</span>);</span><br><span class="line">        context.setResponseStatusCode(code);</span><br><span class="line">        context.setResponseBody(String.format(<span class="string">&quot;&#123;\&quot;result\&quot;: \&quot;%s!\&quot;&#125;&quot;</span>, msg));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Object <span class="title">success</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        context.set(NEXT, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.自定义前置抽象过滤器类：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//继承自通用的抽象过滤器类</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractPreZuulFilter</span> <span class="keyword">extends</span> <span class="title">AbstractZuulFilter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">filterType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> FilterConstants.PRE_TYPE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.自定义后置抽象过滤器类：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//继承自通用的抽象过滤器类</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractPostZuulFilter</span> <span class="keyword">extends</span> <span class="title">AbstractZuulFilter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">filterType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> FilterConstants.POST_TYPE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BC%98%E6%83%A0%E5%88%B8%E7%B3%BB%E7%BB%9F%E9%A1%B9%E7%9B%AE/" rel="tag"><i class="fa fa-tag"></i>  优惠券系统项目</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/10/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%8E%9F%E7%90%86/" rel="prev" title="SpringBoot自动装配原理">
+      <i class="fa fa-chevron-left"></i> SpringBoot自动装配原理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/15/%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98/" rel="next" title="死锁问题">
+      死锁问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-SpringCloud-%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">1. SpringCloud 四大组件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-Eureka"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 Eureka</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Eureka-%E7%9A%84%E7%BB%84%E6%88%90"><span class="nav-number">1.1.1.</span> <span class="nav-text">Eureka 的组成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Eureka-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.2.</span> <span class="nav-text">Eureka 的工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Eureka-%E6%A8%A1%E5%9D%97%E6%90%AD%E5%BB%BA"><span class="nav-number">1.1.3.</span> <span class="nav-text">Eureka 模块搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4-Eureka-Server-%E6%A8%A1%E5%9D%97%E6%90%AD%E5%BB%BA"><span class="nav-number">1.1.4.</span> <span class="nav-text">集群 Eureka Server 模块搭建</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-Zuul"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 Zuul</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Zuul-%E7%9A%84%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">Zuul 的过滤器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zuul-%E6%A8%A1%E5%9D%97%E6%90%AD%E5%BB%BA"><span class="nav-number">1.2.2.</span> <span class="nav-text">Zuul 模块搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BF%87%E6%BB%A4%E5%99%A8%E7%B1%BB"><span class="nav-number">1.2.3.</span> <span class="nav-text">自定义过滤器类</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="老王家的小王呀"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">老王家的小王呀</p>
+  <div class="site-description" itemprop="description">及时当勉励，岁月不待人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangjin1996219" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangjin1996219" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:759161269@qq.com" title="E-Mail → mailto:759161269@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=569200212&auto=0&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王进</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">912k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">13:49</span>
+
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+   本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+<span class="post-meta-divider">|</span>
+<i class="fa fa-eye"></i><span id="busuanzi_container_site_pv">
+        本站访问量:<span id="busuanzi_value_site_pv"></span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'pQCeFPCYCP9sz6YcISYlyUqk-gzGzoHsz',
+      appKey     : 'RwrssV7QwO3le9kYtuScKNyD',
+      placeholder: "评论一句，前排打call~",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"symbols_count_time":null,"symbols":true,"time":false,"total_symbols":true,"total_time":false,"log":false});</script></body>
+</html>
+<!-- ҳ������С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
